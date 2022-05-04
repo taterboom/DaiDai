@@ -1,0 +1,29 @@
+{
+  "sites": [
+    {
+      "name": "小众软件",
+      "url": "https://www.appinn.com/",
+      "tagStr": "产品"
+    },
+    {
+      "name": "Producthunt",
+      "url": "https://www.producthunt.com/",
+      "tagStr": "产品"
+    },
+    {
+      "name": "少数派",
+      "url": "https://www.sspai.com/",
+      "tagStr": "产品"
+    },
+    {
+      "name": "36氪",
+      "url": "https://36kr.com/",
+      "tagStr": "资讯"
+    },
+    {
+      "name": "虎嗅网",
+      "url": "https://www.huxiu.com/",
+      "tagStr": "资讯"
+    }
+  ]
+}
