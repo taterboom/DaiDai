@@ -13,20 +13,26 @@ const SiteItem: React.FC<{ value: Site; active?: boolean }> = ({ value, active }
       )}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={value.iconUrl} alt={value.name} width="40" height="40" className="rounded-full" />
-      <figcaption className="ml-4">
-        <a href={value.url} target={settings.hrefTarget}>
+      <img
+        src={value.iconUrl}
+        alt={value.name}
+        width="40"
+        height="40"
+        className="rounded-full w-10 h-10"
+      />
+      <figcaption className="ml-4 truncate">
+        <a href={value.url} target={settings.hrefTarget} title={value.name}>
           <span className="absolute inset-0"></span>
           {value.name}
         </a>
-        <ul className="flex">
+        <ul className="flex flex-wrap">
           {value.tags.map((tag) => (
             <li
               key={tag}
-              className="relative opacity-70 px-2 py-0.5 border border-black rounded-md text-xs scale-75 origin-left"
+              className="relative opacity-70 px-1.5 border border-black rounded-md text-xs scale-90 origin-left"
             >
               {tag}
-              <div className="absolute inset-0.5 -z-10 rounded bg-gray-300"></div>
+              <div className="absolute inset-0.5 -z-10 rounded bg-gray-100"></div>
             </li>
           ))}
         </ul>

@@ -15,7 +15,7 @@ class Site {
   constructor(name: string, url: string, tagStr: string) {
     this.name = name
     this.url = url
-    this.tagStr = tagStr
+    this.tagStr = tagStr.trim() || "No Tag"
     this.iconUrl = getGoogleFaviconUrl(getHost(url))
   }
   get tags() {
