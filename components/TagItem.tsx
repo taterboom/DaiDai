@@ -1,8 +1,10 @@
 import React from "react"
+import { useSettingsValue } from "../contexts/settings"
 import { useTags } from "../contexts/tags"
 
 const TagItem: React.FC<{ value: string }> = ({ value }) => {
   const { value: tagsMap, onChange } = useTags()
+  const { highlightColor } = useSettingsValue()
   return (
     <button
       className="group relative inline-block whitespace-nowrap px-4 py-0.5 border-2 rounded-lg border-black"
@@ -11,7 +13,7 @@ const TagItem: React.FC<{ value: string }> = ({ value }) => {
         if (newTagsMap.has(value)) {
           newTagsMap.delete(value)
         } else {
-          newTagsMap.set(value, "#3c5")
+          newTagsMap.set(value, highlightColor)
         }
         onChange(newTagsMap)
       }}

@@ -3,6 +3,7 @@ import React, { createContext, HTMLAttributeAnchorTarget, useContext, useState }
 export type SettingsContextValue = {
   value: {
     hrefTarget: HTMLAttributeAnchorTarget
+    highlightColor: string
   }
 
   onChange: (value: Partial<SettingsContextValue["value"]>) => void
@@ -10,6 +11,7 @@ export type SettingsContextValue = {
 
 const defaultValue: SettingsContextValue["value"] = {
   hrefTarget: "_blank",
+  highlightColor: "#95f09c",
 }
 
 const SettingsContext = createContext<SettingsContextValue>({
