@@ -1,5 +1,5 @@
 import Site from "../modules/Site"
-import { useSettingsValue } from "./Settings"
+import { useSettingsValue } from "../contexts/settings"
 import cx from "classnames"
 import { useState } from "react"
 

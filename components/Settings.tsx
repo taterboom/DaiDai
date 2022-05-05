@@ -1,45 +1,5 @@
-import React, { createContext, HTMLAttributeAnchorTarget, useContext, useState } from "react"
-
-export type SettingsContextValue = {
-  value: {
-    hrefTarget: HTMLAttributeAnchorTarget
-  }
-
-  onChange: (value: Partial<SettingsContextValue["value"]>) => void
+const Settings = () => {
+  return <div>123</div>
 }
 
-const defaultValue: SettingsContextValue["value"] = {
-  hrefTarget: "_blank",
-}
-
-const SettingsContext = createContext<SettingsContextValue>({
-  value: defaultValue,
-  onChange: () => {},
-})
-
-export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState(defaultValue)
-  return (
-    <SettingsContext.Provider
-      value={{
-        value: state,
-        onChange: (v) =>
-          setState({
-            ...state,
-            ...v,
-          }),
-      }}
-    >
-      {children}
-    </SettingsContext.Provider>
-  )
-}
-
-export const useSettings = () => {
-  return useContext(SettingsContext)
-}
-
-export const useSettingsValue = () => {
-  const { value } = useSettings()
-  return value
-}
+export default Settings
