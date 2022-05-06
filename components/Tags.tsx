@@ -3,7 +3,7 @@ import { useTags } from "../contexts/tags"
 import TagItem from "./TagItem"
 import TypeBox from "./TypeBox"
 
-const Tags: React.FC<{ value: Map<string, Set<string>> }> = ({ value }) => {
+const Tags: React.FC<{ blur: boolean; value: Map<string, Set<string>> }> = ({ blur, value }) => {
   const { value: selectTags, onChange } = useTags()
   const { highlightColor } = useSettingsValue()
   const checkTags = (text: string) => {
@@ -29,7 +29,7 @@ const Tags: React.FC<{ value: Map<string, Set<string>> }> = ({ value }) => {
   }
   return (
     <section>
-      <TypeBox onChange={checkTags}></TypeBox>
+      <TypeBox open={!blur} onChange={checkTags}></TypeBox>
       <ul className="flex flex-wrap">
         {[...value].map(([tag, urlsSet]) => (
           <li key={tag} className="ml-2 mb-2">

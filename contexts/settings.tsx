@@ -1,9 +1,14 @@
 import React, { createContext, HTMLAttributeAnchorTarget, useContext, useState } from "react"
 
+const LOCAL_SETTINGS_KEY = "_daidai_settings"
+
+type Site = { name?: string; url?: string; tagStr?: string }
+
 export type SettingsContextValue = {
   value: {
     hrefTarget: HTMLAttributeAnchorTarget
     highlightColor: string
+    dataOrigin: Array<Site>
   }
 
   onChange: (value: Partial<SettingsContextValue["value"]>) => void
@@ -12,6 +17,18 @@ export type SettingsContextValue = {
 const defaultValue: SettingsContextValue["value"] = {
   hrefTarget: "_blank",
   highlightColor: "#95f09c",
+  dataOrigin: [],
+}
+
+const getDefaultValue = () => {
+  if (typeof localStorage === "undefined") return defaultValue
+  const localStr = localStorage.getItem(LOCAL_SETTINGS_KEY)
+  if (!localStr) return defaultValue
+  try {
+    return JSON.parse(localStr)
+  } catch (err) {
+    //
+  }
 }
 
 const SettingsContext = createContext<SettingsContextValue>({
@@ -20,16 +37,20 @@ const SettingsContext = createContext<SettingsContextValue>({
 })
 
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState(defaultValue)
+  const [state, setState] = useState(getDefaultValue)
+  const handleChange: SettingsContextValue["onChange"] = (v) => {
+    const newState = {
+      ...state,
+      ...v,
+    }
+    setState(newState)
+    localStorage.setItem(LOCAL_SETTINGS_KEY, JSON.stringify(newState))
+  }
   return (
     <SettingsContext.Provider
       value={{
         value: state,
-        onChange: (v) =>
-          setState({
-            ...state,
-            ...v,
-          }),
+        onChange: handleChange,
       }}
     >
       {children}

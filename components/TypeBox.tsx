@@ -1,49 +1,46 @@
 import { useEffect, useRef, useState } from "react"
-import { createPortal } from "react-dom"
+import Portal from "./Common/Portal"
 
-type TypeBoxClientProps = { onChange?: (text: string) => any }
-const TypeBoxClient: React.FC<TypeBoxClientProps> = ({ onChange }) => {
+type TypeBoxProps = { open?: boolean; onChange?: (text: string) => any }
+const TypeBox: React.FC<TypeBoxProps> = ({ open = true, onChange }) => {
   const [text, setText] = useState("")
-  const root = useRef(document.createElement("div"))
+  const textRef = useRef(text)
+  textRef.current = text
   const changeHander = useRef(onChange)
   changeHander.current = onChange
-  useEffect(() => {
-    changeHander.current?.(text)
-  }, [text])
-  useEffect(() => {
-    const rootEl = root.current
-    document.body.appendChild(rootEl)
-    return () => {
-      rootEl.remove()
-    }
-  }, [])
-  useEffect(() => {
-    const onType = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey) return
-      if (/^\w$/.test(e.key)) {
-        setText((text) => text.concat(e.key))
-      }
-      if (e.key.toUpperCase() === "BACKSPACE") {
-        setText((text) => (e.metaKey ? "" : text.slice(0, -1)))
-      }
-    }
-    document.addEventListener("keydown", onType)
-    return () => {
-      document.removeEventListener("keydown", onType)
-    }
-  }, [])
-  if (!text) return null
-  return createPortal(
-    <div className="fixed top-0 right-0 px-2 py-0.5 pointer-events-none bg-gray-100 rounded-bl-md border border-gray-200 backdrop-blur-sm">
-      {text}
-    </div>,
-    root.current
-  )
-}
 
-const TypeBox: React.FC<TypeBoxClientProps> = (props) => {
-  if (typeof window === "undefined") return null
-  return <TypeBoxClient {...props}></TypeBoxClient>
+  useEffect(() => {
+    if (open) {
+      const onType = (e: KeyboardEvent) => {
+        if (e.ctrlKey || e.metaKey) return
+        const tagName = (e.target as HTMLElement).tagName.toUpperCase()
+        if (tagName === "INPUT" || tagName === "TEXTAREA") return
+        if (/^\w$/.test(e.key)) {
+          const newText = textRef.current.concat(e.key)
+          setText(newText)
+          changeHander.current?.(newText)
+        }
+        if (e.key.toUpperCase() === "BACKSPACE") {
+          const newText = e.metaKey ? "" : textRef.current.slice(0, -1)
+          setText(newText)
+          changeHander.current?.(newText)
+        }
+      }
+      document.addEventListener("keydown", onType)
+      return () => {
+        document.removeEventListener("keydown", onType)
+      }
+    }
+  }, [open])
+
+  if (!text) return null
+  return (
+    <Portal>
+      <div className="fixed top-0 right-0 px-2 py-0.5 pointer-events-none bg-gray-100 rounded-bl-md border border-gray-200 backdrop-blur-sm">
+        {text}
+      </div>
+    </Portal>
+  )
 }
 
 export default TypeBox

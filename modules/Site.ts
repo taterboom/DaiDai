@@ -1,8 +1,13 @@
 function getHost(url: string) {
-  return new URL(url).host
+  try {
+    return new URL(url).host
+  } catch (err) {
+    return ""
+  }
 }
 
-function getGoogleFaviconUrl(host: string) {
+function getGoogleFaviconUrl(host?: string) {
+  if (!host) return ""
   // return `https://www.google.com/s2/favicons?domain=${decodeURIComponent(host)}&sz=128`
   return `https://icon.horse/icon/${decodeURIComponent(host)}`
 }

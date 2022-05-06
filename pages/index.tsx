@@ -1,17 +1,10 @@
 import type { NextPage } from "next"
-import Desktop from "../components/Desktop"
-import { SettingsProvider } from "../contexts/settings"
-import { TagsProvider } from "../contexts/tags"
-import data from "../test.json"
+import dynamic from "next/dynamic"
+
+const App = dynamic(() => import("../components/App"), { ssr: false })
 
 const Home: NextPage = () => {
-  return (
-    <SettingsProvider>
-      <TagsProvider>
-        <Desktop json={data}></Desktop>
-      </TagsProvider>
-    </SettingsProvider>
-  )
+  return <App></App>
 }
 
 export default Home
