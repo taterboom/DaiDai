@@ -10,13 +10,22 @@ const styles: any = {
   },
 }
 const Fade: React.FC<{ in: boolean; children: React.ReactNode }> = ({ children, in: inProp }) => {
-  const nodeRef = useRef()
+  const nodeRef = useRef<HTMLElement>()
   if (!isValidElement(children) || !Children.only(children)) return null
   return (
-    <Transition in={inProp} timeout={200} nodeRef={nodeRef} unmountOnExit>
+    <Transition
+      in={inProp}
+      timeout={200}
+      nodeRef={nodeRef}
+      unmountOnExit
+      onEnter={() => {
+        nodeRef.current?.scrollTop
+      }}
+    >
       {(state) =>
         cloneElement(children, {
           style: {
+            transition: "opacity 200ms",
             opacity: 0,
             visibility: state === "exited" && !inProp ? "hidden" : undefined,
             ...styles[state],

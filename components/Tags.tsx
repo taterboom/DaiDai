@@ -30,9 +30,9 @@ const Tags: React.FC<{ blur: boolean; value: Map<string, Set<string>> }> = ({ bl
   return (
     <section>
       <TypeBox open={!blur} onChange={checkTags}></TypeBox>
-      <ul className="flex flex-wrap">
+      <ul className="flex flex-wrap mb-2">
         {[...value].map(([tag, urlsSet]) => (
-          <li key={tag} className="ml-2 mb-2">
+          <li key={tag} className="mr-2 mb-2">
             <TagItem value={tag}></TagItem>
           </li>
         ))}

@@ -1,11 +1,14 @@
 import Desktop from "../components/Desktop"
+import { GithubGraphqlClientProvider } from "../contexts/githubGraphql"
 import { SettingsProvider } from "../contexts/settings"
 import { TagsProvider } from "../contexts/tags"
 
 const App = () => (
   <SettingsProvider>
     <TagsProvider>
-      <Desktop></Desktop>
+      <GithubGraphqlClientProvider>
+        <Desktop></Desktop>
+      </GithubGraphqlClientProvider>
     </TagsProvider>
   </SettingsProvider>
 )

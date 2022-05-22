@@ -1,3 +1,4 @@
+import { useRouter } from "next/router"
 import React, { useMemo, useState } from "react"
 import { useSettingsValue } from "../contexts/settings"
 import Site from "../modules/Site"
@@ -6,9 +7,9 @@ import Sites from "./Sites"
 import Tags from "./Tags"
 
 const Desktop: React.FC = ({}) => {
+  const router = useRouter()
   const { dataOrigin } = useSettingsValue()
 
-  const [settingsVisible, setSettingsVisible] = useState(false)
   const { sitesMap, tagsMap } = useMemo(() => {
     const _sitesMap = new Map<string, Site>()
     const _tagsMap = new Map<string, Set<string>>()
@@ -25,11 +26,13 @@ const Desktop: React.FC = ({}) => {
     }
   }, [dataOrigin])
 
+  const settingsPannelShow = router.query.pannel === "settings"
+
   return (
     <div className="p-2">
-      <Settings show={settingsVisible} onChange={(v) => setSettingsVisible(v)}></Settings>
-      <Tags value={tagsMap} blur={settingsVisible}></Tags>
-      <Sites value={[...sitesMap.values()]} blur={settingsVisible}></Sites>
+      <Settings></Settings>
+      <Tags value={tagsMap} blur={settingsPannelShow}></Tags>
+      <Sites value={[...sitesMap.values()]} blur={settingsPannelShow}></Sites>
     </div>
   )
 }

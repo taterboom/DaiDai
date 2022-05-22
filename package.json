@@ -4,15 +4,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.2",
     "@monaco-editor/react": "^4.4.4",
+    "@types/cookie": "^0.5.1",
+    "@types/js-cookie": "^3.0.2",
     "@types/react-transition-group": "^4.4.4",
     "classnames": "^2.3.1",
+    "cookie": "^0.5.0",
+    "graphql": "^16.5.0",
+    "js-base64": "^3.7.2",
+    "js-cookie": "^3.0.1",
     "next": "12.1.5",
     "react": "18.1.0",
     "react-dom": "18.1.0",
