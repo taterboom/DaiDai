@@ -1,1 +1,0 @@
-const useGithubClient = (accessToken: string) => {}
