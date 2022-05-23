@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client"
 import Cookies from "js-cookie"
 import { useState } from "react"
 import { WhoAmI } from "../../apis/github"
+import { useConfigValue } from "../../contexts/config"
 import Button from "../Common/Button"
 import { EosIconsThreeDotsLoading, IcBaselineLogout, RadixIconsGithubLogo } from "../Common/icons"
 
@@ -35,12 +36,13 @@ const GithubUser = ({ onError }: { onError: () => void }) => {
 
 const User = () => {
   const [fetchUserError, setFetchUserError] = useState(false)
+  const { githubClientId } = useConfigValue()
   if (Cookies.get("nekot") && !fetchUserError) {
     return <GithubUser onError={() => setFetchUserError(true)}></GithubUser>
   }
   return (
     <div>
-      <a href="https://github.com/login/oauth/authorize?client_id=c444e149109686b24cf8&scope=repo">
+      <a href={`https://github.com/login/oauth/authorize?client_id=${githubClientId}&scope=repo`}>
         <Button>
           <RadixIconsGithubLogo className="inline mr-1 -mt-0.5" /> Login with Github
         </Button>
