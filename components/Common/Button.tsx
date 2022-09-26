@@ -1,20 +1,30 @@
-type ButtonProps = {
-  className?: string
+import Link, { LinkProps } from "next/link"
+import clsx from "classnames"
+
+export type ButtonProps = {
   rounded?: boolean
-  children: React.ReactNode
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+} & React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+
+const Button = ({ rounded = false, className = "", ...props }: ButtonProps) => {
+  const btnClassName = clsx(`btn btn-ghost btn-sm`, rounded ? "btn-circle" : "", className)
+  return <button {...props} className={btnClassName}></button>
 }
 
-const Button = ({ rounded = false, className = "", children, onClick }: ButtonProps) => {
+type LinkButtonProps = React.PropsWithChildren<
+  { rounded?: boolean; className?: string } & LinkProps
+>
+
+export const LinkButton = ({
+  rounded = false,
+  className = "",
+  children,
+  ...linkProps
+}: LinkButtonProps) => {
+  const btnClassName = clsx(`btn btn-ghost btn-sm`, rounded ? "btn-circle" : "", className)
   return (
-    <button
-      className={`${
-        rounded ? "p-2 rounded-full" : "px-4 py-1 rounded"
-      } hover:shadow-ios active:bg-black/5 ${className}`}
-      onClick={(e) => onClick?.(e)}
-    >
-      {children}
-    </button>
+    <Link scroll={false} {...linkProps}>
+      <a className={btnClassName}>{children}</a>
+    </Link>
   )
 }
 

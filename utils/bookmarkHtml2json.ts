@@ -1,15 +1,15 @@
-type Site = {
-  name: string
+export type Bookmark = {
+  title: string
   url: string
-  tagStr: string
+  tags: string[]
 }
 
 export function bookmarkHTMLString2json(htmlString: string) {
   return bookmarkHTML2json(new DOMParser().parseFromString(htmlString, "text/html"))
 }
 
-function bookmarkHTML2json(doc: Document, ignoreTags = ["书签栏"]) {
-  const result: Site[] = []
+export function bookmarkHTML2json(doc: Document, ignoreTags = ["书签栏"]) {
+  const result: Bookmark[] = []
   function traverse(dl: Element, tags: string[] = []) {
     for (const childElement of dl.children) {
       if (childElement.tagName === "DT") {
@@ -23,9 +23,9 @@ function bookmarkHTML2json(doc: Document, ignoreTags = ["书签栏"]) {
           traverse(fe.nextElementSibling, tags.concat(fe.textContent || ""))
         } else if (fe.tagName === "A") {
           result.push({
-            name: fe.textContent || "",
+            title: fe.textContent || "",
             url: (<HTMLAnchorElement>fe).href,
-            tagStr: tags.filter((t) => !ignoreTags.includes(t)).join(","),
+            tags: tags.filter((t) => !ignoreTags.includes(t)),
           })
         }
       }
@@ -34,5 +34,3 @@ function bookmarkHTML2json(doc: Document, ignoreTags = ["书签栏"]) {
   traverse(doc.querySelector("dl") as Element)
   return result
 }
-
-export default bookmarkHTML2json

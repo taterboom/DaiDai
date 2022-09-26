@@ -1,37 +1,34 @@
 import { useEffect, useRef, useState } from "react"
+import useDaiDaiStore from "../store/daidai"
 import Portal from "./Common/Portal"
 
-type TypeBoxProps = { open?: boolean; onChange?: (text: string) => any }
-const TypeBox: React.FC<TypeBoxProps> = ({ open = true, onChange }) => {
+const TypeBox = () => {
+  const typeTag = useDaiDaiStore((state) => state.typeTag)
   const [text, setText] = useState("")
   const textRef = useRef(text)
   textRef.current = text
-  const changeHander = useRef(onChange)
-  changeHander.current = onChange
 
   useEffect(() => {
-    if (open) {
-      const onType = (e: KeyboardEvent) => {
-        if (e.ctrlKey || e.metaKey) return
-        const tagName = (e.target as HTMLElement).tagName.toUpperCase()
-        if (tagName === "INPUT" || tagName === "TEXTAREA") return
-        if (/^\w$/.test(e.key)) {
-          const newText = textRef.current.concat(e.key)
-          setText(newText)
-          changeHander.current?.(newText)
-        }
-        if (e.key.toUpperCase() === "BACKSPACE") {
-          const newText = e.metaKey ? "" : textRef.current.slice(0, -1)
-          setText(newText)
-          changeHander.current?.(newText)
-        }
+    const onType = (e: KeyboardEvent) => {
+      if (e.key.toUpperCase() === "BACKSPACE") {
+        const newText = e.metaKey || e.altKey ? "" : textRef.current.slice(0, -1)
+        setText(newText)
+        typeTag(newText)
       }
-      document.addEventListener("keydown", onType)
-      return () => {
-        document.removeEventListener("keydown", onType)
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      const tagName = (e.target as HTMLElement).tagName.toUpperCase()
+      if (tagName === "INPUT" || tagName === "TEXTAREA") return
+      if (/^\w$/.test(e.key)) {
+        const newText = textRef.current.concat(e.key)
+        setText(newText)
+        typeTag(newText)
       }
     }
-  }, [open])
+    document.addEventListener("keydown", onType)
+    return () => {
+      document.removeEventListener("keydown", onType)
+    }
+  }, [typeTag])
 
   if (!text) return null
   return (

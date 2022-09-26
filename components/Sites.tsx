@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
-import { useTagsValue } from "../contexts/tags"
-import Site from "../modules/Site"
-import SiteItem from "./SiteItem"
 import tinykeys from "tinykeys"
-import classNames from "classnames"
-import { useSettingsValue } from "../contexts/settings"
+import useDaiDaiStore from "../store/daidai"
+import { selectActiveDaidaiObjects, selectVisibleDaidaiObjects } from "../store/selector"
+import SiteItem from "./SiteItem"
 
 const RESPONSIVE_DATA = {
   mobile: {
@@ -64,49 +62,33 @@ const getScreenLevel = () => {
   return 0
 }
 
-const Sites: React.FC<{ blur: boolean; value: Site[] }> = ({ blur, value }) => {
+const Sites = ({ disabled }: { disabled: boolean }) => {
   const [screenLevel, setScreenLevel] = useState(getScreenLevel)
   const screenLevelRef = useRef(screenLevel)
   screenLevelRef.current = screenLevel
   const [activeIndex, setActiveIndex] = useState(-1)
   const activeIndexRef = useRef(activeIndex)
   activeIndexRef.current = activeIndex
-  const selectedTagsMap = useTagsValue()
-  const visibleItems = useMemo(
-    () =>
-      selectedTagsMap.size === 0
-        ? value
-        : value.filter((item) => {
-            for (const tag of selectedTagsMap.keys()) {
-              if (!item.tags.includes(tag)) {
-                return false
-              }
-            }
-            return true
-          }),
-    [value, selectedTagsMap]
-  )
-  const visibleItemsRef = useRef(visibleItems)
-  visibleItemsRef.current = visibleItems
-  const settingsValue = useSettingsValue()
-  const settingsValueRef = useRef(settingsValue)
-  settingsValueRef.current = settingsValue
+  const visibleDaidaiObjects = useDaiDaiStore(selectVisibleDaidaiObjects)
+
+  const visibleDaidaiObjectsRef = useRef(visibleDaidaiObjects)
+  visibleDaidaiObjectsRef.current = visibleDaidaiObjects
   useEffect(() => {
     if (typeof window === "undefined") return
-    if (!blur) {
+    if (!disabled) {
       const nav = (url: string) =>
-        settingsValueRef.current.hrefTarget === "_blank"
+        useDaiDaiStore.getState().hrefTarget === "_blank"
           ? window.open(url)
           : window.location.assign(url)
       const generateNav = (index: number) => (e: Event) => {
         e.preventDefault()
-        const site = visibleItemsRef.current[index]
+        const site = visibleDaidaiObjectsRef.current[index]
         if (site.url) {
           nav(site.url)
         }
       }
       const enterNav = () => {
-        const site = visibleItemsRef.current[activeIndexRef.current]
+        const site = visibleDaidaiObjectsRef.current[activeIndexRef.current]
         if (site.url) {
           nav(site.url)
         }
@@ -115,7 +97,9 @@ const Sites: React.FC<{ blur: boolean; value: Site[] }> = ({ blur, value }) => {
         e.preventDefault()
         switch (type) {
           case "right":
-            setActiveIndex((index) => Math.min(index + 1, visibleItemsRef.current.length - 1))
+            setActiveIndex((index) =>
+              Math.min(index + 1, visibleDaidaiObjectsRef.current.length - 1)
+            )
             break
           case "left":
             setActiveIndex((index) => Math.max(index - 1, -1))
@@ -125,7 +109,7 @@ const Sites: React.FC<{ blur: boolean; value: Site[] }> = ({ blur, value }) => {
               Math.min(
                 (index === -1 ? 0 : index) +
                   RESPONSIVE_DATA[RESPONSIVE_LEVEL[screenLevelRef.current]].count,
-                visibleItemsRef.current.length - 1
+                visibleDaidaiObjectsRef.current.length - 1
               )
             )
             break
@@ -158,7 +142,7 @@ const Sites: React.FC<{ blur: boolean; value: Site[] }> = ({ blur, value }) => {
         unsubscribe()
       }
     }
-  }, [blur])
+  }, [disabled])
   useEffect(() => {
     window.addEventListener("size", () => {
       setScreenLevel(getScreenLevel())
@@ -167,8 +151,13 @@ const Sites: React.FC<{ blur: boolean; value: Site[] }> = ({ blur, value }) => {
 
   return (
     <section className="grid gap-4 grid-cols-[repeat(2,_minmax(200px,_1fr))] sm:grid-cols-[repeat(3,_minmax(200px,_1fr))] md:grid-cols-[repeat(4,_minmax(200px,_1fr))] lg:grid-cols-[repeat(5,_minmax(200px,_1fr))] xl:grid-cols-[repeat(6,_minmax(200px,_1fr))] 2xl:grid-cols-[repeat(7,_minmax(200px,_1fr))] 3xl:grid-cols-[repeat(8,_minmax(200px,_1fr))]">
-      {visibleItems.map((site, index) => (
-        <SiteItem value={site} key={site.url} active={index === activeIndex}></SiteItem>
+      {visibleDaidaiObjects.map((site, index) => (
+        <SiteItem
+          key={site.key}
+          index={index}
+          value={site}
+          active={index === activeIndex}
+        ></SiteItem>
       ))}
     </section>
   )
