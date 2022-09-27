@@ -7,14 +7,14 @@ import Portal from "./Portal"
 import clsx from "classnames"
 
 const usePreventScroll = (on: boolean) => {
-  // useEffect(() => {
-  //   if (on) {
-  //     document.body.style.overflow = "hidden"
-  //     return () => {
-  //       document.body.style.removeProperty("overflow")
-  //     }
-  //   }
-  // }, [on])
+  useEffect(() => {
+    if (on) {
+      document.body.style.overflow = "hidden"
+      return () => {
+        document.body.style.removeProperty("overflow")
+      }
+    }
+  }, [on])
 }
 
 const Popup: React.FC<{

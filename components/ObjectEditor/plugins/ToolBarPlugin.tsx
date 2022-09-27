@@ -264,7 +264,7 @@ const FormatStikeThroughButton = (props: { checked?: boolean }) => {
   )
 }
 
-const ToolBarPlugin = () => {
+const ToolBarPlugin = ({ onSubmit }: { onSubmit: () => void }) => {
   const [editor] = useLexicalComposerContext()
   const [currentBlock, setCurrentBlock] = useState<null | {
     key: string
@@ -349,24 +349,33 @@ const ToolBarPlugin = () => {
   }, [editor, updateToolBar])
 
   return (
-    <div className="flex">
-      <HeadingButton checked={currentBlock?.type === "heading"}></HeadingButton>
-      <FormatBoldButton checked={isBold}></FormatBoldButton>
-      <FormatItalicButton checked={isItalic}></FormatItalicButton>
-      <FormatUnderlineButton checked={isUnderline}></FormatUnderlineButton>
-      <FormatStikeThroughButton checked={isStrikethrough}></FormatStikeThroughButton>
-      <LinkButton checked={isLink}></LinkButton>
-      <CodeButton checked={currentBlock?.type === "code"}></CodeButton>
-      <BulletListButton
-        checked={currentBlock?.type === "list" && currentBlock?.remark === "bullet"}
-      ></BulletListButton>
-      <NumberListButton
-        checked={currentBlock?.type === "list" && currentBlock?.remark === "number"}
-      ></NumberListButton>
-      <CheckListButton
-        checked={currentBlock?.type === "list" && currentBlock?.remark === "check"}
-      ></CheckListButton>
-      <QuoteButton checked={currentBlock?.type === "quote"}></QuoteButton>
+    <div className="flex items-center justify-between handlebar">
+      <div className="flex items-center">
+        <HeadingButton checked={currentBlock?.type === "heading"}></HeadingButton>
+        <FormatBoldButton checked={isBold}></FormatBoldButton>
+        <FormatItalicButton checked={isItalic}></FormatItalicButton>
+        <FormatUnderlineButton checked={isUnderline}></FormatUnderlineButton>
+        <FormatStikeThroughButton checked={isStrikethrough}></FormatStikeThroughButton>
+        <LinkButton checked={isLink}></LinkButton>
+        <CodeButton checked={currentBlock?.type === "code"}></CodeButton>
+        <BulletListButton
+          checked={currentBlock?.type === "list" && currentBlock?.remark === "bullet"}
+        ></BulletListButton>
+        <NumberListButton
+          checked={currentBlock?.type === "list" && currentBlock?.remark === "number"}
+        ></NumberListButton>
+        <CheckListButton
+          checked={currentBlock?.type === "list" && currentBlock?.remark === "check"}
+        ></CheckListButton>
+        <QuoteButton checked={currentBlock?.type === "quote"}></QuoteButton>
+      </div>
+      <Button
+        onClick={() => {
+          onSubmit()
+        }}
+      >
+        Submit
+      </Button>
     </div>
   )
 }

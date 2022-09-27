@@ -1,3 +1,4 @@
+import { omit } from "lodash"
 import { HTMLAttributeAnchorTarget } from "react"
 import create from "zustand"
 import { persist } from "zustand/middleware"
@@ -65,7 +66,9 @@ const useDaiDaiStore = create<DaidaiState>()(
           if (!text.trim()) return
           const tags = selectTags(get())
           set((state) => {
-            state.activeTags = tags.filter((tag) => tag.startsWith(text))
+            state.activeTags = tags.filter((tag) =>
+              tag.toUpperCase().startsWith(text.toUpperCase())
+            )
           })
         },
       })),
@@ -75,7 +78,7 @@ const useDaiDaiStore = create<DaidaiState>()(
           return JSON.stringify({
             ...localState,
             state: {
-              ...localState.state,
+              ...omit(localState.state, "activeTags"),
               data: localState.state.data.map((item) => item.dehydrate()),
             },
           })

@@ -25,3 +25,7 @@
 .upload-input {
     @apply hidden
 }
+
+.label {
+    @apply px-2
+}

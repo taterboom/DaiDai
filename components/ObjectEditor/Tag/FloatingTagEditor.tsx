@@ -32,7 +32,7 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
     [value, fuse, tags]
   )
   const resultRef = useRef<string>()
-  resultRef.current = options[currentIndex].item
+  resultRef.current = options[currentIndex]?.item
   const editorRef = useRef(null)
 
   const updateTag = useCallback(() => {
@@ -133,7 +133,7 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
     >
       <ul>
         {options.map(({ item }, index) => (
-          <li key={item} className={clsx(index === currentIndex && "bg-neutral-900/30")}>
+          <li key={item} className={clsx(index === currentIndex && "bg-secondary")}>
             {item}
           </li>
         ))}

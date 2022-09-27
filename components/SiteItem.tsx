@@ -1,10 +1,12 @@
 import cx from "classnames"
 import { useRouter } from "next/router"
-import { useState } from "react"
 import { useSettingsValue } from "../contexts/settings"
 import DaidaiObject from "../store/DaidaiObject"
-import Button, { LinkButton } from "./Common/Button"
-import { DaidaiObjectEditor } from "./DaidaiObjectForm"
+import { LinkButton } from "./Common/Button"
+import {
+  FluentDocumentPageTopLeft24Regular,
+  MaterialSymbolsDeleteOutlineSharp,
+} from "./Common/icons"
 
 const SiteItem: React.FC<{
   index: number
@@ -18,7 +20,7 @@ const SiteItem: React.FC<{
     <figure
       className={cx(
         active && "bulge",
-        "relative flex items-center px-4 py-2 border-2 rounded-2xl border-black hover:bulge active:unbulge"
+        "group relative flex items-center px-4 py-2 border-2 rounded-2xl border-black hover:bulge active:unbulge"
       )}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -47,12 +49,12 @@ const SiteItem: React.FC<{
         </ul>
       </figcaption>
       {!disable && (
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col">
-          <LinkButton href={`/?pannel=editor&id=${index}`} className="btn-sm">
-            =
+        <div className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 flex flex-col handlebar backdrop-blur-sm">
+          <LinkButton href={`/?pannel=editor&id=${index}`} className="btn-xs pointer-events-auto">
+            <FluentDocumentPageTopLeft24Regular />
           </LinkButton>
-          <LinkButton href={`/?pannel=deleter&id=${index}`} className="btn-sm">
-            -
+          <LinkButton href={`/?pannel=deleter&id=${index}`} className="btn-xs pointer-events-auto">
+            <MaterialSymbolsDeleteOutlineSharp />
           </LinkButton>
         </div>
       )}

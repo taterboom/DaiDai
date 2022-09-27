@@ -121,6 +121,7 @@ type ContentEditorProps = {
   initialEditorState?: InitialEditorStateType
   editable?: boolean
   children?: React.ReactElement
+  onSubmit: () => void
 }
 
 const ContentEditor = (props: ContentEditorProps) => {
@@ -143,7 +144,7 @@ const ContentEditor = (props: ContentEditorProps) => {
             </div>
           }
         ></RichTextPlugin>
-        <ToolBarPlugin />
+        <ToolBarPlugin onSubmit={props.onSubmit} />
         <OnChangePlugin
           onChange={(editorState) => {
             editorState.read(() => {
@@ -156,7 +157,7 @@ const ContentEditor = (props: ContentEditorProps) => {
         <CheckListPlugin />
         <LinkPlugin />
         <CodeHighlightPlugin />
-        {/* <MarkdownShortcutPlugin transformers={transformers} /> */}
+        <MarkdownShortcutPlugin transformers={transformers} />
         <TagPlugin />
         {/* <TreeViewPlugin /> */}
         {props.children !== undefined ? props.children : <></>}

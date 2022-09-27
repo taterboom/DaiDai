@@ -80,13 +80,21 @@ const HTMLInput = ({ onChange }: { onChange: (json: Bookmark[]) => void }) => {
   )
 }
 
-type BookmarkImporterProps = {
+type BookmarkImporterPopupProps = {
   children?: React.ReactNode
   show: boolean
   onClose: () => void
 }
 
-const BookmarkImporter = (props: BookmarkImporterProps) => {
+const BookmarkImporterPopupPopup = (props: BookmarkImporterPopupProps) => {
+  return (
+    <Popup show={props.show} onClose={props.onClose}>
+      <BookmarkImporter />
+    </Popup>
+  )
+}
+
+const BookmarkImporter = () => {
   const add = useDaiDaiStore((state) => state.add)
   const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 
@@ -97,14 +105,12 @@ const BookmarkImporter = (props: BookmarkImporterProps) => {
   }
 
   return (
-    <Popup show={props.show} onClose={props.onClose}>
-      <div className="overflow-y-auto p-4 bg-neutral-700/70 max-w-[80vw] max-h-[80vh] w-[800px] 2xl:w-[1024px] h-[600px] 2xl:h-[768px]">
-        <div className="flex justify-between">
-          {!bookmarks && <HTMLInput onChange={(e) => setBookmarks(e)} />}
-        </div>
-        {bookmarks && <BookmarksSelect value={bookmarks} onSubmit={submit} />}
+    <div className="overflow-y-auto p-4 bg-neutral-700/70 max-w-[80vw] max-h-[80vh] w-[800px] 2xl:w-[1024px] h-[600px] 2xl:h-[768px]">
+      <div className="flex justify-between">
+        {!bookmarks && <HTMLInput onChange={(e) => setBookmarks(e)} />}
       </div>
-    </Popup>
+      {bookmarks && <BookmarksSelect value={bookmarks} onSubmit={submit} />}
+    </div>
   )
 }
 
@@ -180,28 +186,31 @@ const BookmarksSelect = ({
 
   return (
     <div>
-      <div className="flex justify-between mt-4">
-        <label className="label cursor-pointer">
-          <input
-            type="checkbox"
-            className="checkbox"
-            checked={ignoreFirstTagChecked}
-            onChange={(e) => setIgnoreFirstTagChecked(e.target.checked)}
-          ></input>
-          <span className="label-text">Ignore first tag</span>
-        </label>
-        <label className="label cursor-pointer">
-          <input
-            type="checkbox"
-            className="checkbox"
-            checked={ignoreDuplicatedItemsChecked}
-            onChange={(e) => {
-              setIgnoreDuplicatedItemsChecked(e.target.checked)
-            }}
-          ></input>
-          <span className="label-text">Ignore duplicated items</span>
-        </label>
+      <div className="flex justify-between items-center mt-4 handlebar">
+        <div className="flex gap-8">
+          <label className="label cursor-pointer gap-2">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={ignoreFirstTagChecked}
+              onChange={(e) => setIgnoreFirstTagChecked(e.target.checked)}
+            ></input>
+            <span className="label-text">Ignore first tag</span>
+          </label>
+          <label className="label cursor-pointer gap-2">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={ignoreDuplicatedItemsChecked}
+              onChange={(e) => {
+                setIgnoreDuplicatedItemsChecked(e.target.checked)
+              }}
+            ></input>
+            <span className="label-text">Ignore duplicated items</span>
+          </label>
+        </div>
         <Button
+          className="h-10"
           onClick={() => {
             submit()
           }}
@@ -215,7 +224,7 @@ const BookmarksSelect = ({
             <th>
               <input
                 type="checkbox"
-                className="checkbox"
+                className="checkbox block"
                 ref={selectAllRef}
                 checked={checkedItemSet.size === value.length}
                 onChange={(e) =>
@@ -237,7 +246,7 @@ const BookmarksSelect = ({
               <td>
                 <input
                   type="checkbox"
-                  className="checkbox"
+                  className="checkbox block"
                   checked={item.checked}
                   onChange={(e) =>
                     e.target.checked
@@ -271,4 +280,4 @@ const BookmarksSelect = ({
   )
 }
 
-export default BookmarkImporter
+export default BookmarkImporterPopupPopup

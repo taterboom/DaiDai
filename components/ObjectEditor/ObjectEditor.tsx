@@ -68,12 +68,7 @@ function ObjectEditor({ editable, initialValue, onSubmit }: ObjectEditorProps) {
             $getRoot().append(...nodes)
           }
         }}
-      >
-        <InnerContextPlugin ref={contentEditorContextRef} />
-      </ContentEditor>
-
-      <Button
-        onClick={() => {
+        onSubmit={() => {
           contentEditorContextRef.current![0].update(() => {
             const url = urlEditorContextRef
               .current![0].getEditorState()
@@ -84,8 +79,8 @@ function ObjectEditor({ editable, initialValue, onSubmit }: ObjectEditorProps) {
           })
         }}
       >
-        Submit
-      </Button>
+        <InnerContextPlugin ref={contentEditorContextRef} />
+      </ContentEditor>
     </div>
   )
 }
