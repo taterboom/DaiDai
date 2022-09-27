@@ -1,5 +1,7 @@
 import {
+  $createTextNode,
   $getSelection,
+  $isNodeSelection,
   $isRangeSelection,
   $isTextNode,
   createCommand,
@@ -119,14 +121,22 @@ export const TOGGLE_TAG_COMMAND: LexicalCommand<string | null> = createCommand()
 export function toggleTag(tag: string | null): boolean {
   const selection = $getSelection()
   if (tag === null) {
-    // TODO remove TagNode
-    return false
+    if (!$isNodeSelection(selection)) return false
+    const [node] = selection.extract()
+    if (!$isTagNode(node)) return false
+    node.insertBefore($createTextNode(node.getTextContent()))
+    node.remove()
+    return true
   } else {
-    console.log("?")
-    if (!($isRangeSelection(selection) && selection.isCollapsed())) return false
+    if (!$isRangeSelection(selection)) return false
     const focusNode = selection.focus.getNode()
     if (!$isTextNode(focusNode)) return false
-    const tagNode = $createTagNode(tag || focusNode.getTextContent())
+    const focusNodeTextContent = focusNode.getTextContent().trim()
+    const tagNode = $createTagNode(
+      tag || focusNodeTextContent.startsWith("#")
+        ? focusNodeTextContent.slice(1)
+        : focusNodeTextContent
+    )
     focusNode.insertBefore(tagNode)
     focusNode.setTextContent(" ")
     focusNode.select()

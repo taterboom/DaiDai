@@ -16,7 +16,7 @@ import { useCallback, useEffect, useState } from "react"
 import { FloatingTagEditor } from "./FloatingTagEditor"
 import TagNode, { toggleTag, TOGGLE_TAG_COMMAND } from "./TagNode"
 
-const TAG_REGEXP = /^#\S?$/
+const TAG_REGEXP = /^#\S*$/
 
 function canConvertToTag(node: LexicalNode) {
   const textContent = node.getTextContent().trimStart()

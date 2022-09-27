@@ -16,6 +16,7 @@ import clsx from "classnames"
 import {
   $createParagraphNode,
   $getSelection,
+  $isNodeSelection,
   $isRangeSelection,
   COMMAND_PRIORITY_LOW,
   ElementNode,
@@ -33,6 +34,8 @@ import {
   BiListTask,
   BiListUl,
   FoundationQuote,
+  IcBaselineTag,
+  IcSharpSettings,
   RadixBold,
   RadixCode,
   RadixHeading,
@@ -41,6 +44,7 @@ import {
   RadixStrikethrough,
   RadixUnderline,
 } from "../../Common/icons"
+import { $isTagNode, TOGGLE_TAG_COMMAND } from "../Tag/TagNode"
 import { FloatingLinkEditor } from "./FloatingLinkEditor"
 
 export function getSelectedNode(selection: RangeSelection) {
@@ -70,9 +74,28 @@ const formatElement = (editor: LexicalEditor, createElement: () => ElementNode) 
 
 const CheckButton = (props: ButtonProps & { checked?: boolean }) => {
   return (
-    <Button {...props} className={clsx(props.checked && "bg-neutral-800/30", props.className)}>
+    <Button {...props} className={clsx(props.checked && "bg-base-100/50", props.className)}>
       {props.children}
     </Button>
+  )
+}
+
+const TagButton = (props: { checked?: boolean }) => {
+  const [editor] = useLexicalComposerContext()
+  return (
+    <CheckButton
+      title="Tag"
+      checked={props.checked}
+      onClick={() => {
+        if (props.checked) {
+          editor.dispatchCommand(TOGGLE_TAG_COMMAND, null)
+        } else {
+          editor.dispatchCommand(TOGGLE_TAG_COMMAND, "")
+        }
+      }}
+    >
+      <IcBaselineTag></IcBaselineTag>
+    </CheckButton>
   )
 }
 
@@ -325,6 +348,15 @@ const ToolBarPlugin = ({ onSubmit }: { onSubmit: () => void }) => {
       } else {
         setIsLink(false)
       }
+    } else if ($isNodeSelection(selection)) {
+      const firstNode = selection.getNodes()[0]
+      if ($isTagNode(firstNode)) {
+        setCurrentBlock({
+          key: firstNode.getKey(),
+          type: firstNode.getType(),
+          remark: firstNode.getTag(),
+        })
+      }
     } else {
       setCurrentBlock(null)
     }
@@ -351,6 +383,7 @@ const ToolBarPlugin = ({ onSubmit }: { onSubmit: () => void }) => {
   return (
     <div className="flex items-center justify-between handlebar">
       <div className="flex items-center">
+        <TagButton checked={currentBlock?.type === "tag"} />
         <HeadingButton checked={currentBlock?.type === "heading"}></HeadingButton>
         <FormatBoldButton checked={isBold}></FormatBoldButton>
         <FormatItalicButton checked={isItalic}></FormatItalicButton>
