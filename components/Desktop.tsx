@@ -8,6 +8,7 @@ import DaidaiObjectDeleter from "./DaidaiObjectDeleter"
 import { DaidaiObjectCreator, DaidaiObjectEditor } from "./DaidaiObjectForm"
 import Dock from "./Dock"
 import ObjectEditor from "./ObjectEditor/ObjectEditor"
+import Profile from "./Profile"
 import Settings from "./Settings"
 import Sites from "./Sites"
 import Tags from "./Tags"
@@ -53,6 +54,7 @@ const Desktop: React.FC = ({}) => {
         onClose={onClosePannel}
       />
       <BookmarkImporter show={pannel === "importer"} onClose={onClosePannel} />
+      <Profile show={pannel === "profile"} onClose={onClosePannel} />
     </div>
   )
 }
