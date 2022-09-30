@@ -16,7 +16,7 @@ import TypeBox from "./TypeBox"
 
 const Desktop: React.FC = ({}) => {
   const router = useRouter()
-
+  console.log(router)
   const pannel = router.query.pannel
 
   const daidaiObjectId = useMemo(() => {

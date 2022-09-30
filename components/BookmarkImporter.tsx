@@ -105,7 +105,7 @@ const BookmarkImporter = () => {
   }
 
   return (
-    <div className="overflow-y-auto p-4 bg-neutral-700/70 max-w-[80vw] max-h-[80vh] w-[800px] 2xl:w-[1024px] h-[600px] 2xl:h-[768px]">
+    <div className="overflow-y-auto p-4 bg-neutral/30  max-w-[80vw] max-h-[80vh] w-[800px] 2xl:w-[1024px] h-[600px] 2xl:h-[768px]">
       <div className="flex justify-between">
         {!bookmarks && <HTMLInput onChange={(e) => setBookmarks(e)} />}
       </div>

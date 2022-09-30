@@ -9,7 +9,7 @@ type ProfileProps = {
 const Profile = (props: ProfileProps) => {
   const user = useUser()
   return (
-    <div>
+    <div className="max-w-lg max-h-[80vh] overflow-auto">
       <LinkButton href="/api/auth/logout">Logout</LinkButton>
       <pre className=" max-w-lg">{JSON.stringify(user, null, 2)}</pre>
     </div>

@@ -1,8 +1,16 @@
+import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useState } from "react"
+import { DaidaiApiResult } from "../types/api"
 
 export type ConfigContextValue = {
   value: {
-    githubClientId: string
+    /**
+     * @deprecated
+     */
+    githubClientId?: string
+    userFromServer: User | null
+    providerTokenFromServer: string | null
+    dataFromServer: DaidaiApiResult[] | null
   }
 
   onChange: (value: Partial<ConfigContextValue["value"]>) => void
@@ -10,6 +18,9 @@ export type ConfigContextValue = {
 
 const defaultValue: ConfigContextValue["value"] = {
   githubClientId: "",
+  userFromServer: null,
+  providerTokenFromServer: null,
+  dataFromServer: null,
 }
 
 const ConfigContext = createContext<ConfigContextValue>({

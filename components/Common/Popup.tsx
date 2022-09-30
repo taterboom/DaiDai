@@ -44,7 +44,7 @@ const Popup: React.FC<{
   const body = (
     <div className={clsx(`relative`, wrapperClassName)}>
       {closeable && (
-        <div className="absolute left-0 -top-4 -translate-y-full text-2xl">
+        <div className="absolute left-0 -top-2 -translate-y-full -translate-x-1/2 text-2xl">
           <Button rounded onClick={() => show && onClose?.()}>
             {closeIcon}
           </Button>

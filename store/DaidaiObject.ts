@@ -7,6 +7,7 @@ import {
 } from "lexical"
 import { nanoid } from "nanoid"
 import { SerializedTagNode } from "../components/ObjectEditor/Tag/TagNode"
+import type { DaidaiApiResult } from "../types/api"
 import { Bookmark } from "../utils/bookmarkHtml2json"
 
 function isSerializedHeadingNode(node: any): node is SerializedHeadingNode {
@@ -36,6 +37,15 @@ class DaidaiObject {
       key: plainObject.key,
     })
   }
+
+  static generateFromApiResult(result: DaidaiApiResult): DaidaiObject {
+    return new DaidaiObject({
+      url: result.url,
+      contentHTML: result.c_html,
+      key: result.id,
+    })
+  }
+
   //"<h1 class="editor-heading-h1"><span>Baidu</span></h1><p class="editor-paragraph"><span class="editor-tag" data-lexical-tag="search"></span><span class="editor-tag" data-lexical-tag="seo"></span><span> </span></p>"
   static generateFromBookmark(bookmark: Bookmark): DaidaiObject {
     return new DaidaiObject({

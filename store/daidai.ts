@@ -1,8 +1,10 @@
+import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { omit } from "lodash"
 import { HTMLAttributeAnchorTarget } from "react"
 import create from "zustand"
 import { persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
+import { DaidaiApiResult } from "../types/api"
 import DaidaiObject from "./DaidaiObject"
 import logger from "./plugins/logger"
 import { selectTags } from "./selector"
@@ -13,6 +15,7 @@ export type DaidaiState = {
   hrefTarget: HTMLAttributeAnchorTarget
   highlightColor: string
 
+  reset: (daidaiObjects: DaidaiObject[]) => void
   add: (...daidaiObjects: DaidaiObject[]) => void
   update: (index: number, daidaiObject: DaidaiObject) => void
   remove: (index: number) => void
@@ -29,7 +32,19 @@ const useDaiDaiStore = create<DaidaiState>()(
         hrefTarget: "_blank",
         highlightColor: "#95f09c",
 
-        add: (...daidaiObjects) => {
+        reset: (daidaiObjects) => {
+          set({
+            data: daidaiObjects,
+          })
+        },
+        add: async (...daidaiObjects) => {
+          const { data, error } = await supabaseClient.from<DaidaiApiResult>("daidais").insert(
+            daidaiObjects.map((item) => ({
+              url: item.url,
+              c_html: item.contentHTML,
+            }))
+          )
+          console.log("!!", data, error)
           set((state) => {
             state.data.push(...daidaiObjects)
           })

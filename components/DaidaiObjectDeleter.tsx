@@ -14,7 +14,7 @@ const DaidaiObjectDeleter = (props: DaidaiObjectDeleterProps) => {
 
   return (
     <Popup show={popupShow} onClose={props.onClose}>
-      <div className="p-4 bg-neutral-700/70">
+      <div className="p-4 bg-neutral/30 ">
         <p className="font-bold text-xl mb-2">Are you sure to delete this?</p>
         <div className="flex justify-end gap-4">
           <Button className="opacity-70" onClick={() => props.onClose()}>

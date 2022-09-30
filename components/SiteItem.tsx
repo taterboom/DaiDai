@@ -50,10 +50,18 @@ const SiteItem: React.FC<{
       </figcaption>
       {!disable && (
         <div className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 flex flex-col handlebar backdrop-blur-sm">
-          <LinkButton href={`/?pannel=editor&id=${index}`} className="btn-xs pointer-events-auto">
+          <LinkButton
+            shallow
+            href={`/?pannel=editor&id=${index}`}
+            className="btn-xs pointer-events-auto"
+          >
             <FluentDocumentPageTopLeft24Regular />
           </LinkButton>
-          <LinkButton href={`/?pannel=deleter&id=${index}`} className="btn-xs pointer-events-auto">
+          <LinkButton
+            shallow
+            href={`/?pannel=deleter&id=${index}`}
+            className="btn-xs pointer-events-auto"
+          >
             <MaterialSymbolsDeleteOutlineSharp />
           </LinkButton>
         </div>

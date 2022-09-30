@@ -9,9 +9,26 @@ const Dock = (props: DockProps) => {
   const { user } = useUser()
   return (
     <div className="fixed right-2 top-2 handlebar">
-      <LinkButton href="/?pannel=creator">+</LinkButton>
-      <LinkButton href="/?pannel=importer">Import Bookmarks</LinkButton>
-      {user ? <LinkButton href="/?pannel=profile">Profile</LinkButton> : null}
+      <LinkButton href="/?pannel=creator" shallow>
+        +
+      </LinkButton>
+      <LinkButton href="/?pannel=importer" shallow>
+        Import Bookmarks
+      </LinkButton>
+      {user ? (
+        <LinkButton href="/?pannel=profile" shallow>
+          Profile
+        </LinkButton>
+      ) : (
+        <>
+          <LinkButton href="/signin" shallow>
+            Sign in
+          </LinkButton>
+          <LinkButton href="/signup" shallow>
+            Get Daidai free
+          </LinkButton>
+        </>
+      )}
     </div>
   )
 }
