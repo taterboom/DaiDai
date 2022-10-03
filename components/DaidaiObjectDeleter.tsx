@@ -1,4 +1,6 @@
+import { toast } from "react-toastify"
 import useDaiDaiStore from "../store/daidai"
+import { TOAST_CONFIG } from "../utils/toast"
 import Button from "./Common/Button"
 import Popup from "./Common/Popup"
 
@@ -13,8 +15,8 @@ const DaidaiObjectDeleter = (props: DaidaiObjectDeleterProps) => {
   const remove = useDaiDaiStore((state) => state.remove)
 
   return (
-    <Popup show={popupShow} onClose={props.onClose}>
-      <div className="p-4 bg-neutral/30 ">
+    <Popup show={popupShow} onClose={props.onClose} closeOnClickAway={false}>
+      <div className="p-4 bg-neutral/30">
         <p className="font-bold text-xl mb-2">Are you sure to delete this?</p>
         <div className="flex justify-end gap-4">
           <Button className="opacity-70" onClick={() => props.onClose()}>
@@ -22,8 +24,16 @@ const DaidaiObjectDeleter = (props: DaidaiObjectDeleterProps) => {
           </Button>
           <Button
             onClick={() => {
-              remove(props.id!)
-              props.onClose()
+              remove(props.id!).then(
+                () => {
+                  toast.success("Success!", TOAST_CONFIG)
+                  props.onClose()
+                },
+                (e) => {
+                  toast.error("Faild!", TOAST_CONFIG)
+                  console.error("error: ", e)
+                }
+              )
             }}
           >
             Yes

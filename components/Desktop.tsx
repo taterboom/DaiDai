@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import React, { useEffect, useMemo, useState } from "react"
 import { useSettingsValue } from "../contexts/settings"
 import Site from "../modules/Site"
+import useDaiDaiStore from "../store/daidai"
 import DaidaiObject from "../store/DaidaiObject"
 import BookmarkImporter from "./BookmarkImporter"
 import DaidaiObjectDeleter from "./DaidaiObjectDeleter"
@@ -10,13 +11,15 @@ import Dock from "./Dock"
 import ObjectEditor from "./ObjectEditor/ObjectEditor"
 import Profile from "./Profile"
 import Settings from "./Settings"
+import ShortcutManualPopup from "./ShotcutsManual"
 import Sites from "./Sites"
 import Tags from "./Tags"
 import TypeBox from "./TypeBox"
 
 const Desktop: React.FC = ({}) => {
+  const initData = useDaiDaiStore((state) => state.initDatda)
+  const userStore = useDaiDaiStore((state) => state.user)
   const router = useRouter()
-  console.log(router)
   const pannel = router.query.pannel
 
   const daidaiObjectId = useMemo(() => {
@@ -39,6 +42,12 @@ const Desktop: React.FC = ({}) => {
     }
   }, [router])
 
+  useEffect(() => {
+    if (userStore) {
+      initData().catch(console.log)
+    }
+  }, [initData, userStore])
+
   return (
     <div className="p-2">
       {/* <Settings></Settings> */}
@@ -55,6 +64,7 @@ const Desktop: React.FC = ({}) => {
       />
       <BookmarkImporter show={pannel === "importer"} onClose={onClosePannel} />
       <Profile show={pannel === "profile"} onClose={onClosePannel} />
+      <ShortcutManualPopup show={pannel === "shortcuts"} onClose={onClosePannel} />
     </div>
   )
 }

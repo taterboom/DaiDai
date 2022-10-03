@@ -10,10 +10,13 @@ const Dock = (props: DockProps) => {
   return (
     <div className="fixed right-2 top-2 handlebar">
       <LinkButton href="/?pannel=creator" shallow>
-        +
+        Create
       </LinkButton>
       <LinkButton href="/?pannel=importer" shallow>
         Import Bookmarks
+      </LinkButton>
+      <LinkButton href="/?pannel=shortcuts" shallow>
+        Shortcuts
       </LinkButton>
       {user ? (
         <LinkButton href="/?pannel=profile" shallow>

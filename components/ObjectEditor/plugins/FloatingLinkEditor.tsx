@@ -63,7 +63,6 @@ export function FloatingLinkEditor() {
       } else {
         rect = domRange.getBoundingClientRect()
       }
-      console.log("?!", rect)
       setFloatingElemPosition(rect, editorElem, document.body)
       setLastSelection(selection)
     } else if (!activeElement || activeElement !== inputRef.current) {

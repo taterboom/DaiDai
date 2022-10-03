@@ -32,7 +32,7 @@ const Popup: React.FC<{
   children,
   show,
   closeIcon = <IcRoundClose />,
-  closeOnClickAway = false,
+  closeOnClickAway = true,
   closeable = true,
   centerX = true,
   centerY = true,

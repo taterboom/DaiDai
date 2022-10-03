@@ -137,10 +137,12 @@ const ContentEditor = (props: ContentEditorProps) => {
     <div className="relative">
       <LexicalComposer initialConfig={initialConfig}>
         <RichTextPlugin
-          contentEditable={<ContentEditable className="p-2" />}
+          contentEditable={
+            <ContentEditable className="p-2 min-h-[256px] max-h-[80vh] overflow-y-auto" />
+          }
           placeholder={
             <div className="absolute left-0 top-0 p-2 opacity-60 select-none pointer-events-none">
-              Type # for tags{" "}
+              Type # for tags
             </div>
           }
         ></RichTextPlugin>

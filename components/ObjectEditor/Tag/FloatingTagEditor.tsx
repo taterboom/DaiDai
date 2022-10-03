@@ -23,12 +23,12 @@ type FloatingTagEditorProps = {
 }
 
 export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(-1)
   const [editor] = useLexicalComposerContext()
   const tags = useDaiDaiStore(selectTags)
   const fuse = useMemo(() => new Fuse(tags, { threshold: 0.4 }), [tags])
   const options = useMemo(
-    () => (value.length > 1 ? fuse.search(value) : tags.map((item) => ({ item }))),
+    () => (value.length >= 1 ? fuse.search(value) : tags.map((item) => ({ item }))),
     [value, fuse, tags]
   )
   const resultRef = useRef<string>()
@@ -59,6 +59,10 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
       }
     }
   }, [editor])
+
+  useEffect(() => {
+    setCurrentIndex(-1)
+  }, [options])
 
   useEffect(() => {
     const scrollerElem = document.body
@@ -126,7 +130,7 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
     <div
       ref={editorRef}
       className={clsx(
-        "fixed bg-neutral-900/30 min-w-[150px] p-2",
+        "fixed bg-neutral/30 min-w-[150px] p-2",
         options.length === 0 && "!invisible"
       )}
       style={{ left: -9999, top: -9999 }}

@@ -1,9 +1,11 @@
 import clsx from "classnames"
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import { toast } from "react-toastify"
 import { useUpdateEffect } from "react-use"
 import useDaiDaiStore from "../store/daidai"
 import DaidaiObject from "../store/DaidaiObject"
 import { Bookmark, bookmarkHTMLString2json } from "../utils/bookmarkHtml2json"
+import { TOAST_CONFIG } from "../utils/toast"
 import Button from "./Common/Button"
 import Popup from "./Common/Popup"
 import { useLocalstorageState } from "./Common/useLocalstorageState"
@@ -88,7 +90,7 @@ type BookmarkImporterPopupProps = {
 
 const BookmarkImporterPopupPopup = (props: BookmarkImporterPopupProps) => {
   return (
-    <Popup show={props.show} onClose={props.onClose}>
+    <Popup show={props.show} onClose={props.onClose} closeOnClickAway={false}>
       <BookmarkImporter />
     </Popup>
   )
@@ -100,7 +102,15 @@ const BookmarkImporter = () => {
 
   const submit = (result: Bookmark[]) => {
     if (result && result.length > 0) {
-      add(...result.map((item) => DaidaiObject.generateFromBookmark(item)))
+      add(...result.map((item) => DaidaiObject.generateFromBookmark(item))).then(
+        () => {
+          toast.success("Success!", TOAST_CONFIG)
+        },
+        (e) => {
+          toast.error("Faild!", TOAST_CONFIG)
+          console.error("error: ", e)
+        }
+      )
     }
   }
 

@@ -153,7 +153,7 @@ const Sites = ({ disabled }: { disabled: boolean }) => {
     <section className="grid gap-4 grid-cols-[repeat(2,_minmax(200px,_1fr))] sm:grid-cols-[repeat(3,_minmax(200px,_1fr))] md:grid-cols-[repeat(4,_minmax(200px,_1fr))] lg:grid-cols-[repeat(5,_minmax(200px,_1fr))] xl:grid-cols-[repeat(6,_minmax(200px,_1fr))] 2xl:grid-cols-[repeat(7,_minmax(200px,_1fr))] 3xl:grid-cols-[repeat(8,_minmax(200px,_1fr))]">
       {visibleDaidaiObjects.map((site, index) => (
         <SiteItem
-          key={site.key}
+          key={site.id}
           index={index}
           value={site}
           active={index === activeIndex}

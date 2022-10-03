@@ -133,9 +133,10 @@ export function toggleTag(tag: string | null): boolean {
     if (!$isTextNode(focusNode)) return false
     const focusNodeTextContent = focusNode.getTextContent().trim()
     const tagNode = $createTagNode(
-      tag || focusNodeTextContent.startsWith("#")
-        ? focusNodeTextContent.slice(1)
-        : focusNodeTextContent
+      tag ||
+        (focusNodeTextContent.startsWith("#")
+          ? focusNodeTextContent.slice(1)
+          : focusNodeTextContent)
     )
     focusNode.insertBefore(tagNode)
     focusNode.setTextContent(" ")

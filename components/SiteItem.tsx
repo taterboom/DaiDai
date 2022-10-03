@@ -15,7 +15,7 @@ const SiteItem: React.FC<{
   disable?: boolean
 }> = ({ index, value, active, disable }) => {
   const settings = useSettingsValue()
-  const router = useRouter()
+
   return (
     <figure
       className={cx(
@@ -34,7 +34,7 @@ const SiteItem: React.FC<{
       <figcaption className="ml-4 truncate">
         <a href={value.url || ""} target={settings.hrefTarget} title={value.title || ""}>
           <span className="absolute inset-0"></span>
-          {value.title}
+          {value.title || value.url}
         </a>
         <ul className="flex flex-wrap">
           {value.tags.map((tag) => (
@@ -49,18 +49,18 @@ const SiteItem: React.FC<{
         </ul>
       </figcaption>
       {!disable && (
-        <div className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 flex flex-col handlebar backdrop-blur-sm">
+        <div className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none absolute right-1 top-1 flex handlebar backdrop-blur-sm">
           <LinkButton
             shallow
             href={`/?pannel=editor&id=${index}`}
-            className="btn-xs pointer-events-auto"
+            className="!btn-xs pointer-events-auto"
           >
             <FluentDocumentPageTopLeft24Regular />
           </LinkButton>
           <LinkButton
             shallow
             href={`/?pannel=deleter&id=${index}`}
-            className="btn-xs pointer-events-auto"
+            className="!btn-xs pointer-events-auto"
           >
             <MaterialSymbolsDeleteOutlineSharp />
           </LinkButton>

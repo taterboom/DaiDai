@@ -25,7 +25,7 @@ export type DaidaiHTML = string
 export type PlainObject = {
   _url: string
   _contentHTML: DaidaiHTML
-  key: string
+  id: string
 }
 
 class DaidaiObject {
@@ -34,7 +34,7 @@ class DaidaiObject {
     return new DaidaiObject({
       url: plainObject._url,
       contentHTML: plainObject._contentHTML,
-      key: plainObject.key,
+      id: plainObject.id,
     })
   }
 
@@ -42,7 +42,7 @@ class DaidaiObject {
     return new DaidaiObject({
       url: result.url,
       contentHTML: result.c_html,
-      key: result.id,
+      id: result.id,
     })
   }
 
@@ -60,7 +60,7 @@ class DaidaiObject {
 
   dehydrate(): PlainObject {
     return {
-      key: this.key,
+      id: this.id,
       _url: this._url,
       _contentHTML: this._contentHTML,
     }
@@ -70,23 +70,23 @@ class DaidaiObject {
   private _contentJSON?: DaidaiJSON
   private _cachedDOM?: Document
   private _url: string
-  key: string
+  id: string
 
   constructor({
     url,
     contentHTML,
     contentJSON,
-    key,
+    id,
   }: {
     url: string
     contentHTML: DaidaiHTML
     contentJSON?: DaidaiJSON
-    key?: string
+    id?: string
   }) {
     this._url = url
     this._contentHTML = contentHTML
     this._contentJSON = contentJSON
-    this.key = key || nanoid()
+    this.id = id || nanoid()
   }
 
   get url() {
