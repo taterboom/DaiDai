@@ -31,6 +31,7 @@ import TypeBox from "./TypeBox"
 
 const Desktop: React.FC = ({}) => {
   const { user, isLoading } = useUser()
+  const [dataLoading, setDataLoading] = useState(false)
   const initData = useDaiDaiStore((state) => state.initDatda)
   const router = useRouter()
   const pannel = router.query.pannel
@@ -63,10 +64,15 @@ const Desktop: React.FC = ({}) => {
   useEffect(() => {
     if (isLoading) return
     if (user) {
-      initData(user).catch((e) => {
-        toast.error("Should login first!", TOAST_CONFIG)
-        console.error(e)
-      })
+      setDataLoading(true)
+      initData(user)
+        .catch((e) => {
+          toast.error("Should login first!", TOAST_CONFIG)
+          console.error(e)
+        })
+        .then(() => {
+          setDataLoading(false)
+        })
     } else {
       initData(null)
     }
@@ -81,9 +87,14 @@ const Desktop: React.FC = ({}) => {
     }
   }, [pannel, user])
 
+  if (isLoading) {
+    return <div className="p-2">Loading...</div>
+  }
+
   return (
     <div className="p-2">
       {/* <Settings></Settings> */}
+      {dataLoading && <progress className="progress w-56"></progress>}
       {!controlDisabled && <TypeBox />}
       <Tags></Tags>
       <Sites disabled={controlDisabled}></Sites>

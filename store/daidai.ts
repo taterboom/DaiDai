@@ -3,7 +3,7 @@ import { HTMLAttributeAnchorTarget } from "react"
 import create from "zustand"
 import { immer } from "zustand/middleware/immer"
 
-import { DaidaiApiResult, daidaisQuery } from "../types/api"
+import { daidaisQuery } from "../types/api"
 import { ANONYMOUS_DAIDAIS, isAnonymousDaidai } from "../utils/anonymous"
 import DaidaiObject from "./DaidaiObject"
 import logger from "./plugins/logger"
@@ -35,7 +35,7 @@ const useDaiDaiStore = create<DaidaiState>()(
 
       initDatda: async (user) => {
         if (user) {
-          const result = await daidaisQuery.select("id, url, c_html")
+          const result = await daidaisQuery().select("id, url, c_html")
           if (result.error) throw result.error
           const daidaisJSON = [
             ...ANONYMOUS_DAIDAIS.filter((item) => !user.user_metadata?.[item.id]),
@@ -60,7 +60,7 @@ const useDaiDaiStore = create<DaidaiState>()(
         })
       },
       add: async (userId, ...daidaiObjects) => {
-        const { error } = await supabaseClient.from<DaidaiApiResult>("daidais").insert(
+        const { error } = await daidaisQuery().insert(
           daidaiObjects.map((item) => ({
             url: item.url,
             c_html: item.contentHTML,
@@ -79,14 +79,13 @@ const useDaiDaiStore = create<DaidaiState>()(
         if (isAnonymousDaidai(preDaidaiObject.id)) {
           return
         }
-        const { error } = await supabaseClient
-          .from<DaidaiApiResult>("daidais")
+        const { error } = await daidaisQuery()
           .update({
             url: daidaiObject.url,
             c_html: daidaiObject.contentHTML,
           })
           .eq("id", preDaidaiObject.id)
-        console.log("!e", error)
+        console.error("e", error)
         if (error) throw error
         set((state) => {
           if (index in state.data) {
@@ -106,10 +105,7 @@ const useDaiDaiStore = create<DaidaiState>()(
           })
           if (error) throw error
         } else {
-          const { error } = await supabaseClient
-            .from<DaidaiApiResult>("daidais")
-            .delete()
-            .eq("id", daidaiObject.id)
+          const { error } = await daidaisQuery().delete().eq("id", daidaiObject.id)
           if (error) throw error
         }
         set((state) => {

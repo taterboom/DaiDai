@@ -9,4 +9,4 @@ export type DaidaiApiResult = {
   c_html: string
 }
 
-export const daidaisQuery = supabaseClient.from<DaidaiApiResult>("daidais")
+export const daidaisQuery = () => supabaseClient.from<DaidaiApiResult>("daidais")
