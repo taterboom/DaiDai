@@ -7,11 +7,11 @@ import Popup from "./Common/Popup"
 type DaidaiObjectDeleterProps = {
   show: boolean
   onClose: () => void
-  id?: number
+  index?: number
 }
 
 const DaidaiObjectDeleter = (props: DaidaiObjectDeleterProps) => {
-  const popupShow = props.show && props.id !== undefined
+  const popupShow = props.show && props.index !== undefined
   const remove = useDaiDaiStore((state) => state.remove)
 
   return (
@@ -24,7 +24,7 @@ const DaidaiObjectDeleter = (props: DaidaiObjectDeleterProps) => {
           </Button>
           <Button
             onClick={() => {
-              remove(props.id!).then(
+              remove(props.index!).then(
                 () => {
                   toast.success("Success!", TOAST_CONFIG)
                   props.onClose()

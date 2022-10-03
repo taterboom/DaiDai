@@ -1,31 +1,23 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
-import { User } from "@supabase/supabase-js"
+import { supabaseClient, User } from "@supabase/auth-helpers-nextjs"
 import { HTMLAttributeAnchorTarget } from "react"
 import create from "zustand"
 import { immer } from "zustand/middleware/immer"
 
 import { DaidaiApiResult, daidaisQuery } from "../types/api"
+import { ANONYMOUS_DAIDAIS, isAnonymousDaidai } from "../utils/anonymous"
 import DaidaiObject from "./DaidaiObject"
 import logger from "./plugins/logger"
 import { selectTags } from "./selector"
 
-class NoAuthError extends Error {}
-
-function checkAuth(user: DaidaiState["user"]) {
-  if (user === null) throw new NoAuthError()
-}
-
 export type DaidaiState = {
   data: DaidaiObject[]
-  user: User | null
   activeTags: string[]
   hrefTarget: HTMLAttributeAnchorTarget
   highlightColor: string
 
-  setUser: (user: User | null) => void
-  initDatda: () => Promise<void>
+  initDatda: (user: User | null) => Promise<void>
   reset: (daidaiObjects: DaidaiObject[]) => void
-  add: (...daidaiObjects: DaidaiObject[]) => Promise<void>
+  add: (userId: string, ...daidaiObjects: DaidaiObject[]) => Promise<void>
   update: (index: number, daidaiObject: DaidaiObject) => Promise<void>
   remove: (index: number) => Promise<void>
   toggleTag: (tag: string) => void
@@ -36,41 +28,43 @@ const useDaiDaiStore = create<DaidaiState>()(
   logger(
     // persist(
     immer((set, get) => ({
-      user: null,
       data: [],
       activeTags: [],
       hrefTarget: "_blank",
       highlightColor: "#95f09c",
 
-      initDatda: async () => {
-        const state = get()
-        checkAuth(state.user)
-        const result = await daidaisQuery.select("id, url, c_html")
-        if (result.error) throw result.error
-        set({
-          data: result.data.map(
-            (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
-          ),
-        })
-      },
-      setUser: (user) => {
-        set({
-          user,
-        })
+      initDatda: async (user) => {
+        if (user) {
+          const result = await daidaisQuery.select("id, url, c_html")
+          if (result.error) throw result.error
+          const daidaisJSON = [
+            ...ANONYMOUS_DAIDAIS.filter((item) => !user.user_metadata?.[item.id]),
+            ...result.data,
+          ]
+          set({
+            data: daidaisJSON.map(
+              (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
+            ),
+          })
+        } else {
+          set({
+            data: ANONYMOUS_DAIDAIS.map(
+              (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
+            ),
+          })
+        }
       },
       reset: (daidaiObjects) => {
         set({
           data: daidaiObjects,
         })
       },
-      add: async (...daidaiObjects) => {
-        const state = get()
-        checkAuth(state.user)
+      add: async (userId, ...daidaiObjects) => {
         const { error } = await supabaseClient.from<DaidaiApiResult>("daidais").insert(
           daidaiObjects.map((item) => ({
             url: item.url,
             c_html: item.contentHTML,
-            user_id: state.user!.id,
+            user_id: userId,
           }))
         )
         if (error) throw error
@@ -80,9 +74,11 @@ const useDaiDaiStore = create<DaidaiState>()(
       },
       update: async (index, daidaiObject) => {
         const state = get()
-        checkAuth(state.user)
         const preDaidaiObject = state.data[index]
         if (!preDaidaiObject) return
+        if (isAnonymousDaidai(preDaidaiObject.id)) {
+          return
+        }
         const { error } = await supabaseClient
           .from<DaidaiApiResult>("daidais")
           .update({
@@ -100,14 +96,22 @@ const useDaiDaiStore = create<DaidaiState>()(
       },
       remove: async (index) => {
         const state = get()
-        checkAuth(state.user)
         const daidaiObject = state.data[index]
         if (!daidaiObject) return
-        const { error } = await supabaseClient
-          .from<DaidaiApiResult>("daidais")
-          .delete()
-          .eq("id", daidaiObject.id)
-        if (error) throw error
+        if (isAnonymousDaidai(daidaiObject.id)) {
+          const { error } = await supabaseClient.auth.update({
+            data: {
+              [daidaiObject.id]: true,
+            },
+          })
+          if (error) throw error
+        } else {
+          const { error } = await supabaseClient
+            .from<DaidaiApiResult>("daidais")
+            .delete()
+            .eq("id", daidaiObject.id)
+          if (error) throw error
+        }
         set((state) => {
           state.data.splice(index, 1)
         })

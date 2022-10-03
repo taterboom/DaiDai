@@ -1,11 +1,17 @@
+import { useUser } from "@supabase/auth-helpers-react"
 import cx from "classnames"
 import { useRouter } from "next/router"
+import { toast } from "react-toastify"
 import { useSettingsValue } from "../contexts/settings"
 import DaidaiObject from "../store/DaidaiObject"
+import { isAnonymousDaidai } from "../utils/anonymous"
+import { PannelConfig, PANNEL_DELETER, PANNEL_EDITOR } from "../utils/pannel"
+import { TOAST_CONFIG } from "../utils/toast"
 import { LinkButton } from "./Common/Button"
 import {
   FluentDocumentPageTopLeft24Regular,
   MaterialSymbolsDeleteOutlineSharp,
+  IonIosLink,
 } from "./Common/icons"
 
 const SiteItem: React.FC<{
@@ -15,6 +21,8 @@ const SiteItem: React.FC<{
   disable?: boolean
 }> = ({ index, value, active, disable }) => {
   const settings = useSettingsValue()
+  const { user } = useUser()
+  const shouldReplace = (pannelConfig: PannelConfig) => !pannelConfig[1] && user === null
 
   return (
     <figure
@@ -23,14 +31,28 @@ const SiteItem: React.FC<{
         "group relative flex items-center px-4 py-2 border-2 rounded-2xl border-black hover:bulge active:unbulge"
       )}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={value.iconUrl || ""}
-        alt={value.title || ""}
-        width="40"
-        height="40"
-        className="rounded-full w-10 h-10"
-      />
+      {value.iconUrl ? (
+        <div className="avatar">
+          <div className="w-12 rounded">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={value.iconUrl || ""}
+              alt={value.title || ""}
+              width="48"
+              height="48"
+              className="rounded-full w-10 h-10"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="avatar placeholder">
+          <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
+            <span className="text-2xl uppercase">
+              {value.title ? value.title.slice(0, 1) : <IonIosLink />}
+            </span>
+          </div>
+        </div>
+      )}
       <figcaption className="ml-4 truncate">
         <a href={value.url || ""} target={settings.hrefTarget} title={value.title || ""}>
           <span className="absolute inset-0"></span>
@@ -51,16 +73,24 @@ const SiteItem: React.FC<{
       {!disable && (
         <div className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none absolute right-1 top-1 flex handlebar backdrop-blur-sm">
           <LinkButton
-            shallow
-            href={`/?pannel=editor&id=${index}`}
             className="!btn-xs pointer-events-auto"
+            href={`/?pannel=${PANNEL_EDITOR[0]}&index=${index}`}
+            shallow
+            replace={shouldReplace(PANNEL_EDITOR)}
+            onClick={(e) => {
+              if (isAnonymousDaidai(value.id)) {
+                toast("This cannot be updated, you can delete it.", TOAST_CONFIG)
+                e.preventDefault()
+              }
+            }}
           >
             <FluentDocumentPageTopLeft24Regular />
           </LinkButton>
           <LinkButton
-            shallow
-            href={`/?pannel=deleter&id=${index}`}
             className="!btn-xs pointer-events-auto"
+            href={`/?pannel=${PANNEL_DELETER[0]}&index=${index}`}
+            shallow
+            replace={shouldReplace(PANNEL_DELETER)}
           >
             <MaterialSymbolsDeleteOutlineSharp />
           </LinkButton>

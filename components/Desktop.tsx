@@ -1,9 +1,22 @@
+import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import React, { useEffect, useMemo, useState } from "react"
+import { toast } from "react-toastify"
 import { useSettingsValue } from "../contexts/settings"
 import Site from "../modules/Site"
 import useDaiDaiStore from "../store/daidai"
 import DaidaiObject from "../store/DaidaiObject"
+import {
+  PannelConfig,
+  PANNELS,
+  PANNEL_CREATOR,
+  PANNEL_DELETER,
+  PANNEL_EDITOR,
+  PANNEL_IMPORTER,
+  PANNEL_PROFILE,
+  PANNEL_SHORTCUTS,
+} from "../utils/pannel"
+import { authToast, TOAST_CONFIG } from "../utils/toast"
 import BookmarkImporter from "./BookmarkImporter"
 import DaidaiObjectDeleter from "./DaidaiObjectDeleter"
 import { DaidaiObjectCreator, DaidaiObjectEditor } from "./DaidaiObjectForm"
@@ -17,15 +30,20 @@ import Tags from "./Tags"
 import TypeBox from "./TypeBox"
 
 const Desktop: React.FC = ({}) => {
+  const { user, isLoading } = useUser()
   const initData = useDaiDaiStore((state) => state.initDatda)
-  const userStore = useDaiDaiStore((state) => state.user)
   const router = useRouter()
   const pannel = router.query.pannel
 
-  const daidaiObjectId = useMemo(() => {
-    const maybeStringId = Array.isArray(router.query.id) ? router.query.id[0] : router.query.id
-    return maybeStringId === undefined ? maybeStringId : +maybeStringId
-  }, [router.query.id])
+  const daidaiObjectIndex = useMemo(() => {
+    const maybeStringIndex = Array.isArray(router.query.index)
+      ? router.query.index[0]
+      : router.query.index
+    return maybeStringIndex === undefined ? maybeStringIndex : +maybeStringIndex
+  }, [router.query.index])
+
+  const pannelCanShow = (pannelConfig: PannelConfig) =>
+    (pannelConfig[1] || user !== null) && pannel === pannelConfig[0]
 
   const controlDisabled = typeof pannel === "string"
 
@@ -43,10 +61,25 @@ const Desktop: React.FC = ({}) => {
   }, [router])
 
   useEffect(() => {
-    if (userStore) {
-      initData().catch(console.log)
+    if (isLoading) return
+    if (user) {
+      initData(user).catch((e) => {
+        toast.error("Should login first!", TOAST_CONFIG)
+        console.error(e)
+      })
+    } else {
+      initData(null)
     }
-  }, [initData, userStore])
+  }, [initData, user, isLoading])
+
+  useEffect(() => {
+    const inPannelDonotSupportAnonymousButAnonymousNow = PANNELS.some(
+      ([name, supportAnonymous]) => name === pannel && !supportAnonymous && user === null
+    )
+    if (inPannelDonotSupportAnonymousButAnonymousNow) {
+      authToast()
+    }
+  }, [pannel, user])
 
   return (
     <div className="p-2">
@@ -55,16 +88,20 @@ const Desktop: React.FC = ({}) => {
       <Tags></Tags>
       <Sites disabled={controlDisabled}></Sites>
       <Dock />
-      <DaidaiObjectCreator show={pannel === "creator"} onClose={onClosePannel} />
-      <DaidaiObjectEditor id={daidaiObjectId} show={pannel === "editor"} onClose={onClosePannel} />
-      <DaidaiObjectDeleter
-        id={daidaiObjectId}
-        show={pannel === "deleter"}
+      <DaidaiObjectCreator show={pannelCanShow(PANNEL_CREATOR)} onClose={onClosePannel} />
+      <DaidaiObjectEditor
+        index={daidaiObjectIndex}
+        show={pannelCanShow(PANNEL_EDITOR)}
         onClose={onClosePannel}
       />
-      <BookmarkImporter show={pannel === "importer"} onClose={onClosePannel} />
-      <Profile show={pannel === "profile"} onClose={onClosePannel} />
-      <ShortcutManualPopup show={pannel === "shortcuts"} onClose={onClosePannel} />
+      <DaidaiObjectDeleter
+        index={daidaiObjectIndex}
+        show={pannelCanShow(PANNEL_DELETER)}
+        onClose={onClosePannel}
+      />
+      <BookmarkImporter show={pannelCanShow(PANNEL_IMPORTER)} onClose={onClosePannel} />
+      <Profile show={pannelCanShow(PANNEL_PROFILE)} onClose={onClosePannel} />
+      <ShortcutManualPopup show={pannelCanShow(PANNEL_SHORTCUTS)} onClose={onClosePannel} />
     </div>
   )
 }

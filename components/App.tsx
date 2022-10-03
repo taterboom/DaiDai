@@ -3,11 +3,9 @@ import { ConfigProvider } from "../contexts/config"
 import { GithubGraphqlClientProvider } from "../contexts/githubGraphql"
 import { SettingsProvider } from "../contexts/settings"
 import { TagsProvider } from "../contexts/tags"
-import SyncUserToStore from "./SyncUserToStore"
 
 const App = () => (
   <>
-    <SyncUserToStore />
     <SettingsProvider>
       <TagsProvider>
         <GithubGraphqlClientProvider>

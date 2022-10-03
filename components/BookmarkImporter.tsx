@@ -1,3 +1,4 @@
+import { useUser } from "@supabase/auth-helpers-react"
 import clsx from "classnames"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "react-toastify"
@@ -97,12 +98,17 @@ const BookmarkImporterPopupPopup = (props: BookmarkImporterPopupProps) => {
 }
 
 const BookmarkImporter = () => {
+  const { user } = useUser()
   const add = useDaiDaiStore((state) => state.add)
   const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 
   const submit = (result: Bookmark[]) => {
+    if (!user) {
+      toast.error("Should login first!", TOAST_CONFIG)
+      return
+    }
     if (result && result.length > 0) {
-      add(...result.map((item) => DaidaiObject.generateFromBookmark(item))).then(
+      add(user.id, ...result.map((item) => DaidaiObject.generateFromBookmark(item))).then(
         () => {
           toast.success("Success!", TOAST_CONFIG)
         },

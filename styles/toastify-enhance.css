@@ -1,3 +1,6 @@
+:root {
+    --toastify-toast-width: 360px;
+}
 .Toastify__toast {
     border-radius: 0 !important;
 }

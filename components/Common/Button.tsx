@@ -22,7 +22,12 @@ const Button = ({
 }
 
 type LinkButtonProps = React.PropsWithChildren<
-  { rounded?: boolean; className?: string; disableDefaultStyle?: boolean } & LinkProps
+  {
+    rounded?: boolean
+    className?: string
+    disableDefaultStyle?: boolean
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>
+  } & LinkProps
 >
 
 export const LinkButton = ({
@@ -30,6 +35,7 @@ export const LinkButton = ({
   className = "",
   children,
   disableDefaultStyle = false,
+  onClick,
   ...linkProps
 }: LinkButtonProps) => {
   const btnClassName = clsx(
@@ -40,7 +46,9 @@ export const LinkButton = ({
   )
   return (
     <Link scroll={false} {...linkProps}>
-      <a className={btnClassName}>{children}</a>
+      <a className={btnClassName} onClick={onClick}>
+        {children}
+      </a>
     </Link>
   )
 }

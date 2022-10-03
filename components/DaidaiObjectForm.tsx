@@ -1,3 +1,4 @@
+import { useUser } from "@supabase/auth-helpers-react"
 import { toast } from "react-toastify"
 import useDaiDaiStore from "../store/daidai"
 import DaidaiObject from "../store/DaidaiObject"
@@ -14,13 +15,19 @@ const DaidaiObjectArea = (props: ObjectEditorProps) => {
 }
 
 export const DaidaiObjectCreator = ({ show, onClose }: { show: boolean; onClose: () => void }) => {
+  const { user } = useUser()
+
   const add = useDaiDaiStore((state) => state.add)
   return (
     <Popup show={show} onClose={onClose} closeOnClickAway={false}>
       <DaidaiObjectArea
         editable
         onSubmit={(result) => {
-          add(new DaidaiObject(result)).then(
+          if (!user) {
+            toast.error("Should login first!", TOAST_CONFIG)
+            return
+          }
+          add(user.id, new DaidaiObject(result)).then(
             () => {
               toast.success("Success!", TOAST_CONFIG)
               onClose()
@@ -39,14 +46,16 @@ export const DaidaiObjectCreator = ({ show, onClose }: { show: boolean; onClose:
 export const DaidaiObjectEditor = ({
   show,
   onClose,
-  id,
+  index,
 }: {
   show: boolean
   onClose: () => void
-  id?: number
+  index?: number
 }) => {
-  const popupShow = show && id !== undefined
-  const daidaiObject = useDaiDaiStore((state) => (id === undefined ? undefined : state.data[id]))
+  const popupShow = show && index !== undefined
+  const daidaiObject = useDaiDaiStore((state) =>
+    index === undefined ? undefined : state.data[index]
+  )
   const update = useDaiDaiStore((state) => state.update)
   return (
     <Popup show={popupShow} onClose={onClose} closeOnClickAway={false}>
@@ -54,7 +63,7 @@ export const DaidaiObjectEditor = ({
         editable
         initialValue={daidaiObject}
         onSubmit={(result) => {
-          update(id!, new DaidaiObject(result)).then(
+          update(index!, new DaidaiObject(result)).then(
             () => {
               toast.success("Success!", TOAST_CONFIG)
               onClose()

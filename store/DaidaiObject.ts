@@ -178,7 +178,7 @@ function getHost(url: string) {
   try {
     return new URL(url).host
   } catch (err) {
-    console.log(err)
+    // console.warn(err)
     return ""
   }
 }
