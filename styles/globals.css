@@ -3,21 +3,40 @@
 @tailwind utilities;
 
 body {
-    min-height: 100vh;
-    background-image: linear-gradient(55deg, rgb(42 34 32 / 0.8),rgb(32 40 50 / 0.8));
-    background-attachment: fixed;
+  min-height: 100vh;
+  background-image: linear-gradient(55deg, rgb(42 34 32 / 0.8), rgb(32 40 50 / 0.8));
+  background-attachment: fixed;
 }
 
 :focus-visible {
-    outline: none;
+  outline: none;
 }
 
 .bulge {
-    @apply -translate-x-1 -translate-y-1 shadow-keep
+  @apply -translate-x-1 -translate-y-1 shadow-keep;
 }
 .unbulge {
-    @apply translate-x-0 translate-y-0 shadow-none
+  @apply translate-x-0 translate-y-0 shadow-none;
 }
 .handlebar {
-    @apply rounded-lg border border-white/30 bg-gray-500/30 backdrop-blur-md overflow-hidden
+  @apply rounded-lg border border-white/30 bg-gray-500/30 backdrop-blur-md overflow-hidden;
+}
+
+.squat {
+  animation-name: squat;
+  animation-duration: 1s;
+  animation-timing-function: steps(1);
+  animation-iteration-count: infinite;
+}
+
+@keyframes squat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

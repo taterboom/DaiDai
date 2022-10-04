@@ -18,6 +18,8 @@ import {
 } from "../utils/pannel"
 import { authToast, TOAST_CONFIG } from "../utils/toast"
 import BookmarkImporter from "./BookmarkImporter"
+import Loading from "./Common/Loading"
+import Popup from "./Common/Popup"
 import DaidaiObjectDeleter from "./DaidaiObjectDeleter"
 import { DaidaiObjectCreator, DaidaiObjectEditor } from "./DaidaiObjectForm"
 import Dock from "./Dock"
@@ -87,12 +89,11 @@ const Desktop: React.FC = ({}) => {
     }
   }, [pannel, user])
 
-  if (isLoading) {
-    return <div className="p-2">Loading...</div>
-  }
-
   return (
     <div className="p-2">
+      <Popup closeable={false} show={dataLoading || isLoading}>
+        <Loading />
+      </Popup>
       {/* <Settings></Settings> */}
       {dataLoading && <progress className="progress w-56"></progress>}
       {!controlDisabled && <TypeBox />}
