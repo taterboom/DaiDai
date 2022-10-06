@@ -17,7 +17,7 @@ import {
   RiUser3Line,
 } from "./Common/icons"
 import clsx from "classnames"
-import { useMeasure } from "react-use"
+import { useLocalStorage, useMeasure } from "react-use"
 
 const getGroupParent = (elem: HTMLElement): HTMLElement | null => {
   return !elem || elem === document.body
@@ -59,7 +59,7 @@ const Dock = (props: DockProps) => {
   const { user } = useUser()
   const shouldReplace = (pannelConfig: PannelConfig) => !pannelConfig[1] && user === null
 
-  const [showAll, setShowAll] = useState(true)
+  const [showAll, setShowAll] = useLocalStorage("__daidai_dockopen", true)
 
   return (
     <div
