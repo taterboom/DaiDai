@@ -3,6 +3,7 @@ import { mergeRegister } from "@lexical/utils"
 import {
   $getSelection,
   $isRangeSelection,
+  BLUR_COMMAND,
   COMMAND_PRIORITY_CRITICAL,
   COMMAND_PRIORITY_LOW,
   KEY_ARROW_DOWN_COMMAND,
@@ -13,9 +14,12 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import useDaiDaiStore from "../../../store/daidai"
 import { selectTags } from "../../../store/selector"
-import { setFloatingElemPosition } from "../utils"
+import { setFloatingElemPosition, setScroll } from "../utils"
 import clsx from "classnames"
 import Fuse from "fuse.js"
+import { debounce } from "lodash"
+
+const debouncedSetFloatingElemPosition = debounce(setFloatingElemPosition, 200)
 
 type FloatingTagEditorProps = {
   value: string
@@ -31,6 +35,7 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
     () => (value.length >= 1 ? fuse.search(value) : tags.map((item) => ({ item }))),
     [value, fuse, tags]
   )
+  const optionsWrapperRef = useRef<HTMLUListElement>(null)
   const resultRef = useRef<string>()
   resultRef.current = options[currentIndex]?.item
   const editorRef = useRef(null)
@@ -53,9 +58,9 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
         } else {
           rect = domRange.getBoundingClientRect()
         }
-        setFloatingElemPosition(rect, editorEl, document.body)
+        debouncedSetFloatingElemPosition(rect, editorEl, document.body)
       } else {
-        setFloatingElemPosition(null, editorEl, document.body)
+        debouncedSetFloatingElemPosition(null, editorEl, document.body)
       }
     }
   }, [editor])
@@ -84,7 +89,26 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
   }, [editor, updateTag])
 
   useEffect(() => {
+    if (currentIndex < 0) return
+    const wrapperEl = optionsWrapperRef.current
+    const activeOptionEl = wrapperEl?.children[currentIndex]
+    if (!activeOptionEl) return
+    setScroll(activeOptionEl as HTMLElement)
+  }, [currentIndex])
+
+  useEffect(() => {
+    console.log("1111")
     return mergeRegister(
+      editor.registerCommand(
+        BLUR_COMMAND,
+        () => {
+          console.log("@@@@")
+          if (!editorRef.current) return false
+          debouncedSetFloatingElemPosition(null, editorRef.current, document.body)
+          return false
+        },
+        COMMAND_PRIORITY_LOW
+      ),
       editor.registerCommand(
         KEY_ARROW_DOWN_COMMAND,
         (e) => {
@@ -130,14 +154,21 @@ export function FloatingTagEditor({ value, onChange }: FloatingTagEditorProps) {
     <div
       ref={editorRef}
       className={clsx(
-        "fixed bg-neutral/30 min-w-[150px] p-2",
+        "fixed bg-primary/70 min-w-[150px] max-h-[360px] p-2 overflow-y-auto backdrop-blur-sm",
         options.length === 0 && "!invisible"
       )}
       style={{ left: -9999, top: -9999 }}
     >
-      <ul>
+      <ul ref={optionsWrapperRef}>
         {options.map(({ item }, index) => (
-          <li key={item} className={clsx(index === currentIndex && "bg-secondary")}>
+          <li
+            key={item}
+            className={clsx("py-0.5 px-1.5", index === currentIndex && "bg-primary-content")}
+            onClick={(e) => {
+              console.log("!", options[index].item)
+              onChange?.(options[index].item)
+            }}
+          >
             {item}
           </li>
         ))}

@@ -1,5 +1,4 @@
 import { supabaseClient, User } from "@supabase/auth-helpers-nextjs"
-import { HTMLAttributeAnchorTarget } from "react"
 import create from "zustand"
 import { immer } from "zustand/middleware/immer"
 
@@ -12,8 +11,6 @@ import { selectTags } from "./selector"
 export type DaidaiState = {
   data: DaidaiObject[]
   activeTags: string[]
-  hrefTarget: HTMLAttributeAnchorTarget
-  highlightColor: string
 
   initDatda: (user: User | null) => Promise<void>
   reset: (daidaiObjects: DaidaiObject[]) => void
@@ -30,8 +27,6 @@ const useDaiDaiStore = create<DaidaiState>()(
     immer((set, get) => ({
       data: [],
       activeTags: [],
-      hrefTarget: "_blank",
-      highlightColor: "#95f09c",
 
       initDatda: async (user) => {
         if (user) {

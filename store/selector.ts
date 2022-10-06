@@ -1,13 +1,17 @@
-import { intersection } from "lodash"
+import { intersection, memoize } from "lodash"
 import { DaidaiState } from "./daidai"
 import DaidaiObject from "./DaidaiObject"
 
-export const selectTags = (state: DaidaiState) => {
+const getTagsSet = memoize((data: DaidaiState["data"]) => {
   const tagsSet = new Set<string>()
-  state.data.forEach((daidaiObj) => {
+  data.forEach((daidaiObj) => {
     daidaiObj.tags.forEach((t) => tagsSet.add(t))
   })
   return [...tagsSet]
+})
+
+export const selectTags = (state: DaidaiState) => {
+  return getTagsSet(state.data)
 }
 
 export const selectActiveDaidaiObjects = (state: DaidaiState) => {

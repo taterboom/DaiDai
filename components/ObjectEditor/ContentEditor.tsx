@@ -22,6 +22,7 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin"
 import ToolBarPlugin from "./plugins/ToolBarPlugin"
 import { TextFormatTransformer } from "@lexical/markdown"
+import { IcBaselineTag, MaterialSymbolsSpaceBar } from "../Common/icons"
 
 export const TRANSFORMER_UNDERLINE: TextFormatTransformer = {
   format: ["underline"],
@@ -142,7 +143,23 @@ const ContentEditor = (props: ContentEditorProps) => {
           }
           placeholder={
             <div className="absolute left-0 top-0 p-2 opacity-60 select-none pointer-events-none">
-              Type # for tags
+              <p className="font-medium">
+                Type{" "}
+                <kbd className="kbd kbd-sm">
+                  <IcBaselineTag />
+                </kbd>{" "}
+                <kbd className="kbd kbd-sm">
+                  <MaterialSymbolsSpaceBar className="align-bottom" />
+                </kbd>{" "}
+                for title
+              </p>
+              <p className="text-sm mt-1">
+                Type{" "}
+                <kbd className="kbd kbd-sm">
+                  <IcBaselineTag />
+                </kbd>{" "}
+                for tags
+              </p>
             </div>
           }
         ></RichTextPlugin>

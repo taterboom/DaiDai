@@ -1,9 +1,11 @@
 import { useUser } from "@supabase/auth-helpers-react"
-import cx from "classnames"
 import { useRouter } from "next/router"
+import { useMemo } from "react"
 import { toast } from "react-toastify"
-import { useSettingsValue } from "../contexts/settings"
+import useDaiDaiStore from "../store/daidai"
 import DaidaiObject from "../store/DaidaiObject"
+import { selectTags } from "../store/selector"
+import useSettingsStore from "../store/settings"
 import { isAnonymousDaidai } from "../utils/anonymous"
 import { PannelConfig, PANNEL_DELETER, PANNEL_EDITOR } from "../utils/pannel"
 import { TOAST_CONFIG } from "../utils/toast"
@@ -13,6 +15,22 @@ import {
   MaterialSymbolsDeleteOutlineSharp,
   IonIosLink,
 } from "./Common/icons"
+import clsx from "classnames"
+
+const useTagsColorMap = () => {
+  const tags = useDaiDaiStore(selectTags)
+  const highlightColors = useSettingsStore((state) => state.highlightColors)
+  return useMemo(() => {
+    const tagsColorMap = new Map<string, { index: number; color: string }>()
+    tags.forEach((tag, index) => {
+      tagsColorMap.set(tag, {
+        index,
+        color: highlightColors[index % highlightColors.length],
+      })
+    })
+    return tagsColorMap
+  }, [highlightColors, tags])
+}
 
 const SiteItem: React.FC<{
   index: number
@@ -20,17 +38,20 @@ const SiteItem: React.FC<{
   active?: boolean
   disable?: boolean
 }> = ({ index, value, active, disable }) => {
-  const settings = useSettingsValue()
+  const hrefTarget = useSettingsStore((state) => state.hrefTarget)
   const { user } = useUser()
+  const tagsColorMap = useTagsColorMap()
+  const activeTags = useDaiDaiStore((state) => state.activeTags)
   const shouldReplace = (pannelConfig: PannelConfig) => !pannelConfig[1] && user === null
 
   return (
     <figure
-      className={cx(
-        active && "bulge",
-        "group relative flex items-center px-4 py-2 border-2 rounded-2xl border-black hover:bulge active:unbulge"
+      className={clsx(
+        active && "!bg-primary-focus",
+        "group relative flex items-center p-5 py-3 bg-main transition-colors hover:bg-main-focus"
       )}
     >
+      {/* cover */}
       {value.iconUrl ? (
         <div className="avatar">
           <div className="w-12 rounded">
@@ -40,7 +61,7 @@ const SiteItem: React.FC<{
               alt={value.title || ""}
               width="48"
               height="48"
-              className="rounded-full w-10 h-10"
+              className="rounded-full w-12 h-12"
             />
           </div>
         </div>
@@ -53,23 +74,39 @@ const SiteItem: React.FC<{
           </div>
         </div>
       )}
-      <figcaption className="ml-4 truncate">
-        <a href={value.url || ""} target={settings.hrefTarget} title={value.title || ""}>
+      {/* title and tags */}
+      <figcaption className="ml-4 overflow-hidden">
+        <a
+          href={value.url || ""}
+          target={hrefTarget}
+          title={value.title || ""}
+          className="line-clamp-2 text-white"
+        >
           <span className="absolute inset-0"></span>
           {value.title || value.url}
         </a>
-        <ul className="flex flex-wrap">
-          {value.tags.map((tag) => (
-            <li
-              key={tag}
-              className="relative opacity-70 px-1.5 border border-black rounded-md text-xs scale-90 origin-left"
-            >
-              {tag}
-              <div className="absolute inset-0.5 -z-10 rounded bg-gray-100"></div>
-            </li>
-          ))}
+        <ul className="flex flex-wrap gap-1 mt-2">
+          {value.tags.map((tag) => {
+            const isTagActive = activeTags.includes(tag)
+            return (
+              <li
+                key={tag}
+                className={clsx(
+                  "relative px-1.5 border text-xs scale-90 origin-left transition-colors",
+                  isTagActive ? "text-black" : "border-white text-white "
+                )}
+                style={{
+                  backgroundColor: isTagActive ? tagsColorMap.get(tag)?.color : undefined,
+                  borderColor: tagsColorMap.get(tag)?.color,
+                }}
+              >
+                {tag}
+              </li>
+            )
+          })}
         </ul>
       </figcaption>
+      {/* operation bar */}
       {!disable && (
         <div className="group-hover:opacity-100 opacity-0 transition-opacity pointer-events-none absolute right-1 top-1 flex handlebar backdrop-blur-sm">
           <LinkButton
@@ -77,6 +114,7 @@ const SiteItem: React.FC<{
             href={`/?pannel=${PANNEL_EDITOR[0]}&index=${index}`}
             shallow
             replace={shouldReplace(PANNEL_EDITOR)}
+            title="edit"
             onClick={(e) => {
               if (isAnonymousDaidai(value.id)) {
                 toast("This cannot be updated, you can delete it.", TOAST_CONFIG)
@@ -90,6 +128,7 @@ const SiteItem: React.FC<{
             className="!btn-xs pointer-events-auto"
             href={`/?pannel=${PANNEL_DELETER[0]}&index=${index}`}
             shallow
+            title="delete"
             replace={shouldReplace(PANNEL_DELETER)}
           >
             <MaterialSymbolsDeleteOutlineSharp />

@@ -47,6 +47,117 @@ export const Logo = () => {
   )
 }
 
+export const NavLogo = () => {
+  return (
+    <svg
+      width="1em"
+      height="0.85em"
+      viewBox="0 0 20 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="3" y="5" width="13" height="9" fill="white" />
+      <path d="M6 3L7.73205 5.25H4.26795L6 3Z" fill="white" />
+      <path d="M13 3L14.7321 5.25H11.2679L13 3Z" fill="white" />
+      <rect x="5" y="9" width="2" height="2" fill="#06112A" />
+      <rect x="9" y="9" width="1" height="1" fill="#06112A" />
+      <rect x="5" y="8" width="1" height="1" fill="#06112A" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M13 8H12V9V11H14V9H13V8Z" fill="#06112A" />
+      <rect x="10" y="10" width="1" height="1" fill="#06112A" />
+      <rect x="8" y="10" width="1" height="1" fill="#06112A" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M0 1H16V2H1V16H18V4H19V17H0V1Z" fill="white" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M19 0H18V1H17V2H18V3H19V2H20V1H19V0Z"
+        fill="white"
+      />
+    </svg>
+  )
+}
+
+export const NavLogoClosed = () => {
+  return (
+    <svg
+      width="1em"
+      height="0.85em"
+      viewBox="0 0 20 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="3" y="5" width="13" height="9" fill="white" />
+      <path d="M6 3L7.73205 5.25H4.26795L6 3Z" fill="white" />
+      <path d="M13 3L14.7321 5.25H11.2679L13 3Z" fill="white" />
+      <rect x="9" y="9" width="1" height="1" fill="#06112A" />
+      <rect x="10" y="10" width="1" height="1" fill="#06112A" />
+      <rect x="8" y="10" width="1" height="1" fill="#06112A" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M0 1H16V2H1V16H18V4H19V17H0V1Z" fill="white" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M19 0H18V1H17V2H18V3H19V2H20V1H19V0Z"
+        fill="white"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M4 8H6V9H4V8ZM6 10V9H7V10H6ZM6 10V11H4V10H6Z"
+        fill="black"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M15 8H13V9H15V8ZM13 10V9H12V10H13ZM13 10V11H15V10H13Z"
+        fill="black"
+      />
+    </svg>
+  )
+}
+
+export const Star = () => {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M5.20301 5.20245L7.03453 0L8.87583 5.23021L14 7.03417L8.84836 8.84781L7.03453 14L5.23047 8.87556L-1.49012e-07 7.03417L5.20301 5.20245Z"
+        fill="#F4DA52"
+      />
+    </svg>
+  )
+}
+
+export const Close = () => {
+  return (
+    <svg width="19" height="17" viewBox="0 0 19 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M4.83333 0L7.01456 2.8335H12.5688L14.75 0L16.9312 2.8335H19V17.0002H0.583313V2.8335H2.65211L4.83333 0Z"
+        fill="white"
+        fillOpacity="0.65"
+      />
+      <path
+        d="M4.83331 14.1665L8.69229 8.91422L8.60254 10.9343L4.92306 5.6665H8.73716L10.547 8.47912L9.14101 8.58789L11.1303 5.6665H14.6752L10.9807 10.7634V8.82098L14.75 14.1665H10.876L9.00639 11.1674L10.4273 11.3694L8.49784 14.1665H4.83331Z"
+        fill="#1319A9"
+      />
+    </svg>
+  )
+}
+
+export const Upload = () => {
+  return (
+    <svg width="86" height="80" viewBox="0 0 86 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M30.0318 13.2315L19.8463 0L9.66067 13.2315H0V79.3853H86V13.2315H76.3396L66.154 0L55.9685 13.2315H30.0318ZM42.9644 33.2903L65.1416 59.5385H50.0778V79.3846H35.8511V59.5385H20.7873L42.9644 33.2903Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
 export function IcSharpSettings(props: SVGProps<SVGSVGElement>) {
   return (
     <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -400,6 +511,69 @@ export function IonIosLink(props: SVGProps<SVGSVGElement>) {
       <path
         d="M433.3 78.7C413.5 58.9 387.1 48 359 48s-54.6 10.9-74.4 30.7l-63.7 63.7c-9.7 9.7-3.6 26.3 10.1 27.4 4.7.4 9.3-1.3 12.7-4.6l63.8-63.6c13.7-13.7 32-21.2 51.5-21.2s37.8 7.5 51.5 21.2c13.7 13.7 21.2 32 21.2 51.5s-7.5 37.8-21.2 51.5l-68.6 68.6c-3.5 3.5-7.3 6.6-11.4 9.3-4.6 3-9.6 5.6-14.8 7.5-4.8 1.8-9.9 3-15 3.7-3.4.5-6.9.7-10.2.7-1.4 0-2.9-.1-4.6-.2-17.7-1.1-34.4-8.6-46.8-21-7.3-7.3-12.8-16-16.4-25.5-2.9-7.7-11.1-11.9-19.1-9.8-8.9 2.3-14.1 11.7-11.3 20.5 4.5 14 12.1 25.9 23.7 37.5l.2.2c16.9 16.9 39.4 27.6 63.3 30.1 3.7.4 7.4.6 11.1.6 2.6 0 5.2-.1 7.8-.3 6.5-.5 13-1.6 19.3-3.2 6.7-1.8 13.3-4.2 19.5-7.3 10.3-5.1 19.6-11.7 27.7-19.9l68.6-68.6c19.8-19.8 30.7-46.2 30.7-74.4s-11.1-54.6-30.9-74.4z"
         fill="currentColor"
+      ></path>
+    </svg>
+  )
+}
+
+export function MaterialSymbolsSpaceBar(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path fill="currentColor" d="M4 20V14h2v4h12V14h2v6Z"></path>
+    </svg>
+  )
+}
+
+export function MaterialSymbolsSave(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="currentColor"
+        d="M21 7v12q0 .825-.587 1.413Q19.825 21 19 21H5q-.825 0-1.413-.587Q3 19.825 3 19V5q0-.825.587-1.413Q4.175 3 5 3h12Zm-9 11q1.25 0 2.125-.875T15 15q0-1.25-.875-2.125T12 12q-1.25 0-2.125.875T9 15q0 1.25.875 2.125T12 18Zm-6-8h9V6H6Z"
+      ></path>
+    </svg>
+  )
+}
+
+export function MaterialSymbolsAddBoxOutlineSharp(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="currentColor"
+        d="M11 17h2v-4h4v-2h-4V7h-2v4H7v2h4Zm-8 4V3h18v18Zm2-2h14V5H5Zm0 0V5v14Z"
+      ></path>
+    </svg>
+  )
+}
+
+export function CarbonWorkspaceImport(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 32 32" {...props}>
+      <path
+        fill="currentColor"
+        d="M27 6v5H17V6h10m0-2H17a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM12 25H6v-8h6v-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6zm18-5H16.828l2.586-2.586L18 16l-5 5l5 5l1.414-1.414L16.828 22H30v-2zM11 6v5H6V6h5m0-2H6a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"
+      ></path>
+    </svg>
+  )
+}
+
+export function MaterialSymbolsKeyboardSharp(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="currentColor"
+        d="M2 19V5h20v14Zm9-9h2V8h-2Zm0 3h2v-2h-2Zm-3-3h2V8H8Zm0 3h2v-2H8Zm-3 0h2v-2H5Zm0-3h2V8H5Zm3 6h8v-2H8Zm6-3h2v-2h-2Zm0-3h2V8h-2Zm3 3h2v-2h-2Zm0-3h2V8h-2Z"
+      ></path>
+    </svg>
+  )
+}
+
+export function RiUser3Line(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="currentColor"
+        d="M20 22h-2v-2a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v2H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12a6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8a4 4 0 0 0 0 8z"
       ></path>
     </svg>
   )

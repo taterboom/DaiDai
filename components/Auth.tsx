@@ -121,12 +121,12 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
                       Sign up here
                     </LinkButton>
                   </p>
-                  <p>
+                  {/* <p>
                     Forgot password?
                     <LinkButton disableDefaultStyle className="btn-xs btn-ghost" href="/todo">
                       Reset password here
                     </LinkButton>
-                  </p>
+                  </p> */}
                 </>
               ) : (
                 <p>

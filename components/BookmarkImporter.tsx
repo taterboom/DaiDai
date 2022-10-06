@@ -8,6 +8,7 @@ import DaidaiObject from "../store/DaidaiObject"
 import { Bookmark, bookmarkHTMLString2json } from "../utils/bookmarkHtml2json"
 import { TOAST_CONFIG } from "../utils/toast"
 import Button from "./Common/Button"
+import { MaterialSymbolsSave, Upload } from "./Common/icons"
 import Popup from "./Common/Popup"
 import { useLocalstorageState } from "./Common/useLocalstorageState"
 
@@ -50,24 +51,10 @@ const HTMLInput = ({ onChange }: { onChange: (json: Bookmark[]) => void }) => {
       }}
       onDrop={handleFileDrop}
     >
-      <label htmlFor="dropzone-file" className="upload-content">
+      <label htmlFor="dropzone-file" className="upload-content text-primary-content">
         <div className="upload-placeholder">
-          <svg
-            aria-hidden="true"
-            className="upload-btn"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-            ></path>
-          </svg>
-          <p className="upload-tips">
+          <Upload />
+          <p className="upload-tips mt-4">
             <span className="font-semibold">Click to upload</span> or drag and drop
           </p>
           <p className="upload-tips">your bookmarks.html</p>
@@ -121,11 +108,14 @@ const BookmarkImporter = () => {
   }
 
   return (
-    <div className="overflow-y-auto p-4 bg-neutral/30  max-w-[80vw] max-h-[80vh] w-[800px] 2xl:w-[1024px] h-[600px] 2xl:h-[768px]">
-      <div className="flex justify-between">
-        {!bookmarks && <HTMLInput onChange={(e) => setBookmarks(e)} />}
-      </div>
-      {bookmarks && <BookmarksSelect value={bookmarks} onSubmit={submit} />}
+    <div className="pannel">
+      {bookmarks ? (
+        <BookmarksSelect value={bookmarks} onSubmit={submit} />
+      ) : (
+        <div className="flex justify-between w-[800px] ">
+          <HTMLInput onChange={(e) => setBookmarks(e)} />
+        </div>
+      )}
     </div>
   )
 }
@@ -201,7 +191,7 @@ const BookmarksSelect = ({
   }, [checkedItemSet, value.length])
 
   return (
-    <div>
+    <div className="overflow-y-auto max-w-[80vw] max-h-[80vh] w-[800px] 2xl:w-[1024px] h-[600px] 2xl:h-[768px]">
       <div className="flex justify-between items-center mt-4 handlebar">
         <div className="flex gap-8">
           <label className="label cursor-pointer gap-2">
@@ -226,12 +216,12 @@ const BookmarksSelect = ({
           </label>
         </div>
         <Button
-          className="h-10"
+          className="flex items-center gap-1"
           onClick={() => {
             submit()
           }}
         >
-          Submit
+          <MaterialSymbolsSave /> Save
         </Button>
       </div>
       <table className="table table-compact w-full mt-4">
@@ -258,7 +248,7 @@ const BookmarksSelect = ({
         </thead>
         <tbody>
           {displayValue.map((item, index) => (
-            <tr key={index} className={clsx(item.duplicated && "text-yellow-600")}>
+            <tr key={index} className={clsx(item.duplicated && "text-warning")}>
               <td>
                 <input
                   type="checkbox"

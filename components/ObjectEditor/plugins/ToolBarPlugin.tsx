@@ -36,6 +36,7 @@ import {
   FoundationQuote,
   IcBaselineTag,
   IcSharpSettings,
+  MaterialSymbolsSave,
   RadixBold,
   RadixCode,
   RadixHeading,
@@ -381,7 +382,7 @@ const ToolBarPlugin = ({ onSubmit }: { onSubmit: () => void }) => {
   }, [editor, updateToolBar])
 
   return (
-    <div className="flex items-center justify-between handlebar">
+    <div className="flex items-center justify-between handlebar !bg-main-accent">
       <div className="flex items-center">
         <TagButton checked={currentBlock?.type === "tag"} />
         <HeadingButton checked={currentBlock?.type === "heading"}></HeadingButton>
@@ -403,11 +404,12 @@ const ToolBarPlugin = ({ onSubmit }: { onSubmit: () => void }) => {
         <QuoteButton checked={currentBlock?.type === "quote"}></QuoteButton>
       </div>
       <Button
+        className="flex items-center gap-1"
         onClick={() => {
           onSubmit()
         }}
       >
-        Submit
+        <MaterialSymbolsSave className="text-[1.2em]" /> Save
       </Button>
     </div>
   )

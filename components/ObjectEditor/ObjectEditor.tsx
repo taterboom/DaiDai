@@ -31,7 +31,7 @@ function ObjectEditor({ editable, initialValue, onSubmit }: ObjectEditorProps) {
   const contentEditorContextRef = useRef<LexicalComposerContextWithEditor>(null)
 
   return (
-    <div className="p-4 bg-neutral-700/70">
+    <div className="editor--dark">
       <URLEditor
         editable={editable}
         initialEditorState={() => {

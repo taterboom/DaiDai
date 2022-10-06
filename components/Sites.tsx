@@ -2,47 +2,44 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import tinykeys from "tinykeys"
 import useDaiDaiStore from "../store/daidai"
 import { selectActiveDaidaiObjects, selectVisibleDaidaiObjects } from "../store/selector"
+import useSettingsStore from "../store/settings"
 import SiteItem from "./SiteItem"
+import clsx from "classnames"
+import { useWindowSize } from "react-use"
 
 const RESPONSIVE_DATA = {
   mobile: {
     size: 0,
     count: 2,
-    className: "grid-cols-[repeat(2,_minmax(200px,_1fr))]",
+    className: "grid-cols-[repeat(2,_minmax(240px,_1fr))]",
   },
   sm: {
     size: 640,
-    count: 3,
-    className: "grid-cols-[repeat(3,_minmax(200px,_1fr))]",
+    count: 2,
+    className: "grid-cols-[repeat(2,_minmax(240px,_1fr))]",
   },
   md: {
     size: 768,
-    count: 4,
-    className: "grid-cols-[repeat(4,_minmax(180px,_1fr))]",
+    count: 3,
+    className: "grid-cols-[repeat(3,_minmax(240px,_1fr))]",
   },
   lg: {
     size: 1024,
-    count: 5,
-    className: "grid-cols-[repeat(5,_minmax(200px,_1fr))]",
+    count: 4,
+    className: "grid-cols-[repeat(4,_minmax(240px,_1fr))]",
   },
   xl: {
     size: 1280,
-    count: 6,
-    className: "grid-cols-[repeat(6,_minmax(200px,_1fr))]",
+    count: 5,
+    className: "grid-cols-[repeat(5,_minmax(240px,_1fr))]",
   },
   "2xl": {
     size: 1536,
-    count: 7,
-    className: "grid-cols-[repeat(7,_minmax(200px,_1fr))]",
-  },
-  "3xl": {
-    size: 1800,
-    count: 8,
-    className: "grid-cols-[repeat(8,_minmax(200px,_1fr))]",
+    count: 6,
+    className: "grid-cols-[repeat(6,_minmax(240px,_1fr))]",
   },
 }
 const RESPONSIVE_LEVEL: Array<keyof typeof RESPONSIVE_DATA> = [
-  "3xl",
   "2xl",
   "xl",
   "lg",
@@ -51,11 +48,10 @@ const RESPONSIVE_LEVEL: Array<keyof typeof RESPONSIVE_DATA> = [
   "mobile",
 ]
 
-const getScreenLevel = () => {
+const getScreenLevel = (windowWidth: number) => {
   if (typeof window === "undefined") return 0
-  const w = document.documentElement.clientWidth
   for (let i = 0; i < RESPONSIVE_LEVEL.length; i++) {
-    if (w >= RESPONSIVE_DATA[RESPONSIVE_LEVEL[i]].size) {
+    if (windowWidth >= RESPONSIVE_DATA[RESPONSIVE_LEVEL[i]].size) {
       return i
     }
   }
@@ -63,21 +59,23 @@ const getScreenLevel = () => {
 }
 
 const Sites = ({ disabled }: { disabled: boolean }) => {
-  const [screenLevel, setScreenLevel] = useState(getScreenLevel)
-  const screenLevelRef = useRef(screenLevel)
-  screenLevelRef.current = screenLevel
   const [activeIndex, setActiveIndex] = useState(-1)
   const activeIndexRef = useRef(activeIndex)
   activeIndexRef.current = activeIndex
   const visibleDaidaiObjects = useDaiDaiStore(selectVisibleDaidaiObjects)
-
   const visibleDaidaiObjectsRef = useRef(visibleDaidaiObjects)
   visibleDaidaiObjectsRef.current = visibleDaidaiObjects
+  const { width: windowWidth } = useWindowSize()
+
+  const screenLevel = useMemo(() => getScreenLevel(windowWidth), [windowWidth])
+  const screenLevelRef = useRef(screenLevel)
+  screenLevelRef.current = screenLevel
+
   useEffect(() => {
     if (typeof window === "undefined") return
     if (!disabled) {
       const nav = (url: string) =>
-        useDaiDaiStore.getState().hrefTarget === "_blank"
+        useSettingsStore.getState().hrefTarget === "_blank"
           ? window.open(url)
           : window.location.assign(url)
       const generateNav = (index: number) => (e: Event) => {
@@ -89,7 +87,7 @@ const Sites = ({ disabled }: { disabled: boolean }) => {
       }
       const enterNav = () => {
         const site = visibleDaidaiObjectsRef.current[activeIndexRef.current]
-        if (site.url) {
+        if (site?.url) {
           nav(site.url)
         }
       }
@@ -143,14 +141,15 @@ const Sites = ({ disabled }: { disabled: boolean }) => {
       }
     }
   }, [disabled])
+
   useEffect(() => {
-    window.addEventListener("size", () => {
-      setScreenLevel(getScreenLevel())
-    })
-  }, [])
+    setActiveIndex(-1)
+  }, [visibleDaidaiObjects])
 
   return (
-    <section className="grid gap-4 grid-cols-[repeat(2,_minmax(200px,_1fr))] sm:grid-cols-[repeat(3,_minmax(200px,_1fr))] md:grid-cols-[repeat(4,_minmax(200px,_1fr))] lg:grid-cols-[repeat(5,_minmax(200px,_1fr))] xl:grid-cols-[repeat(6,_minmax(200px,_1fr))] 2xl:grid-cols-[repeat(7,_minmax(200px,_1fr))] 3xl:grid-cols-[repeat(8,_minmax(200px,_1fr))]">
+    <section
+      className={clsx("grid gap-5", RESPONSIVE_DATA[RESPONSIVE_LEVEL[screenLevel]].className)}
+    >
       {visibleDaidaiObjects.map((site, index) => (
         <SiteItem
           key={site.id}

@@ -26,6 +26,7 @@ type LinkButtonProps = React.PropsWithChildren<
     rounded?: boolean
     className?: string
     disableDefaultStyle?: boolean
+    title?: string
     onClick?: React.MouseEventHandler<HTMLAnchorElement>
   } & LinkProps
 >
@@ -35,6 +36,7 @@ export const LinkButton = ({
   className = "",
   children,
   disableDefaultStyle = false,
+  title,
   onClick,
   ...linkProps
 }: LinkButtonProps) => {
@@ -46,7 +48,7 @@ export const LinkButton = ({
   )
   return (
     <Link scroll={false} {...linkProps}>
-      <a className={btnClassName} onClick={onClick}>
+      <a className={btnClassName} title={title} onClick={onClick}>
         {children}
       </a>
     </Link>

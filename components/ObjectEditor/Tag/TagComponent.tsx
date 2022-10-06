@@ -14,6 +14,7 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { useCallback, useEffect, useRef } from "react"
 import { $isTagNode } from "./TagNode"
 import { mergeRegister } from "@lexical/utils"
+import { IcBaselineTag } from "../../Common/icons"
 
 export const TagComponent = ({ tag, nodeKey }: { tag: string; nodeKey: NodeKey }) => {
   const [editor] = useLexicalComposerContext()
@@ -65,11 +66,11 @@ export const TagComponent = ({ tag, nodeKey }: { tag: string; nodeKey: NodeKey }
     <span
       ref={elRef}
       className={clsx(
-        "px-2 rounded border bg-gray",
-        isSelected ? " border-blue-400" : "border-black"
+        "relative inline-flex justify-center items-center gap-0.5 whitespace-nowrap px-2 py-0.5 text-sm border transition-all",
+        isSelected ? " border-primary-focus" : "border-base-content"
       )}
     >
-      <span>#</span>
+      <IcBaselineTag />
       <span className="">{tag}</span>
     </span>
   )

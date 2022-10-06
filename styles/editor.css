@@ -23,6 +23,9 @@ h1 {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+.editor--dark .editor-container{
+  color: inherit
+}
 
 .editor-inner {
   background: #fff;
@@ -52,6 +55,10 @@ h1 {
   user-select: none;
   display: inline-block;
   pointer-events: none;
+}
+.editor--dark .editor-placeholder{
+  color: inherit;
+  opacity: 0.6;
 }
 
 .editor-text-bold {
@@ -187,20 +194,21 @@ h1 {
 .editor-heading-h1 {
   font-size: 24px;
   color: rgb(5, 5, 5);
-  font-weight: 400;
+  font-weight: 700;
   margin: 0;
   margin-bottom: 12px;
   padding: 0;
 }
+.editor--dark .editor-heading-h1 {
+  color: inherit;
+}
 
 .editor-heading-h2 {
-  font-size: 15px;
-  color: rgb(101, 103, 107);
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   margin: 0;
   margin-top: 10px;
   padding: 0;
-  text-transform: uppercase;
 }
 
 .editor-quote {
@@ -753,5 +761,4 @@ i.justify-align {
 }
 
 .editor-tag {
-  @apply inline-block px-1
 }

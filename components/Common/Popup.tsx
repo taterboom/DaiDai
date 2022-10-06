@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import Button from "./Button"
 import ClickAway from "./ClickAway"
 import Fade from "./Fade"
-import { IcRoundClose } from "./icons"
+import { Close, IcRoundClose } from "./icons"
 import Portal from "./Portal"
 import clsx from "classnames"
 
@@ -31,7 +31,7 @@ const Popup: React.FC<{
 }> = ({
   children,
   show,
-  closeIcon = <IcRoundClose />,
+  closeIcon = <Close />,
   closeOnClickAway = true,
   closeable = true,
   centerX = true,
@@ -44,10 +44,8 @@ const Popup: React.FC<{
   const body = (
     <div className={clsx(`relative`, wrapperClassName)}>
       {closeable && (
-        <div className="absolute left-0 -top-2 -translate-y-full -translate-x-1/2 text-2xl">
-          <Button rounded onClick={() => show && onClose?.()}>
-            {closeIcon}
-          </Button>
+        <div className="absolute right-0 -top-1 -translate-y-full text-2xl">
+          <Button onClick={() => show && onClose?.()}>{closeIcon}</Button>
         </div>
       )}
       {children}
@@ -58,7 +56,7 @@ const Popup: React.FC<{
       <Fade in={show}>
         <div
           className={clsx(
-            `fixed inset-0 bg-white/30 backdrop-blur-2xl overflow-auto py-4 flex`,
+            `fixed inset-0 bg-[#282B75]/30 backdrop-blur-2xl overflow-auto py-4 flex`,
             centerX && "justify-center",
             centerY && "items-center",
             className

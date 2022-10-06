@@ -1,8 +1,7 @@
 import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "react-toastify"
-import { useSettingsValue } from "../contexts/settings"
 import Site from "../modules/Site"
 import useDaiDaiStore from "../store/daidai"
 import DaidaiObject from "../store/DaidaiObject"
@@ -63,18 +62,23 @@ const Desktop: React.FC = ({}) => {
     }
   }, [router])
 
+  const preUserIdRef = useRef<string | null>(null)
+
   useEffect(() => {
     if (isLoading) return
     if (user) {
-      setDataLoading(true)
-      initData(user)
-        .catch((e) => {
-          toast.error("Should login first!", TOAST_CONFIG)
-          console.error(e)
-        })
-        .then(() => {
-          setDataLoading(false)
-        })
+      if (preUserIdRef.current !== user.id) {
+        setDataLoading(true)
+        initData(user)
+          .catch((e) => {
+            toast.error("Should login first!", TOAST_CONFIG)
+            console.error(e)
+          })
+          .then(() => {
+            setDataLoading(false)
+            preUserIdRef.current = user.id
+          })
+      }
     } else {
       initData(null)
     }
@@ -90,7 +94,7 @@ const Desktop: React.FC = ({}) => {
   }, [pannel, user])
 
   return (
-    <div className="p-2">
+    <div className="p-16">
       <Popup closeable={false} show={dataLoading || isLoading}>
         <Loading />
       </Popup>

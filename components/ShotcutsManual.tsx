@@ -6,8 +6,8 @@ type ShortcutManualProps = {
 
 const ShortcutManual = (props: ShortcutManualProps) => {
   return (
-    <div>
-      <table className="table table-compact w-full">
+    <div className="pannel">
+      <table className="table table-compact w-full p-4">
         <tbody>
           <tr>
             <td>

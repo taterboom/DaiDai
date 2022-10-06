@@ -12,8 +12,8 @@ export function setFloatingElemPosition(
   targetRect: DOMRect | null,
   floatingElem: HTMLElement,
   anchorElem: HTMLElement,
-  verticalGap: number = VERTICAL_GAP,
-  horizontalOffset: number = HORIZONTAL_OFFSET
+  verticalGap: number = 10,
+  horizontalOffset: number = 5
 ): void {
   const scrollerElem = anchorElem.parentElement
   console.log(targetRect, floatingElem)
@@ -46,4 +46,56 @@ export function setFloatingElemPosition(
   floatingElem.style.opacity = "1"
   floatingElem.style.top = `${top}px`
   floatingElem.style.left = `${left}px`
+}
+
+export function setScroll(targetElem: HTMLElement, _scrollerElem?: HTMLElement, gap = 4): void {
+  const scrollerElem = _scrollerElem || getScrollableParent(targetElem)
+
+  if (!scrollerElem) return
+
+  const targetElemRect = targetElem.getBoundingClientRect()
+  const scrollerElemRect = scrollerElem.getBoundingClientRect()
+
+  let deltaY = 0
+  let deltaX = 0
+
+  if (targetElemRect.top < scrollerElemRect.top) {
+    deltaY = targetElemRect.top - scrollerElemRect.top - gap
+  }
+  if (targetElemRect.bottom > scrollerElemRect.bottom) {
+    deltaY = targetElemRect.bottom - scrollerElemRect.bottom + gap
+  }
+  if (targetElemRect.left < scrollerElemRect.left) {
+    deltaX = targetElemRect.left - scrollerElemRect.left
+  }
+  if (targetElemRect.right > scrollerElemRect.right) {
+    deltaX = targetElemRect.right - scrollerElemRect.right
+  }
+
+  console.log(targetElem, scrollerElem, deltaX, deltaY)
+
+  if (deltaX || deltaY) {
+    scrollerElem.scrollBy({
+      left: deltaX,
+      top: deltaY,
+      behavior: "smooth",
+    })
+  }
+}
+
+const isScrollable = (elem: HTMLElement) => {
+  const hasScrollableContent = elem.scrollHeight > elem.clientHeight
+  const overflowYStyle = window.getComputedStyle(elem).overflowY
+  const isOverflowHidden = overflowYStyle.indexOf("hidden") !== -1
+  return hasScrollableContent && !isOverflowHidden
+}
+
+const getScrollableParent = (elem: HTMLElement): HTMLElement | null => {
+  return !elem || elem === document.body
+    ? document.body
+    : isScrollable(elem)
+    ? elem
+    : elem.parentElement
+    ? getScrollableParent(elem.parentElement)
+    : null
 }
