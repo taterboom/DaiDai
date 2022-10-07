@@ -1,0 +1,15 @@
+{
+  "name": "daidai",
+  "description": "manage your bookmarks with tags instead of directory",
+  "version": "1.0",
+  "manifest_version": 3,
+  "icons": {
+    "48": "images/48.png"
+  },
+  "action": {
+    "default_title": "Read bookmarks",
+    "default_popup": "popup/index.html"
+  },
+  "permissions": [],
+  "host_permissions": []
+}
