@@ -2,12 +2,21 @@
 // https://tailwindcss.com/docs/using-with-preprocessors
 
 const config = require("tailwind-config/tailwind.config.js")
-
+console.log(config.content)
 module.exports = {
   plugins: {
     // Specifying the config is not necessary in most cases, but it is included
     // here to share the same config across the entire monorepo
-    tailwindcss: { config },
+    tailwindcss: {
+      config: {
+        ...config,
+        content: [
+          ...config.content,
+          "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+          "./components/**/*.{js,ts,jsx,tsx,mdx}",
+        ],
+      },
+    },
     autoprefixer: {},
   },
 }

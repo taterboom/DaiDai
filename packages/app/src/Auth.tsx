@@ -64,81 +64,75 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
   }
 
   return (
-    <div className="h-screen flex justify-center items-center">
-      <div className="space-y-4 bg-neutral/30 p-4 ">
-        {shouldConfirm && (
-          <div className="absolute inset-0 z-10 flex justify-center items-center bg-neutral/30 backdrop-blur-lg">
-            Should confirm email!
+    <div className="space-y-4 bg-neutral/30 p-4 ">
+      {shouldConfirm && (
+        <div className="absolute inset-0 z-10 flex justify-center items-center bg-neutral/30 backdrop-blur-lg">
+          Should confirm email!
+        </div>
+      )}
+      <Button disableDefaultStyle className="btn-sm btn-block" onClick={(e) => signInWithGoogle()}>
+        {type === "signin" ? "Sign in" : "Sign up"} with Google
+      </Button>
+      <Button disableDefaultStyle className="btn-sm btn-block" onClick={() => signInWithGithub()}>
+        {type === "signin" ? "Sign in" : "Sign up"} with Github
+      </Button>
+      <div className="divider">OR</div>
+      <div>
+        <form className="space-y-4" onSubmit={signWithEmailAndPassword}>
+          <div className="form-control">
+            <input
+              required
+              type="email"
+              placeholder="Email"
+              className="input input-bordered input-sm"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-        )}
-        <Button
-          disableDefaultStyle
-          className="btn-sm btn-block"
-          onClick={(e) => signInWithGoogle()}
-        >
-          {type === "signin" ? "Sign in" : "Sign up"} with Google
-        </Button>
-        <Button disableDefaultStyle className="btn-sm btn-block" onClick={() => signInWithGithub()}>
-          {type === "signin" ? "Sign in" : "Sign up"} with Github
-        </Button>
-        <div className="divider">OR</div>
-        <div>
-          <form className="space-y-4" onSubmit={signWithEmailAndPassword}>
-            <div className="form-control">
-              <input
-                required
-                type="email"
-                placeholder="Email"
-                className="input input-bordered input-sm"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="form-control">
-              <input
-                required
-                type="password"
-                placeholder="Password"
-                className="input input-bordered input-sm"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+          <div className="form-control">
+            <input
+              required
+              type="password"
+              placeholder="Password"
+              className="input input-bordered input-sm"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-            <Button
-              type="submit"
-              disableDefaultStyle
-              className={clsx("btn-sm btn-block", loading && "loading")}
-            >
-              {type === "signin" ? "Sign in" : "Sign up"}
-            </Button>
-            <div className="space-y-2 text-xs">
-              {type === "signin" ? (
-                <>
-                  <p>
-                    Don't have an account yet?
-                    <LinkButton disableDefaultStyle className="btn-xs btn-ghost" href="/signup">
-                      Sign up here
-                    </LinkButton>
-                  </p>
-                  {/* <p>
+          <Button
+            type="submit"
+            disableDefaultStyle
+            className={clsx("btn-sm btn-block", loading && "loading")}
+          >
+            {type === "signin" ? "Sign in" : "Sign up"}
+          </Button>
+          <div className="space-y-2 text-xs">
+            {type === "signin" ? (
+              <>
+                <p>
+                  Don't have an account yet?
+                  <LinkButton disableDefaultStyle className="btn-xs btn-ghost" href="/signup">
+                    Sign up here
+                  </LinkButton>
+                </p>
+                {/* <p>
                     Forgot password?
                     <LinkButton disableDefaultStyle className="btn-xs btn-ghost" href="/todo">
                       Reset password here
                     </LinkButton>
                   </p> */}
-                </>
-              ) : (
-                <p>
-                  Already have an account?
-                  <LinkButton disableDefaultStyle className="btn-xs btn-ghost" href="/signin">
-                    Sign in here
-                  </LinkButton>
-                </p>
-              )}
-            </div>
-          </form>
-        </div>
+              </>
+            ) : (
+              <p>
+                Already have an account?
+                <LinkButton disableDefaultStyle className="btn-xs btn-ghost" href="/signin">
+                  Sign in here
+                </LinkButton>
+              </p>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   )

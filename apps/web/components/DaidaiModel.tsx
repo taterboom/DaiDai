@@ -9,7 +9,7 @@ import { Group, Mesh, Plane, Raycaster, Vector3 } from "three"
 
 const Floor = () => {
   return (
-    <mesh position={[0, -4, 0]} rotation={[0, 0, 0]} receiveShadow>
+    <mesh position={[0, -4, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
       <meshPhongMaterial></meshPhongMaterial>
       <planeGeometry args={[20, 20]}></planeGeometry>
     </mesh>
@@ -49,20 +49,24 @@ const LogoModel = () => {
 
 const FollowBox = () => {
   const el = useRef<Mesh>()
-  const mousePosition = useRef([0, 0])
   const raycaster = useRef(new Raycaster())
-  const plane = useRef(new Plane(new Vector3(0, 0, 2)))
+  const plane = useRef(new Plane(new Vector3(0, 0, 1)))
+  const mousePosition = useRef([0, 0])
 
   useFrame((state) => {
     const from = {
-      x: mousePosition.current[0] / window.innerWidth - 1 / 2,
-      y: -(mousePosition.current[1] / window.innerHeight - 1 / 2),
+      x:
+        mousePosition.current[0] / window.innerWidth -
+        (state.size.left + state.size.width / 2) / window.innerWidth,
+      y: -(
+        mousePosition.current[1] / window.innerHeight -
+        (state.size.top + state.size.height / 2) / window.innerHeight
+      ),
     }
     const intersectPoint = new Vector3()
     raycaster.current.setFromCamera(from, state.camera)
     raycaster.current.ray.intersectPlane(plane.current, intersectPoint)
-    // intersectPoint.z = 0
-    console.log(intersectPoint)
+    intersectPoint.z = 2
     el.current?.lookAt(intersectPoint)
   })
 
@@ -71,6 +75,7 @@ const FollowBox = () => {
       mousePosition.current = [e.clientX, e.clientY]
     })
   }, [])
+
   return (
     <group>
       <Box ref={el} />
@@ -87,19 +92,19 @@ const DaidaiModel = (props: DaidaiLogoSceneProps) => {
   return (
     <Canvas camera={{ position: [0, 0, 10] }} gl={{ antialias: true }} shadows>
       <ambientLight />
-      <directionalLight
+      {/* <directionalLight
         // ref={lightRef}
         castShadow
-        color="red"
+        color="#ff0"
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0001}
-      />
-      <gridHelper />
-      <axesHelper args={[4]} />
-      <OrbitControls />
-      <LogoModel />
+      /> */}
+      {/* <gridHelper /> */}
+      {/* <axesHelper args={[4]} /> */}
+      {/* <OrbitControls /> */}
+      {/* <LogoModel /> */}
       <FollowBox />
-      <Floor />
+      {/* <Floor /> */}
     </Canvas>
   )
 }
