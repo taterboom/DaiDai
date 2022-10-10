@@ -23,6 +23,7 @@
   "include": [
     "next-env.d.ts",
     "pages/**/*",
+    "components/**/*",
     "node_modules/app/src/**/*.ts",
     "node_modules/app/src/**/*.tsx",
     "node_modules/ui/src/**/*.ts",
