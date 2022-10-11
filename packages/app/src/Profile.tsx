@@ -24,7 +24,7 @@ const Profile = (props: ProfileProps) => {
       }
     }
     return (
-      <span className="text-3xl">
+      <span className="text-6xl flex items-center justify-center">
         <PhUserLight />
       </span>
     )
