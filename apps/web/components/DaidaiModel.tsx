@@ -18,33 +18,19 @@ const Floor = () => {
 
 const LogoModel = () => {
   const mtl = useLoader(MTLLoader, "/cat.mtl")
-  const obj = useLoader(OBJLoader, "/cat.obj", (loader) => {
-    mtl.preload()
-    // @ts-ignore
-    loader.setMaterials(mtl)
-  })
+  // const obj = useLoader(OBJLoader, "/cat.obj", (loader) => {
+  //   mtl.preload()
+  //   // @ts-ignore
+  //   loader.setMaterials(mtl)
+  // })
   // @ts-ignore
-  const vox = useLoader(VOXLoader, "/cat.vox")
+  const vox = useLoader(VOXLoader, "/2x2x2.vox")
   // @ts-ignore
-  const geometry = obj.children[0].geometry
-  console.log(obj, vox, mtl)
+  // const geometry = obj.children[0].geometry
+  // console.log(obj, vox, mtl)
+  console.log(vox)
 
-  const mousePosition = useRef([0, 0])
-
-  useFrame((state) => {
-    obj.lookAt(
-      (mousePosition.current[0] / window.innerWidth - 1 / 2) * 8,
-      -(mousePosition.current[1] / window.innerHeight - 1 / 2) * 8,
-      state.camera.position.z
-    )
-  })
-
-  useEffect(() => {
-    window.addEventListener("mousemove", (e) => {
-      mousePosition.current = [e.clientX, e.clientY]
-    })
-  }, [])
-  return <primitive object={obj} position={[0, -30, 0]}></primitive>
+  return <primitive object={vox} position={[0, 0, 0]}></primitive>
 }
 
 const FollowBox = () => {
@@ -78,7 +64,9 @@ const FollowBox = () => {
 
   return (
     <group>
-      <Box ref={el} />
+      <Box ref={el}>
+        <meshPhongMaterial color="#f3f3f3" />
+      </Box>
       <primitive object={plane.current} />
     </group>
   )
@@ -92,16 +80,16 @@ const DaidaiModel = (props: DaidaiLogoSceneProps) => {
   return (
     <Canvas camera={{ position: [0, 0, 10] }} gl={{ antialias: true }} shadows>
       <ambientLight />
-      {/* <directionalLight
+      <directionalLight
         // ref={lightRef}
         castShadow
         color="#ff0"
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0001}
-      /> */}
+      />
       {/* <gridHelper /> */}
       {/* <axesHelper args={[4]} /> */}
-      {/* <OrbitControls /> */}
+      <OrbitControls />
       {/* <LogoModel /> */}
       <FollowBox />
       {/* <Floor /> */}

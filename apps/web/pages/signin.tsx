@@ -5,7 +5,7 @@ const DaidaiModel = dynamic(() => import("../components/DaidaiModel"), { ssr: fa
 
 const Signin = () => {
   return (
-    <div className="flex items-center flex-col mt-60">
+    <div className="flex items-center flex-col pt-32">
       <div className="w-[200px] h-[200px]">
         <DaidaiModel />
       </div>

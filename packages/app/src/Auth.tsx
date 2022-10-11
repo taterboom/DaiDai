@@ -64,17 +64,25 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
   }
 
   return (
-    <div className="space-y-4 bg-neutral/30 p-4 ">
+    <div className="space-y-4 bg-main-accent/60 p-8 border-2 border-white">
       {shouldConfirm && (
         <div className="absolute inset-0 z-10 flex justify-center items-center bg-neutral/30 backdrop-blur-lg">
           Should confirm email!
         </div>
       )}
-      <Button disableDefaultStyle className="btn-sm btn-block" onClick={(e) => signInWithGoogle()}>
-        {type === "signin" ? "Sign in" : "Sign up"} with Google
+      <Button
+        disableDefaultStyle
+        className="btn-sm btn-block btn-accent"
+        onClick={(e) => signInWithGoogle()}
+      >
+        Sign in with Google
       </Button>
-      <Button disableDefaultStyle className="btn-sm btn-block" onClick={() => signInWithGithub()}>
-        {type === "signin" ? "Sign in" : "Sign up"} with Github
+      <Button
+        disableDefaultStyle
+        className="btn-sm btn-block btn-accent"
+        onClick={() => signInWithGithub()}
+      >
+        Sign in with Github
       </Button>
       <div className="divider">OR</div>
       <div>
@@ -103,7 +111,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
           <Button
             type="submit"
             disableDefaultStyle
-            className={clsx("btn-sm btn-block", loading && "loading")}
+            className={clsx("btn-sm btn-block btn-primary", loading && "loading")}
           >
             {type === "signin" ? "Sign in" : "Sign up"}
           </Button>
