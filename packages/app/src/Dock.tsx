@@ -71,7 +71,7 @@ const Dock = (props: DockProps) => {
       <Button
         className="text-base"
         onClick={() => {
-          setShowAll((v) => !v)
+          setShowAll(!showAll)
         }}
       >
         {showAll ? <NavLogo /> : <NavLogoClosed />}
