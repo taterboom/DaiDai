@@ -14,5 +14,5 @@
     "service_worker": "background.js"
   },
   "permissions": ["cookies"],
-  "host_permissions": ["https://daidai.cyou"]
+  "host_permissions": ["https://*.daidai.cyou"]
 }

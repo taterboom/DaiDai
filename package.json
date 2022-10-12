@@ -5,7 +5,7 @@
     "dev:web": "turbo run dev --parallel --filter=./apps/web",
     "dev:popup": "turbo run dev --parallel --filter=./apps/extension-popup",
     "build:web": "turbo run build --parallel --filter=./apps/web",
-    "build:ext": "turbo run build --parallel --filter=./apps/extension-* && turbo run build --filter=./apps/extension",
+    "build:ext": "turbo run build --parallel --filter=./apps/extension-* --no-cache && turbo run build --filter=./apps/extension --no-cache",
     "lint": "turbo run lint",
     "clean": "turbo run clean"
   },
