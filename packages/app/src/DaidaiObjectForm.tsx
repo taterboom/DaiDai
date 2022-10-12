@@ -1,4 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
+import { useUser } from "supabase-auth-helpers-shared/src"
 import { toast } from "react-toastify"
 import useDaiDaiStore from "./store/daidai"
 import DaidaiObject from "./store/DaidaiObject"

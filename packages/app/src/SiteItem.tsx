@@ -1,4 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
+import { useUser } from "supabase-auth-helpers-shared/src"
 import { useRouter } from "next/router"
 import { useMemo } from "react"
 import { toast } from "react-toastify"

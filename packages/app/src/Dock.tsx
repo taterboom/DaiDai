@@ -1,4 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
+import { useUser } from "supabase-auth-helpers-shared/src"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import {
   PannelConfig,

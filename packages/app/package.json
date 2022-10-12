@@ -34,6 +34,7 @@
     "react-dom": "18.1.0",
     "react-toastify": "^9.0.8",
     "react-use": "^17.4.0",
+    "supabase-auth-helpers-shared": "workspace:^1.0.0",
     "tinykeys": "^1.4.0",
     "ui": "workspace:^1.0.0",
     "zustand": "^4.1.1"

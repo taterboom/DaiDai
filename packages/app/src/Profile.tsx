@@ -1,4 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
+import { useUser } from "supabase-auth-helpers-shared/src"
 import { useMemo } from "react"
 import Button, { LinkButton } from "ui/src/Button"
 import { PhUserLight } from "ui/src/icons"

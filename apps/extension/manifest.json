@@ -10,6 +10,6 @@
     "default_title": "Read bookmarks",
     "default_popup": "popup/index.html"
   },
-  "permissions": [],
-  "host_permissions": []
+  "permissions": ["cookies"],
+  "host_permissions": ["https://daidai.cyou"]
 }

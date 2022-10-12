@@ -2,8 +2,9 @@
   "name": "daidai",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build:web": "turbo run build --parallel --filter=./apps/web",
     "dev:web": "turbo run dev --parallel --filter=./apps/web",
+    "dev:popup": "turbo run dev --parallel --filter=./apps/extension-popup",
+    "build:web": "turbo run build --parallel --filter=./apps/web",
     "build:ext": "turbo run build --parallel --filter=./apps/extension-* && turbo run build --filter=./apps/extension",
     "lint": "turbo run lint",
     "clean": "turbo run clean"

@@ -6,17 +6,59 @@ importers:
     specifiers:
       turbo: latest
     devDependencies:
-      turbo: 1.5.5
+      turbo: 1.5.6
 
   apps/extension:
     specifiers: {}
+
+  apps/extension-popup:
+    specifiers:
+      '@supabase/auth-helpers-nextjs': ^0.2.9
+      '@types/node': 17.0.31
+      '@types/react': 18.0.8
+      '@types/react-dom': 18.0.3
+      app: workspace:^1.0.0
+      autoprefixer: ^10.4.6
+      eslint: 8.14.0
+      eslint-config-next: 12.1.5
+      next: 12.1.5
+      next-transpile-modules: ^9.0.0
+      postcss: ^8.4.13
+      react: 18.1.0
+      react-dom: 18.1.0
+      react-toastify: ^9.0.8
+      supabase-auth-helpers-shared: workspace:^1.0.0
+      tailwind-config: workspace:^1.0.0
+      tailwindcss: ^3.0.24
+      typescript: 4.6.4
+      ui: workspace:^1.0.0
+    dependencies:
+      '@supabase/auth-helpers-nextjs': 0.2.9
+      app: link:../../packages/app
+      next: 12.1.5_ef5jwxihqo6n7gxfmzogljlgcm
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      react-toastify: 9.0.8_ef5jwxihqo6n7gxfmzogljlgcm
+      supabase-auth-helpers-shared: link:../../packages/supabase-auth-helpers-shared
+      tailwind-config: link:../../packages/tailwind-config
+      ui: link:../../packages/ui
+    devDependencies:
+      '@types/node': 17.0.31
+      '@types/react': 18.0.8
+      '@types/react-dom': 18.0.3
+      autoprefixer: 10.4.12_postcss@8.4.17
+      eslint: 8.14.0
+      eslint-config-next: 12.1.5_ldpv3uesskyaguxpaa56hbtpeu
+      next-transpile-modules: 9.0.0
+      postcss: 8.4.17
+      tailwindcss: 3.1.8
+      typescript: 4.6.4
 
   apps/web:
     specifiers:
       '@react-three/drei': ^9.34.3
       '@react-three/fiber': ^8.8.9
       '@supabase/auth-helpers-nextjs': ^0.2.9
-      '@supabase/auth-helpers-react': ^0.2.4
       '@supabase/supabase-js': ^1.35.7
       '@types/node': 17.0.31
       '@types/react': 18.0.8
@@ -33,6 +75,7 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0
       react-toastify: ^9.0.8
+      supabase-auth-helpers-shared: workspace:^1.0.0
       tailwind-config: workspace:^1.0.0
       tailwindcss: ^3.0.24
       three: ^0.145.0
@@ -42,7 +85,6 @@ importers:
       '@react-three/drei': 9.34.3_pfs5nlncibxxfraetgavf66b4y
       '@react-three/fiber': 8.8.9_hilwg5dj3pjxr4wkbrvzbdwhmy
       '@supabase/auth-helpers-nextjs': 0.2.9
-      '@supabase/auth-helpers-react': 0.2.4
       '@supabase/supabase-js': 1.35.7
       app: link:../../packages/app
       classnames: 2.3.2
@@ -50,6 +92,7 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-toastify: 9.0.8_ef5jwxihqo6n7gxfmzogljlgcm
+      supabase-auth-helpers-shared: link:../../packages/supabase-auth-helpers-shared
       tailwind-config: link:../../packages/tailwind-config
       three: 0.145.0
       ui: link:../../packages/ui
@@ -95,6 +138,7 @@ importers:
       react-dom: 18.1.0
       react-toastify: ^9.0.8
       react-use: ^17.4.0
+      supabase-auth-helpers-shared: workspace:^1.0.0
       tinykeys: ^1.4.0
       ui: workspace:^1.0.0
       zustand: ^4.1.1
@@ -123,11 +167,29 @@ importers:
       react-dom: 18.1.0_react@18.1.0
       react-toastify: 9.0.8_ef5jwxihqo6n7gxfmzogljlgcm
       react-use: 17.4.0_ef5jwxihqo6n7gxfmzogljlgcm
+      supabase-auth-helpers-shared: link:../supabase-auth-helpers-shared
       tinykeys: 1.4.0
       ui: link:../ui
-      zustand: 4.1.1_immer@9.0.15+react@18.1.0
+      zustand: 4.1.2_immer@9.0.15+react@18.1.0
     devDependencies:
       '@types/lodash': 4.14.186
+      '@types/react': 18.0.8
+      '@types/react-dom': 18.0.3
+
+  packages/supabase-auth-helpers-shared:
+    specifiers:
+      '@supabase/auth-helpers-react': ^0.2.4
+      '@supabase/supabase-js': ^1.35.7
+      '@types/react': 18.0.8
+      '@types/react-dom': 18.0.3
+      react: 18.1.0
+      react-dom: 18.1.0
+    dependencies:
+      '@supabase/auth-helpers-react': 0.2.4
+      '@supabase/supabase-js': 1.35.7
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+    devDependencies:
       '@types/react': 18.0.8
       '@types/react-dom': 18.0.3
 
@@ -1241,7 +1303,7 @@ packages:
     dev: false
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
   /copy-to-clipboard/3.3.2:
@@ -3271,65 +3333,65 @@ packages:
       typescript: 4.6.4
     dev: true
 
-  /turbo-darwin-64/1.5.5:
-    resolution: {integrity: sha512-HvEn6P2B+NXDekq9LRpRgUjcT9/oygLTcK47U0qsAJZXRBSq/2hvD7lx4nAwgY/4W3rhYJeWtHTzbhoN6BXqGQ==}
+  /turbo-darwin-64/1.5.6:
+    resolution: {integrity: sha512-CWdXMwenBS2+QXIR2Czx7JPnAcoMzWx/QwTDcHVxZyeayMHgz8Oq5AHCtfaHDSfV8YhD3xa0GLSk6+cFt+W8BQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.5.5:
-    resolution: {integrity: sha512-Dmxr09IUy6M0nc7/xWod9galIO2DD500B75sJSkHeT+CCdJOWnlinux0ZPF8CSygNqymwYO8AO2l15/6yxcycg==}
+  /turbo-darwin-arm64/1.5.6:
+    resolution: {integrity: sha512-c/aXgW9JuXT2bJSKf01pdSDQKnrdcdj3WFKmKiVldb9We6eqFzI0fLHBK97k5LM/OesmRMfCMQ2Cv2DU8RqBAA==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.5.5:
-    resolution: {integrity: sha512-wd07TZ4zXXWjzZE00FcFMLmkybQQK/NV9ff66vvAV0vdiuacSMBCNLrD6Mm4ncfrUPW/rwFW5kU/7hyuEqqtDw==}
+  /turbo-linux-64/1.5.6:
+    resolution: {integrity: sha512-y/jNF7SG+XJEwk2GxIqy3g4dj/a0PgZKDGyOkp24qp4KBRcHBl6dI1ZEfNed30EhEqmW4F5Dr7IpeCZoqgbrMg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.5.5:
-    resolution: {integrity: sha512-q3q33tuo74R7gicnfvFbnZZvqmlq7Vakcvx0eshifnJw4PR+oMnTCb4w8ElVFx070zsb8DVTibq99y8NJH8T1Q==}
+  /turbo-linux-arm64/1.5.6:
+    resolution: {integrity: sha512-FRcxPtW7eFrbR3QaYBVX8cK7i+2Cerqi6F0t5ulcq+d1OGSdSW3l35rPPyJdwCzCy+k/S9sBcyCV0RtbS6RKCQ==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.5.5:
-    resolution: {integrity: sha512-lPp9kHonNFfqgovbaW+UAPO5cLmoAN+m3G3FzqcrRPnlzt97vXYsDhDd/4Zy3oAKoAcprtP4CGy0ddisqsKTVw==}
+  /turbo-windows-64/1.5.6:
+    resolution: {integrity: sha512-/5KIExY7zbrbeL5fhKGuO85u5VtJ3Ue4kI0MbYCNnTGe7a10yTYkwswgtGihsgEF4AW0Nm0159aHmXZS2Le8IA==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.5.5:
-    resolution: {integrity: sha512-3AfGULKNZiZVrEzsIE+W79ZRW1+f5r4nM4wLlJ1PTBHyRxBZdD6KTH1tijGfy/uTlcV5acYnKHEkDc6Q9PAXGQ==}
+  /turbo-windows-arm64/1.5.6:
+    resolution: {integrity: sha512-p+LQN9O39+rZuOAyc6BzyVGvdEKo+v+XmtdeyZsZpfj4xuOLtsEptW1w6cUD439u0YcPknuccGq1MQ0lXQ6Xuw==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.5.5:
-    resolution: {integrity: sha512-PVQSDl0STC9WXIyHcYUWs9gXsf8JjQig/FuHfuB8N6+XlgCGB3mPbfMEE6zrChGz2hufH4/guKRX1XJuNL6XTA==}
+  /turbo/1.5.6:
+    resolution: {integrity: sha512-xJO/fhiMo4lI62iGR9OgUfJTC9tnnuoMwNC52IfvvBDEPlA8RWGMS8SFpDVG9bNCXvVRrtUTNJXMe6pJWBiOTA==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.5.5
-      turbo-darwin-arm64: 1.5.5
-      turbo-linux-64: 1.5.5
-      turbo-linux-arm64: 1.5.5
-      turbo-windows-64: 1.5.5
-      turbo-windows-arm64: 1.5.5
+      turbo-darwin-64: 1.5.6
+      turbo-darwin-arm64: 1.5.6
+      turbo-linux-64: 1.5.6
+      turbo-linux-arm64: 1.5.6
+      turbo-windows-64: 1.5.6
+      turbo-windows-arm64: 1.5.6
     dev: true
 
   /type-check/0.4.0:
@@ -3511,8 +3573,8 @@ packages:
       react: 18.1.0
     dev: false
 
-  /zustand/4.1.1_immer@9.0.15+react@18.1.0:
-    resolution: {integrity: sha512-h4F3WMqsZgvvaE0n3lThx4MM81Ls9xebjvrABNzf5+jb3/03YjNTSgZXeyrvXDArMeV9untvWXRw1tY+ntPYbA==}
+  /zustand/4.1.2_immer@9.0.15+react@18.1.0:
+    resolution: {integrity: sha512-gcRaKchcxFPbImrBb/BKgujOhHhik9YhVpIeP87ETT7uokEe2Szu7KkuZ9ghjtD+/KKkcrRNktR2AiLXPIbKIQ==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       immer: '>=9.0'

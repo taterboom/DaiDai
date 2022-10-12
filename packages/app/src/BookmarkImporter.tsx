@@ -1,4 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
+import { useUser } from "supabase-auth-helpers-shared/src"
 import clsx from "classnames"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "react-toastify"
