@@ -14,6 +14,8 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
   const [loading, setLoading] = useState(false)
   const [signError, setSignUpError] = useState<ApiError | null>(null)
   const [shouldConfirm, setShouldConfirm] = useState(false)
+  const [githubLoading, setGithubLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -66,21 +68,32 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
   return (
     <div className="space-y-4 bg-main-accent/60 p-8 border-2 border-white">
       {shouldConfirm && (
-        <div className="absolute inset-0 z-10 flex justify-center items-center bg-neutral/30 backdrop-blur-lg">
+        <div
+          className="absolute inset-0 z-10 flex justify-center items-center text-warning text-2xl bg-neutral/30 backdrop-blur-lg"
+          onClick={() => {
+            setShouldConfirm(false)
+          }}
+        >
           Should confirm email!
         </div>
       )}
       <Button
         disableDefaultStyle
-        className="btn-sm btn-block btn-accent"
-        onClick={(e) => signInWithGoogle()}
+        className={clsx("btn-sm btn-block btn-accent", googleLoading && "loading")}
+        onClick={(e) => {
+          signInWithGoogle()
+          setGoogleLoading(true)
+        }}
       >
         Sign in with Google
       </Button>
       <Button
         disableDefaultStyle
-        className="btn-sm btn-block btn-accent"
-        onClick={() => signInWithGithub()}
+        className={clsx("btn-sm btn-block btn-accent", githubLoading && "loading")}
+        onClick={() => {
+          signInWithGithub()
+          setGithubLoading(true)
+        }}
       >
         Sign in with Github
       </Button>

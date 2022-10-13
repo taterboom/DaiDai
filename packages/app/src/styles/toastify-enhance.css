@@ -1,5 +1,5 @@
 :root {
-    --toastify-toast-width: 360px;
+    --toastify-toast-width: 400px;
 }
 .Toastify__toast {
     border-radius: 0 !important;

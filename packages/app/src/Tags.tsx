@@ -5,6 +5,7 @@ import TypeBox from "./TypeBox"
 import clsx from "classnames"
 import { IcBaselineTag } from "ui/src/icons"
 import useSettingsStore from "./store/settings"
+import { generateColorStr } from "./utils/generateColorStr"
 
 const TagItem = ({
   value,
@@ -31,7 +32,7 @@ const TagItem = ({
         onClick?.()
       }}
     >
-      <IcBaselineTag color={color} />
+      <IcBaselineTag color={color} className={clsx("transition-opacity", active && "opacity-0")} />
       <span className={clsx(active && "-translate-x-2", "transition-transform")}>{value}</span>
     </button>
   )
@@ -51,7 +52,7 @@ const Tags = () => {
             <TagItem
               value={tag}
               active={activeTags.includes(tag)}
-              color={highlightColors[index % highlightColors.length]}
+              color={generateColorStr(highlightColors, index)}
               onClick={() => toggleTag(tag)}
             ></TagItem>
           </li>

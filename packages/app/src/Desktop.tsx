@@ -92,7 +92,7 @@ const Desktop: React.FC = ({}) => {
 
   return (
     <div className="p-16">
-      <Popup closeable={false} show={dataLoading || isLoading}>
+      <Popup closeable={false} show={dataLoading || (isLoading && !user)}>
         <Loading />
       </Popup>
       {/* <Settings></Settings> */}

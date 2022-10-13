@@ -30,7 +30,7 @@ const URLEditor = (props: URLEditorProps) => {
           contentEditable={<ContentEditable className="p-2" />}
           placeholder={
             <div className="absolute top-0 left-0 p-2 text-2xl font-semibold opacity-60 select-none pointer-events-none">
-              URL
+              Link
             </div>
           }
         ></PlainTextPlugin>

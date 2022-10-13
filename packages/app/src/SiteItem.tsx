@@ -16,6 +16,7 @@ import {
   IonIosLink,
 } from "ui/src/icons"
 import clsx from "classnames"
+import { generateColorStr } from "./utils/generateColorStr"
 
 const useTagsColorMap = () => {
   const tags = useDaiDaiStore(selectTags)
@@ -25,7 +26,7 @@ const useTagsColorMap = () => {
     tags.forEach((tag, index) => {
       tagsColorMap.set(tag, {
         index,
-        color: highlightColors[index % highlightColors.length],
+        color: generateColorStr(highlightColors, index),
       })
     })
     return tagsColorMap
