@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import Button, { LinkButton } from "ui/src/Button"
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
+import { supabaseClient } from "./utils/supabaseClient"
 import { useEffect, useState } from "react"
-import { ApiError } from "@supabase/supabase-js"
+import { AuthError } from "@supabase/supabase-js"
 import clsx from "classnames"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
@@ -12,7 +12,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const [signError, setSignUpError] = useState<ApiError | null>(null)
+  const [signError, setSignUpError] = useState<AuthError | null>(null)
   const [shouldConfirm, setShouldConfirm] = useState(false)
   const [githubLoading, setGithubLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
@@ -27,7 +27,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
   const signInWithGoogle = async () => {
     setLoading(true)
-    const { error, user, session } = await supabaseClient.auth.signIn({
+    const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: "google",
     })
     setLoading(false)
@@ -35,7 +35,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
   const signInWithGithub = async () => {
     setLoading(true)
-    const { error, user, session } = await supabaseClient.auth.signIn({
+    const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: "github",
     })
     setLoading(false)
@@ -46,8 +46,11 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
     if (!email || !password) return
     setLoading(true)
     console.log(type, email, password)
-    const { error, user, session } = await (type === "signin"
-      ? supabaseClient.auth.signIn({
+    const {
+      error,
+      data: { user, session },
+    } = await (type === "signin"
+      ? supabaseClient.auth.signInWithPassword({
           email,
           password,
         })

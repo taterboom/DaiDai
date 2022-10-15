@@ -1,9 +1,9 @@
-import { supabaseClient, User } from "@supabase/auth-helpers-nextjs"
+import { User } from "@supabase/auth-helpers-nextjs"
 import create from "zustand"
 import { immer } from "zustand/middleware/immer"
 
-import { daidaisQuery } from "../types/api"
 import { ANONYMOUS_DAIDAIS, isAnonymousDaidai } from "../utils/anonymous"
+import { daidaisQuery, supabaseClient } from "../utils/supabaseClient"
 import DaidaiObject from "./DaidaiObject"
 import logger from "./plugins/logger"
 import { selectTags } from "./selector"
@@ -93,7 +93,7 @@ const useDaiDaiStore = create<DaidaiState>()(
         const daidaiObject = state.data[index]
         if (!daidaiObject) return
         if (isAnonymousDaidai(daidaiObject.id)) {
-          const { error } = await supabaseClient.auth.update({
+          const { error } = await supabaseClient.auth.updateUser({
             data: {
               [daidaiObject.id]: true,
             },

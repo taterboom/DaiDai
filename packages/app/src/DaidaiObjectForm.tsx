@@ -1,4 +1,4 @@
-import { useUser } from "supabase-auth-helpers-shared/src"
+import { useUser } from "@supabase/auth-helpers-react"
 import { toast } from "react-toastify"
 import useDaiDaiStore from "./store/daidai"
 import DaidaiObject from "./store/DaidaiObject"
@@ -15,7 +15,7 @@ const DaidaiObjectArea = (props: ObjectEditorProps) => {
 }
 
 export const DaidaiObjectCreator = ({ show, onClose }: { show: boolean; onClose: () => void }) => {
-  const { user } = useUser()
+  const user = useUser()
 
   const add = useDaiDaiStore((state) => state.add)
   return (

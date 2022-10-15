@@ -1,4 +1,4 @@
-import { useUser } from "supabase-auth-helpers-shared/src"
+import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import { useMemo } from "react"
 import { toast } from "react-toastify"
@@ -40,7 +40,7 @@ const SiteItem: React.FC<{
   disable?: boolean
 }> = ({ index, value, active, disable }) => {
   const hrefTarget = useSettingsStore((state) => state.hrefTarget)
-  const { user } = useUser()
+  const user = useUser()
   const tagsColorMap = useTagsColorMap()
   const activeTags = useDaiDaiStore((state) => state.activeTags)
   const shouldReplace = (pannelConfig: PannelConfig) => !pannelConfig[1] && user === null

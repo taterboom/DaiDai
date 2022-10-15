@@ -1,4 +1,4 @@
-import { useUser } from "supabase-auth-helpers-shared/src"
+import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { useMemo } from "react"
 import Button, { LinkButton } from "ui/src/Button"
 import { PhUserLight } from "ui/src/icons"
@@ -9,7 +9,8 @@ type ProfileProps = {
 }
 
 const Profile = (props: ProfileProps) => {
-  const { user, isLoading, error } = useUser()
+  const { isLoading, error } = useSessionContext()
+  const user = useUser()
 
   if (isLoading) return <p>Loading...</p>
   if (!user || error) return <p>Error</p>

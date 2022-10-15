@@ -1,4 +1,4 @@
-import { useUser } from "supabase-auth-helpers-shared/src"
+import { useUser } from "@supabase/auth-helpers-react"
 import clsx from "classnames"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "react-toastify"
@@ -85,7 +85,7 @@ const BookmarkImporterPopupPopup = (props: BookmarkImporterPopupProps) => {
 }
 
 const BookmarkImporter = () => {
-  const { user } = useUser()
+  const user = useUser()
   const add = useDaiDaiStore((state) => state.add)
   const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 

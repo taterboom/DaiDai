@@ -1,4 +1,4 @@
-import { useUser } from "supabase-auth-helpers-shared/src"
+import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "react-toastify"
@@ -28,7 +28,8 @@ import Tags from "./Tags"
 import TypeBox from "./TypeBox"
 
 const Desktop: React.FC = ({}) => {
-  const { user, isLoading } = useUser()
+  const { isLoading } = useSessionContext()
+  const user = useUser()
   const [dataLoading, setDataLoading] = useState(false)
   const initData = useDaiDaiStore((state) => state.initDatda)
   const router = useRouter()

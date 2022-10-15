@@ -1,4 +1,4 @@
-import { useUser } from "supabase-auth-helpers-shared/src"
+import { useUser } from "@supabase/auth-helpers-react"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import {
   PannelConfig,
@@ -56,7 +56,7 @@ type DockProps = {
 }
 
 const Dock = (props: DockProps) => {
-  const { user } = useUser()
+  const user = useUser()
   const shouldReplace = (pannelConfig: PannelConfig) => !pannelConfig[1] && user === null
 
   const [showAll, setShowAll] = useLocalStorage("__daidai_dockopen", true)
