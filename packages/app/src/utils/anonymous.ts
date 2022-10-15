@@ -1,4 +1,4 @@
-import { DaidaiApiResult } from "../types/api"
+import { DaidaiApiResult } from "./supabaseClient"
 
 const ANONYMOUS_DAIDAI_ID_PREFIX = "_default_"
 
