@@ -1,4 +1,4 @@
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserSupabaseClient as createBrowserSupabaseClientForNextjs } from "@supabase/auth-helpers-nextjs"
 
 export type DaidaiApiResult = {
   id: string
@@ -28,6 +28,6 @@ interface Database {
   }
 }
 
-export const supabaseClient = createBrowserSupabaseClient<Database>()
+export const supabaseClient = createBrowserSupabaseClientForNextjs<Database>()
 
 export const daidaisQuery = () => supabaseClient.from("daidais")

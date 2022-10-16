@@ -13,19 +13,9 @@
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://*.daidai.cyou/"],
-      "js": ["content_script.js"],
-      "run_at": "document_start"
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["injectGlobal.js"],
-      "matches": ["https://*.daidai.cyou/*"]
-    }
-  ],
   "permissions": ["cookies"],
-  "host_permissions": ["https://*.daidai.cyou/"]
+  "host_permissions": ["https://*.daidai.cyou/"],
+  "chrome_url_overrides": {
+    "bookmarks": "bookmarks/index.html"
+  }
 }

@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")(["ui", "app", "supabase-auth-helpers-shared"], {
+const withTM = require("next-transpile-modules")(["ui", "app"], {
   debug: true,
 })
 
