@@ -13,7 +13,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["cookies"],
+  "permissions": ["cookies", "bookmarks"],
   "host_permissions": ["https://*.daidai.cyou/"],
   "chrome_url_overrides": {
     "bookmarks": "bookmarks/index.html"

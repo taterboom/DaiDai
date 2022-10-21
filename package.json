@@ -3,6 +3,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev:web": "turbo run dev --parallel --filter=./apps/web",
+    "dev:ext:bookmarks": "turbo run dev --parallel --filter=./apps/extension-bookmarks",
     "dev:popup": "turbo run dev --parallel --filter=./apps/extension-popup",
     "build:web": "turbo run build --parallel --filter=./apps/web",
     "build:ext": "turbo run build --parallel --filter=./apps/extension-* --no-cache && turbo run build --filter=./apps/extension --no-cache",

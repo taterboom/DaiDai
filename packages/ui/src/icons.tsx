@@ -578,3 +578,43 @@ export function RiUser3Line(props: SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+export function PhQuestion(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 256 256" {...props}>
+      <path
+        fill="currentColor"
+        d="M128 24a104 104 0 1 0 104 104A104.1 104.1 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88Zm12-36a12 12 0 1 1-12-12a12 12 0 0 1 12 12Zm24-72a36 36 0 0 1-28 35.1v.9a8 8 0 0 1-16 0v-8a8 8 0 0 1 8-8a20 20 0 1 0-20-20a8 8 0 0 1-16 0a36 36 0 0 1 72 0Z"
+      ></path>
+    </svg>
+  )
+}
+
+export function OpenmojiChrome(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 72 72" {...props}>
+      <circle cx="36" cy="36" r="28" fill="#B1CC33"></circle>
+      <path
+        fill="#FCEA2B"
+        fillRule="evenodd"
+        d="m34.312 27.158l.008.047a9 9 0 0 1 9.327 13.369L30.386 63.541c11.442 2.28 23.557-2.801 29.714-13.467c4.21-7.291 4.767-15.688 2.24-23.074H36a9.02 9.02 0 0 0-1.688.158Z"
+        clipRule="evenodd"
+      ></path>
+      <path
+        fill="#EA5A47"
+        fillRule="evenodd"
+        d="M27 43.5L8.202 32.617C9.872 18.748 21.681 8 36 8c12.316 0 22.774 7.951 26.522 19H36a9 9 0 0 0-6.914 14.762L27 43.5Z"
+        clipRule="evenodd"
+      ></path>
+      <circle cx="36" cy="36" r="9" fill="#61B2E4"></circle>
+      <g fill="none" stroke="#000" strokeWidth="2">
+        <circle cx="36" cy="36" r="28"></circle>
+        <path
+          strokeLinecap="round"
+          d="M36 26h23M44.66 41l-11.5 19.919M11.081 33.16L31 44.66"
+        ></path>
+        <circle cx="36" cy="36" r="10"></circle>
+      </g>
+    </svg>
+  )
+}

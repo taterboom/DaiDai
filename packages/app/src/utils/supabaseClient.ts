@@ -1,4 +1,9 @@
 import { createBrowserSupabaseClient as createBrowserSupabaseClientForNextjs } from "@supabase/auth-helpers-nextjs"
+import { CookieOptions } from "@supabase/auth-helpers-shared"
+
+export const cookieOptions: CookieOptions = {
+  domain: "daidai.cyou",
+}
 
 export type DaidaiApiResult = {
   id: string
@@ -28,6 +33,6 @@ interface Database {
   }
 }
 
-export const supabaseClient = createBrowserSupabaseClientForNextjs<Database>()
+export const supabaseClient = createBrowserSupabaseClientForNextjs<Database>({ cookieOptions })
 
 export const daidaisQuery = () => supabaseClient.from("daidais")

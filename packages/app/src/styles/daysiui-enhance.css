@@ -7,7 +7,7 @@
 }
 
 .upload-content {
-    @apply flex flex-col justify-center items-center w-full h-64 rounded-lg border-2 border-primary-content bg-primary text-primary-content border-dashed cursor-pointer
+    @apply flex flex-col justify-center items-center w-full h-64 border-2 border-primary-content bg-primary text-primary-content border-dashed cursor-pointer
 }
 
 .upload-placeholder {

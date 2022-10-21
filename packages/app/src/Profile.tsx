@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import Button, { LinkButton } from "ui/src/Button"
 import { PhUserLight } from "ui/src/icons"
 import Popup from "ui/src/Popup"
+import { supabaseClient } from "./utils/supabaseClient"
 
 type ProfileProps = {
   children?: React.ReactNode
@@ -48,9 +49,14 @@ const Profile = (props: ProfileProps) => {
         <p>Email:</p>
         <p>{user.email}</p>
       </div>
-      <LinkButton href="/api/auth/logout" className="!btn-primary">
+      <Button
+        className="!btn-primary"
+        onClick={() => {
+          supabaseClient.auth.signOut()
+        }}
+      >
         Logout
-      </LinkButton>
+      </Button>
     </div>
   )
 }

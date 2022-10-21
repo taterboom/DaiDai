@@ -12,7 +12,7 @@ import { parse, serialize } from "cookie"
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    chrome.runtime.onMessage.addListener((message) => {
+    chrome.runtime?.onMessage.addListener((message) => {
       if (message.type === "SYNC_COOKIE") {
         document.cookie = message.payload
         console.log("sc", document.cookie)

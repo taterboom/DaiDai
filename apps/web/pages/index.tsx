@@ -1,4 +1,5 @@
 import { withPageAuth } from "@supabase/auth-helpers-nextjs"
+import { cookieOptions } from "app/src/utils/supabaseClient"
 import type { NextPage } from "next"
 import dynamic from "next/dynamic"
 
@@ -10,10 +11,7 @@ const Home: NextPage = (props) => {
 
 export const getServerSideProps = withPageAuth({
   authRequired: false,
-  // @ts-ignore
-  cookieOptions: {
-    domain: "daidai.cyou",
-  },
+  cookieOptions,
 })
 
 // export const getServerSideProps = withPageAuth({
