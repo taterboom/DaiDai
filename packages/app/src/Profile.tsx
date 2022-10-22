@@ -1,9 +1,35 @@
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import Button, { LinkButton } from "ui/src/Button"
 import { PhUserLight } from "ui/src/icons"
 import Popup from "ui/src/Popup"
+import useDaidaiStore from "./store/daidai"
+import DaidaiObject from "./store/DaidaiObject"
+import { selectVerboseTagData } from "./store/selector"
+import { jsonToBookmarksHTML } from "./utils/bookmarkHtml2json"
 import { supabaseClient } from "./utils/supabaseClient"
+
+type BookmarksExporterProps = {}
+
+function BookmarksExporter(props: BookmarksExporterProps) {
+  const verboseTagData = useDaidaiStore(selectVerboseTagData)
+
+  const exportBookmarks = useCallback(() => {
+    const htmlStr = jsonToBookmarksHTML(verboseTagData)
+    const file = new File([htmlStr], "bookmarks.html", { type: "text/html" })
+    const url = URL.createObjectURL(file)
+    const a = document.createElement("a")
+    a.download = "bookmarks.html"
+    a.href = url
+    a.click()
+  }, [verboseTagData])
+
+  return (
+    <Button className="!btn-primary" onClick={exportBookmarks}>
+      Export Bookmarks
+    </Button>
+  )
+}
 
 type ProfileProps = {
   children?: React.ReactNode
@@ -41,16 +67,18 @@ const Profile = (props: ProfileProps) => {
       </div>
       {user?.user_metadata?.name ? (
         <div>
-          <p>Email:</p>
+          <p className="font-semibold">Name:</p>
           <p>{user.user_metadata.name}</p>
         </div>
       ) : null}
       <div>
-        <p>Email:</p>
+        <p className="font-semibold">Email:</p>
         <p>{user.email}</p>
       </div>
+      <BookmarksExporter />
+      <br />
       <Button
-        className="!btn-primary"
+        className="!btn-error"
         onClick={() => {
           supabaseClient.auth.signOut()
         }}
