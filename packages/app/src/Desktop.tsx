@@ -43,7 +43,7 @@ const Desktop: React.FC = ({}) => {
   }, [router.query.index])
 
   const pannelCanShow = (pannelConfig: PannelConfig) =>
-    (pannelConfig[1] || user !== null) && pannel === pannelConfig[0]
+    /*(pannelConfig[1] || user !== null) && */ pannel === pannelConfig[0]
 
   const controlDisabled = typeof pannel === "string"
 
@@ -82,14 +82,14 @@ const Desktop: React.FC = ({}) => {
     }
   }, [initData, user, isLoading])
 
-  useEffect(() => {
-    const inPannelDonotSupportAnonymousButAnonymousNow = PANNELS.some(
-      ([name, supportAnonymous]) => name === pannel && !supportAnonymous && user === null
-    )
-    if (inPannelDonotSupportAnonymousButAnonymousNow) {
-      authToast()
-    }
-  }, [pannel, user])
+  // useEffect(() => {
+  //   const inPannelDonotSupportAnonymousButAnonymousNow = PANNELS.some(
+  //     ([name, supportAnonymous]) => name === pannel && !supportAnonymous && user === null
+  //   )
+  //   if (inPannelDonotSupportAnonymousButAnonymousNow) {
+  //     authToast()
+  //   }
+  // }, [pannel, user])
 
   return (
     <div className="p-16">

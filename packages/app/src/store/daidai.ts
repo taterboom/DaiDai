@@ -1,5 +1,6 @@
 import { User } from "@supabase/auth-helpers-nextjs"
 import create from "zustand"
+import { persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 
 import { ANONYMOUS_DAIDAIS, isAnonymousDaidai } from "../utils/anonymous"
@@ -9,6 +10,7 @@ import logger from "./plugins/logger"
 import { selectTags } from "./selector"
 
 export type DaidaiState = {
+  user: User | null
   data: DaidaiObject[]
   activeTags: string[]
 
@@ -21,138 +23,157 @@ export type DaidaiState = {
   typeTag: (text: string) => void
 }
 
+const LOCAL_KEY = "__DAIDAI__"
+
 const useDaiDaiStore = create<DaidaiState>()(
   logger(
-    // persist(
-    immer((set, get) => ({
-      data: [],
-      activeTags: [],
+    persist(
+      immer((set, get) => ({
+        user: null,
+        data: [],
+        activeTags: [],
 
-      initDatda: async (user) => {
-        if (user) {
-          const result = await daidaisQuery().select("id, url, c_html")
-          if (result.error) throw result.error
-          const daidaisJSON = [
-            ...ANONYMOUS_DAIDAIS.filter((item) => !user.user_metadata?.[item.id]),
-            ...result.data,
-          ]
-          set({
-            data: daidaisJSON.map(
-              (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
-            ),
-          })
-        } else {
-          set({
-            data: ANONYMOUS_DAIDAIS.map(
-              (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
-            ),
-          })
-        }
-      },
-      reset: (daidaiObjects) => {
-        set({
-          data: daidaiObjects,
-        })
-      },
-      add: async (userId, ...daidaiObjects) => {
-        const { error } = await daidaisQuery().insert(
-          daidaiObjects.map((item) => ({
-            url: item.url,
-            c_html: item.contentHTML,
-            user_id: userId,
-          }))
-        )
-        if (error) throw error
-        set((state) => {
-          state.data.push(...daidaiObjects)
-        })
-      },
-      update: async (index, daidaiObject) => {
-        const state = get()
-        const preDaidaiObject = state.data[index]
-        if (!preDaidaiObject) return
-        if (isAnonymousDaidai(preDaidaiObject.id)) {
-          return
-        }
-        const { error } = await daidaisQuery()
-          .update({
-            url: daidaiObject.url,
-            c_html: daidaiObject.contentHTML,
-          })
-          .eq("id", preDaidaiObject.id)
-        console.error("e", error)
-        if (error) throw error
-        set((state) => {
-          if (index in state.data) {
-            state.data[index] = daidaiObject
+        initDatda: async (user) => {
+          if (user) {
+            // online mode
+            const result = await daidaisQuery().select("id, url, c_html")
+            if (result.error) throw result.error
+            const daidaisJSON = [
+              ...ANONYMOUS_DAIDAIS.filter((item) => !user.user_metadata?.[item.id]),
+              ...result.data,
+            ]
+            set({
+              user,
+              data: daidaisJSON.map(
+                (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
+              ),
+            })
+          } else {
+            // offline mode
+            console.time("init with localStorage")
+            const localStr = localStorage.getItem(LOCAL_KEY)
+            let _data
+            if (localStr) {
+              const result = JSON.parse(localStr)
+              _data = result.state.data
+                .map((item: any) => DaidaiObject.hydrate(item))
+                .filter(Boolean)
+            } else {
+              _data = ANONYMOUS_DAIDAIS.map(
+                (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
+              )
+            }
+            console.timeEnd("init with localStorage")
+            set({
+              user,
+              data: _data,
+            })
           }
-        })
-      },
-      remove: async (index) => {
-        const state = get()
-        const daidaiObject = state.data[index]
-        if (!daidaiObject) return
-        if (isAnonymousDaidai(daidaiObject.id)) {
-          const { error } = await supabaseClient.auth.updateUser({
-            data: {
-              [daidaiObject.id]: true,
+        },
+        reset: (daidaiObjects) => {
+          set({
+            data: daidaiObjects,
+          })
+        },
+        add: async (userId, ...daidaiObjects) => {
+          const { error } = await daidaisQuery().insert(
+            daidaiObjects.map((item) => ({
+              url: item.url,
+              c_html: item.contentHTML,
+              user_id: userId,
+            }))
+          )
+          if (error) throw error
+          set((state) => {
+            state.data.push(...daidaiObjects)
+          })
+        },
+        update: async (index, daidaiObject) => {
+          const state = get()
+          const preDaidaiObject = state.data[index]
+          if (!preDaidaiObject) return
+          if (isAnonymousDaidai(preDaidaiObject.id)) {
+            return
+          }
+          const { error } = await daidaisQuery()
+            .update({
+              url: daidaiObject.url,
+              c_html: daidaiObject.contentHTML,
+            })
+            .eq("id", preDaidaiObject.id)
+          console.error("e", error)
+          if (error) throw error
+          set((state) => {
+            if (index in state.data) {
+              state.data[index] = daidaiObject
+            }
+          })
+        },
+        remove: async (index) => {
+          const state = get()
+          const daidaiObject = state.data[index]
+          if (!daidaiObject) return
+          if (isAnonymousDaidai(daidaiObject.id)) {
+            const { error } = await supabaseClient.auth.updateUser({
+              data: {
+                [daidaiObject.id]: true,
+              },
+            })
+            if (error) throw error
+          } else {
+            const { error } = await daidaisQuery().delete().eq("id", daidaiObject.id)
+            if (error) throw error
+          }
+          set((state) => {
+            state.data.splice(index, 1)
+          })
+        },
+        toggleTag: (tag: string) => {
+          const index = get().activeTags.indexOf(tag)
+          if (index === -1) {
+            set((state) => {
+              state.activeTags.push(tag)
+            })
+          } else {
+            set((state) => {
+              state.activeTags.splice(index, 1)
+            })
+          }
+        },
+        typeTag: (text) => {
+          if (!text)
+            set({
+              activeTags: [],
+            })
+          if (!text.trim()) return
+          const tags = selectTags(get())
+          set((state) => {
+            state.activeTags = tags.filter((tag) =>
+              tag.toUpperCase().startsWith(text.toUpperCase())
+            )
+          })
+        },
+      })),
+      {
+        name: LOCAL_KEY,
+        partialize: (state) => ({ data: state.data }),
+        serialize: (localState) => {
+          if (localState.state.data.length === 0) {
+            return ""
+          }
+          return JSON.stringify({
+            ...localState,
+            state: {
+              // ...omit(localState.state, "activeTags"),
+              data: localState.state.data.map((item) => item.dehydrate()),
             },
           })
-          if (error) throw error
-        } else {
-          const { error } = await daidaisQuery().delete().eq("id", daidaiObject.id)
-          if (error) throw error
-        }
-        set((state) => {
-          state.data.splice(index, 1)
-        })
-      },
-      toggleTag: (tag: string) => {
-        const index = get().activeTags.indexOf(tag)
-        if (index === -1) {
-          set((state) => {
-            state.activeTags.push(tag)
-          })
-        } else {
-          set((state) => {
-            state.activeTags.splice(index, 1)
-          })
-        }
-      },
-      typeTag: (text) => {
-        if (!text)
-          set({
-            activeTags: [],
-          })
-        if (!text.trim()) return
-        const tags = selectTags(get())
-        set((state) => {
-          state.activeTags = tags.filter((tag) => tag.toUpperCase().startsWith(text.toUpperCase()))
-        })
-      },
-    }))
-    // {
-    //   name: "__daidai",
-    //   serialize: (localState) => {
-    //     return JSON.stringify({
-    //       ...localState,
-    //       state: {
-    //         ...omit(localState.state, "activeTags"),
-    //         data: localState.state.data.map((item) => item.dehydrate()),
-    //       },
-    //     })
-    //   },
-    //   deserialize: (str) => {
-    //     console.time("init with localStorage")
-    //     const result = JSON.parse(str)
-    //     result.state.data = result.state.data
-    //       .map((item: any) => DaidaiObject.hydrate(item))
-    //       .filter(Boolean)
-    //     console.timeEnd("init with localStorage")
-    //     return result
-    //   },
-    // }
-    // )
+        },
+        deserialize: (str) => {
+          return { state: { data: [] } }
+        },
+      }
+    )
   )
 )
 
