@@ -7,6 +7,7 @@ import clsx from "classnames"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { TOAST_CONFIG } from "./utils/toast"
+import { MdiGithub, MdiGoogle } from "ui/src/icons"
 
 const Auth = ({ type }: { type: "signup" | "signin" }) => {
   const [email, setEmail] = useState("")
@@ -82,23 +83,29 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
       )}
       <Button
         disableDefaultStyle
-        className={clsx("btn-sm btn-block btn-accent", googleLoading && "loading")}
+        className={clsx(
+          "btn-sm btn-block bg-[#db4437] hover:bg-[#db4437]/80 text-white",
+          googleLoading && "loading"
+        )}
         onClick={(e) => {
           signInWithGoogle()
           setGoogleLoading(true)
         }}
       >
-        Sign in with Google
+        <MdiGoogle className="mr-2" /> Sign in with Google
       </Button>
       <Button
         disableDefaultStyle
-        className={clsx("btn-sm btn-block btn-accent", githubLoading && "loading")}
+        className={clsx(
+          "btn-sm btn-block bg-[#24292e] hover:bg-[#24292e]/80 text-white",
+          githubLoading && "loading"
+        )}
         onClick={() => {
           signInWithGithub()
           setGithubLoading(true)
         }}
       >
-        Sign in with Github
+        <MdiGithub className="mr-2" /> Sign in with Github
       </Button>
       <div className="divider">OR</div>
       <div>
