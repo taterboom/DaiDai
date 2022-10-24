@@ -115,8 +115,10 @@ const Dock = (props: DockProps) => {
         </LinkButton>
       ) : (
         <>
-          <LinkButton href="/signin">Sign in</LinkButton>
-          <LinkButton className="btn-accent" href="/signup">
+          <LinkButton href="/signin" className="text-primary">
+            Sign in
+          </LinkButton>
+          <LinkButton className="text-accent" href="/signup">
             Get Daidai free
           </LinkButton>
         </>

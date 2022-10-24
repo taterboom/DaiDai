@@ -1,4 +1,5 @@
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
+import { useRouter } from "next/router"
 import { useCallback, useMemo } from "react"
 import Button, { LinkButton } from "ui/src/Button"
 import { PhUserLight } from "ui/src/icons"
@@ -33,11 +34,13 @@ function BookmarksExporter(props: BookmarksExporterProps) {
 
 type ProfileProps = {
   children?: React.ReactNode
+  onLogout: () => void
 }
 
 const Profile = (props: ProfileProps) => {
   const { isLoading, error } = useSessionContext()
   const user = useUser()
+  const router = useRouter()
 
   if (isLoading) return <p>Loading...</p>
   if (!user || error) return <p>Error</p>
@@ -59,7 +62,7 @@ const Profile = (props: ProfileProps) => {
   })()
 
   return (
-    <div className="max-w-lg max-h-[80vh] overflow-auto space-y-4 pannel">
+    <div className="max-w-lg max-h-[80vh] min-w-[300px] overflow-auto space-y-4 pannel">
       <div className="avatar">
         <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
           {avatar}
@@ -80,7 +83,9 @@ const Profile = (props: ProfileProps) => {
       <Button
         className="!btn-error"
         onClick={() => {
-          supabaseClient.auth.signOut()
+          supabaseClient.auth.signOut().then(() => {
+            props.onLogout()
+          })
         }}
       >
         Logout
@@ -92,7 +97,7 @@ const Profile = (props: ProfileProps) => {
 const ProfilePopup = ({ show, onClose }: { show: boolean; onClose: () => void }) => {
   return (
     <Popup show={show} onClose={onClose}>
-      <Profile></Profile>
+      <Profile onLogout={onClose}></Profile>
     </Popup>
   )
 }

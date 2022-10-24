@@ -13,7 +13,7 @@ import {
   PANNEL_PROFILE,
   PANNEL_SHORTCUTS,
 } from "./utils/pannel"
-import { authToast, TOAST_CONFIG } from "./utils/toast"
+import { authToast, offlineToastOnce, TOAST_CONFIG } from "./utils/toast"
 import BookmarkImporter from "./BookmarkImporter"
 import Loading from "ui/src/Loading"
 import Popup from "ui/src/Popup"
@@ -47,7 +47,7 @@ const Desktop: React.FC = ({}) => {
 
   const controlDisabled = typeof pannel === "string"
 
-  const onClosePannel = router.back
+  const onClosePannel = () => router.push("/")
 
   // prevent nextjs default scroll behavior
   useEffect(() => {
@@ -79,6 +79,7 @@ const Desktop: React.FC = ({}) => {
       }
     } else {
       initData(null)
+      offlineToastOnce()
     }
   }, [initData, user, isLoading])
 

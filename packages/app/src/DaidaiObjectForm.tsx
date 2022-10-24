@@ -23,11 +23,7 @@ export const DaidaiObjectCreator = ({ show, onClose }: { show: boolean; onClose:
       <DaidaiObjectArea
         editable
         onSubmit={(result) => {
-          if (!user) {
-            toast.error("Should login first!", TOAST_CONFIG)
-            return
-          }
-          add(user.id, new DaidaiObject(result)).then(
+          add(new DaidaiObject(result)).then(
             () => {
               toast.success("Success!", TOAST_CONFIG)
               onClose()

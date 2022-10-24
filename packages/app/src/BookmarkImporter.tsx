@@ -121,12 +121,8 @@ const BookmarkImporter = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 
   const submit = (result: Bookmark[]) => {
-    if (!user) {
-      toast.error("Should login first!", TOAST_CONFIG)
-      return
-    }
     if (result && result.length > 0) {
-      add(user.id, ...result.map((item) => DaidaiObject.generateFromBookmark(item))).then(
+      add(...result.map((item) => DaidaiObject.generateFromBookmark(item))).then(
         () => {
           toast.success("Success!", TOAST_CONFIG)
         },
