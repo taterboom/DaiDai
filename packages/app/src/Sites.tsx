@@ -11,7 +11,7 @@ const RESPONSIVE_DATA = {
   mobile: {
     size: 0,
     count: 2,
-    className: "grid-cols-[repeat(2,_minmax(240px,_1fr))]",
+    className: "grid-cols-[repeat(2,_minmax(216px,_1fr))]",
   },
   sm: {
     size: 640,
@@ -21,22 +21,22 @@ const RESPONSIVE_DATA = {
   md: {
     size: 768,
     count: 3,
-    className: "grid-cols-[repeat(3,_minmax(240px,_1fr))]",
+    className: "grid-cols-[repeat(3,_minmax(220px,_1fr))]",
   },
   lg: {
     size: 1024,
     count: 4,
-    className: "grid-cols-[repeat(4,_minmax(240px,_1fr))]",
+    className: "grid-cols-[repeat(4,_minmax(220px,_1fr))]",
   },
   xl: {
     size: 1280,
     count: 5,
-    className: "grid-cols-[repeat(5,_minmax(240px,_1fr))]",
+    className: "grid-cols-[repeat(5,_minmax(220px,_1fr))]",
   },
   "2xl": {
     size: 1536,
     count: 6,
-    className: "grid-cols-[repeat(6,_minmax(240px,_1fr))]",
+    className: "grid-cols-[repeat(6,_minmax(220px,_1fr))]",
   },
 }
 const RESPONSIVE_LEVEL: Array<keyof typeof RESPONSIVE_DATA> = [
@@ -148,7 +148,10 @@ const Sites = ({ disabled }: { disabled: boolean }) => {
 
   return (
     <section
-      className={clsx("grid gap-5", RESPONSIVE_DATA[RESPONSIVE_LEVEL[screenLevel]].className)}
+      className={clsx(
+        "grid gap-4 popup:gap-3",
+        RESPONSIVE_DATA[RESPONSIVE_LEVEL[screenLevel]].className
+      )}
     >
       {visibleDaidaiObjects.map((site, index) => (
         <SiteItem

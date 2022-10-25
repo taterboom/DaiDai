@@ -93,7 +93,7 @@ const Desktop: React.FC = ({}) => {
   // }, [pannel, user])
 
   return (
-    <div className="p-16">
+    <div className="min-w-[480px] min-h-[601px] p-16 popup:p-4">
       <Popup closeable={false} show={dataLoading || (isLoading && !user)}>
         <Loading />
       </Popup>

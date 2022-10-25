@@ -46,7 +46,7 @@ const Tags = () => {
 
   return (
     <section>
-      <ul className="flex flex-wrap gap-2.5 mb-10">
+      <ul className="flex flex-wrap gap-2.5 mb-10 popup:mb-4">
         {tags.map((tag, index) => (
           <li key={tag} className="">
             <TagItem

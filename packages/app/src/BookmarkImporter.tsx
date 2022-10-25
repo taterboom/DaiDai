@@ -135,11 +135,11 @@ const BookmarkImporter = () => {
   }
 
   return (
-    <div className="pannel overflow-hidden">
+    <div className="pannel overflow-hidden max-w-[90vw]">
       {bookmarks ? (
         <BookmarksSelect value={bookmarks} onSubmit={submit} />
       ) : (
-        <div className="flex flex-col items-center w-[800px] ">
+        <div className="flex flex-col items-center w-[768px] max-w-full">
           {isExtension && (
             <>
               <ChromeBookmarksReader onChange={(e) => setBookmarks(e)} />

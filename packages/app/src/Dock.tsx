@@ -7,7 +7,7 @@ import {
   PANNEL_PROFILE,
   PANNEL_SHORTCUTS,
 } from "./utils/pannel"
-import Button, { LinkButton } from "ui/src/Button"
+import Button, { LinkButton, LinkButtonProps } from "ui/src/Button"
 import {
   CarbonWorkspaceImport,
   MaterialSymbolsAddBoxOutlineSharp,
@@ -18,6 +18,8 @@ import {
 } from "ui/src/icons"
 import clsx from "classnames"
 import { useLocalStorage, useMeasure } from "react-use"
+import { isExtension } from "./utils/ua"
+import ChromeNewTabButton from "./chrome/ChromeNewTabButton"
 
 const getGroupParent = (elem: HTMLElement): HTMLElement | null => {
   return !elem || elem === document.body
@@ -49,6 +51,10 @@ const CollpasedLabel = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   )
+}
+
+const OutsideButton = (props: { href: string; className: string; children: React.ReactNode }) => {
+  return isExtension ? <ChromeNewTabButton {...props} /> : <LinkButton {...props} />
 }
 
 type DockProps = {
@@ -115,12 +121,12 @@ const Dock = (props: DockProps) => {
         </LinkButton>
       ) : (
         <>
-          <LinkButton href="/signin" className="text-primary">
+          <OutsideButton href="/signin" className="text-primary">
             Sign in
-          </LinkButton>
-          <LinkButton className="text-accent" href="/signup">
+          </OutsideButton>
+          <OutsideButton className="text-accent" href="/signup">
             Get Daidai free
-          </LinkButton>
+          </OutsideButton>
         </>
       )}
     </div>

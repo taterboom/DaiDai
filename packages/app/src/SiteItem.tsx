@@ -49,7 +49,7 @@ const SiteItem: React.FC<{
     <figure
       className={clsx(
         active && "!bg-primary-focus",
-        "group relative flex items-center p-5 py-3 bg-main transition-colors hover:bg-main-focus"
+        "group relative flex items-center px-5 py-3 bg-main transition-colors hover:bg-main-focus popup:px-3 popup:py-2"
       )}
     >
       {/* cover */}

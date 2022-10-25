@@ -39,7 +39,7 @@ syncCookie()
 
 chrome.cookies.onChanged.addListener((e) => {
   console.log("co", e)
-  if (e.cookie.domain === "www.daidai.cyou" && e.cookie.name === "supabase-auth-token") {
+  if (e.cookie.domain === ".daidai.cyou" && e.cookie.name === "supabase-auth-token") {
     if (e.removed) {
       token.current = null
     } else {
@@ -48,13 +48,13 @@ chrome.cookies.onChanged.addListener((e) => {
   }
 })
 
-chrome.runtime.onMessage.addListener((messsage) => {
+chrome.runtime.onMessage.addListener((messsage, sender, sendResponse) => {
   switch (messsage.type) {
     case "GET_COOKIE": {
-      chrome.runtime.sendMessage({
-        type: "SYNC_COOKIE",
+      sendResponse({
         payload: token.current,
       })
+      return true
     }
   }
 })

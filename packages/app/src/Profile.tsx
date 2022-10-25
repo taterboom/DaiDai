@@ -62,7 +62,7 @@ const Profile = (props: ProfileProps) => {
   })()
 
   return (
-    <div className="max-w-lg max-h-[80vh] min-w-[300px] overflow-auto space-y-4 pannel">
+    <div className="max-w-lg max-h-[80vh] min-w-[300px] overflow-auto space-y-4 pannel popup:max-w-md">
       <div className="avatar">
         <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
           {avatar}

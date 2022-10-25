@@ -8,7 +8,7 @@ import ObjectEditor, { ObjectEditorProps, Result } from "./ObjectEditor/ObjectEd
 
 const DaidaiObjectArea = (props: ObjectEditorProps) => {
   return (
-    <div className="pannel w-[320px] sm:w-[500px] md:w-[640px] lg:w-[768px] xl:w-[1024px]">
+    <div className="pannel w-[320px] popup:w-[400px] sm:w-[500px] md:w-[640px] lg:w-[768px] xl:w-[1024px]">
       <ObjectEditor {...props}></ObjectEditor>
     </div>
   )
