@@ -7,9 +7,10 @@ import {
   PANNEL_PROFILE,
   PANNEL_SHORTCUTS,
 } from "./utils/pannel"
-import Button, { LinkButton } from "ui/src/Button"
+import Button, { LinkButton, LinkButtonProps } from "ui/src/Button"
 import {
   CarbonWorkspaceImport,
+  IonMdExpand,
   MaterialSymbolsAddBoxOutlineSharp,
   MaterialSymbolsKeyboardSharp,
   NavLogo,
@@ -18,6 +19,8 @@ import {
 } from "ui/src/icons"
 import clsx from "classnames"
 import { useLocalStorage, useMeasure } from "react-use"
+import { isExtension, isExtensionPopup } from "./utils/ua"
+import ChromeNewTabButton from "./chrome/ChromeNewTabButton"
 
 const getGroupParent = (elem: HTMLElement): HTMLElement | null => {
   return !elem || elem === document.body
@@ -51,12 +54,16 @@ const CollpasedLabel = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
+const OutsideButton = (props: { href: string; className: string; children: React.ReactNode }) => {
+  return isExtension ? <ChromeNewTabButton {...props} /> : <LinkButton {...props} />
+}
+
 type DockProps = {
   children?: React.ReactNode
 }
 
 const Dock = (props: DockProps) => {
-  const { user } = useUser()
+  const user = useUser()
   const shouldReplace = (pannelConfig: PannelConfig) => !pannelConfig[1] && user === null
 
   const [showAll, setShowAll] = useLocalStorage("__daidai_dockopen", true)
@@ -68,6 +75,7 @@ const Dock = (props: DockProps) => {
         showAll ? "bounce-in-right" : "bounce-in-left"
       )}
     >
+      <div id="test"></div>
       <Button
         className="text-base"
         onClick={() => {
@@ -103,6 +111,15 @@ const Dock = (props: DockProps) => {
         <MaterialSymbolsKeyboardSharp className="text-lg" />
         <CollpasedLabel>Shortcuts</CollpasedLabel>
       </LinkButton>
+      {isExtensionPopup && (
+        <ChromeNewTabButton
+          href="chrome://bookmarks"
+          className="group flex items-center gap-1 pr-2"
+        >
+          <IonMdExpand />
+          <CollpasedLabel>Bookmarks Tab</CollpasedLabel>
+        </ChromeNewTabButton>
+      )}
       {user ? (
         <LinkButton
           href={`/?pannel=${PANNEL_PROFILE[0]}`}
@@ -115,10 +132,12 @@ const Dock = (props: DockProps) => {
         </LinkButton>
       ) : (
         <>
-          <LinkButton href="/signin">Sign in</LinkButton>
-          <LinkButton className="btn-accent" href="/signup">
+          <OutsideButton href="/signin" className="text-primary">
+            Sign in
+          </OutsideButton>
+          <OutsideButton className="text-accent" href="/signup">
             Get Daidai free
-          </LinkButton>
+          </OutsideButton>
         </>
       )}
     </div>

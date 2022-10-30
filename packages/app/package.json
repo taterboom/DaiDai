@@ -20,9 +20,10 @@
     "@lexical/selection": "^0.4.1",
     "@lexical/table": "^0.4.1",
     "@lexical/utils": "^0.4.1",
-    "@supabase/auth-helpers-nextjs": "^0.2.9",
-    "@supabase/auth-helpers-react": "^0.2.4",
-    "@supabase/supabase-js": "^1.35.7",
+    "@supabase/auth-helpers-nextjs": "^0.4.0",
+    "@supabase/auth-helpers-react": "^0.3.0",
+    "@supabase/auth-helpers-shared": "^0.2.0",
+    "@supabase/supabase-js": "^2.0.0",
     "classnames": "^2.3.1",
     "fuse.js": "^6.6.2",
     "immer": "^9.0.15",
@@ -39,6 +40,7 @@
     "zustand": "^4.1.1"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.197",
     "@types/lodash": "^4.14.185",
     "@types/react": "18.0.8",
     "@types/react-dom": "18.0.3"

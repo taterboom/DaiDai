@@ -4,17 +4,20 @@ import "app/src/styles/daysiui-enhance.css"
 import "react-toastify/dist/ReactToastify.css"
 import "app/src/styles/toastify-enhance.css"
 import type { AppProps } from "next/app"
-import { UserProvider } from "@supabase/auth-helpers-react"
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
+import { SessionContextProvider } from "@supabase/auth-helpers-react"
 import { ToastContainer } from "react-toastify"
+import { supabaseClient } from "app/src/utils/supabaseClient"
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <ToastContainer />
-      <UserProvider supabaseClient={supabaseClient}>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
         <Component {...pageProps} />
-      </UserProvider>
+      </SessionContextProvider>
     </>
   )
 }

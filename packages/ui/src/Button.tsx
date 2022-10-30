@@ -1,5 +1,6 @@
 import Link, { LinkProps } from "next/link"
 import clsx from "classnames"
+import React from "react"
 
 export type ButtonProps = {
   disableDefaultStyle?: boolean
@@ -21,7 +22,7 @@ const Button = ({
   return <button {...props} className={btnClassName}></button>
 }
 
-type LinkButtonProps = React.PropsWithChildren<
+export type LinkButtonProps = React.PropsWithChildren<
   {
     rounded?: boolean
     className?: string

@@ -242,19 +242,6 @@ export function IcBaselineLogout(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function RadixIconsGithubLogo(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 15 15" {...props}>
-      <path
-        fill="currentColor"
-        fillRule="evenodd"
-        d="M7.5.25a7.25 7.25 0 0 0-2.292 14.13c.363.066.495-.158.495-.35c0-.172-.006-.628-.01-1.233c-2.016.438-2.442-.972-2.442-.972c-.33-.838-.805-1.06-.805-1.06c-.658-.45.05-.441.05-.441c.728.051 1.11.747 1.11.747c.647 1.108 1.697.788 2.11.602c.066-.468.254-.788.46-.969c-1.61-.183-3.302-.805-3.302-3.583a2.8 2.8 0 0 1 .747-1.945c-.075-.184-.324-.92.07-1.92c0 0 .61-.194 1.994.744A6.963 6.963 0 0 1 7.5 3.756A6.97 6.97 0 0 1 9.315 4c1.384-.938 1.992-.743 1.992-.743c.396.998.147 1.735.072 1.919c.465.507.745 1.153.745 1.945c0 2.785-1.695 3.398-3.31 3.577c.26.224.492.667.492 1.343c0 .97-.009 1.751-.009 1.989c0 .194.131.42.499.349A7.25 7.25 0 0 0 7.499.25Z"
-        clipRule="evenodd"
-      ></path>
-    </svg>
-  )
-}
-
 export function RadixHeading(props: SVGProps<SVGSVGElement>) {
   return (
     <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -575,6 +562,79 @@ export function RiUser3Line(props: SVGProps<SVGSVGElement>) {
         fill="currentColor"
         d="M20 22h-2v-2a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v2H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12a6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8a4 4 0 0 0 0 8z"
       ></path>
+    </svg>
+  )
+}
+
+export function PhQuestion(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 256 256" {...props}>
+      <path
+        fill="currentColor"
+        d="M128 24a104 104 0 1 0 104 104A104.1 104.1 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88Zm12-36a12 12 0 1 1-12-12a12 12 0 0 1 12 12Zm24-72a36 36 0 0 1-28 35.1v.9a8 8 0 0 1-16 0v-8a8 8 0 0 1 8-8a20 20 0 1 0-20-20a8 8 0 0 1-16 0a36 36 0 0 1 72 0Z"
+      ></path>
+    </svg>
+  )
+}
+
+export function OpenmojiChrome(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 72 72" {...props}>
+      <circle cx="36" cy="36" r="28" fill="#B1CC33"></circle>
+      <path
+        fill="#FCEA2B"
+        fillRule="evenodd"
+        d="m34.312 27.158l.008.047a9 9 0 0 1 9.327 13.369L30.386 63.541c11.442 2.28 23.557-2.801 29.714-13.467c4.21-7.291 4.767-15.688 2.24-23.074H36a9.02 9.02 0 0 0-1.688.158Z"
+        clipRule="evenodd"
+      ></path>
+      <path
+        fill="#EA5A47"
+        fillRule="evenodd"
+        d="M27 43.5L8.202 32.617C9.872 18.748 21.681 8 36 8c12.316 0 22.774 7.951 26.522 19H36a9 9 0 0 0-6.914 14.762L27 43.5Z"
+        clipRule="evenodd"
+      ></path>
+      <circle cx="36" cy="36" r="9" fill="#61B2E4"></circle>
+      <g fill="none" stroke="#000" strokeWidth="2">
+        <circle cx="36" cy="36" r="28"></circle>
+        <path
+          strokeLinecap="round"
+          d="M36 26h23M44.66 41l-11.5 19.919M11.081 33.16L31 44.66"
+        ></path>
+        <circle cx="36" cy="36" r="10"></circle>
+      </g>
+    </svg>
+  )
+}
+
+export function MdiGoogle(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="currentColor"
+        d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27c3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10c5.35 0 9.25-3.67 9.25-9.09c0-1.15-.15-1.81-.15-1.81Z"
+      ></path>
+    </svg>
+  )
+}
+
+export function MdiGithub(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <path
+        fill="currentColor"
+        d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33c.85 0 1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"
+      ></path>
+    </svg>
+  )
+}
+
+export function IonMdExpand(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 512 512" {...props}>
+      <path d="M396.795 396.8H320V448h128V320h-51.205z" fill="currentColor"></path>
+      <path d="M396.8 115.205V192H448V64H320v51.205z" fill="currentColor"></path>
+      <path d="M115.205 115.2H192V64H64v128h51.205z" fill="currentColor"></path>
+      <path d="M115.2 396.795V320H64v128h128v-51.205z" fill="currentColor"></path>
     </svg>
   )
 }

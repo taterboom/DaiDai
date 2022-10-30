@@ -1,18 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 import Button, { LinkButton } from "ui/src/Button"
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
+import { supabaseClient } from "./utils/supabaseClient"
 import { useEffect, useState } from "react"
-import { ApiError } from "@supabase/supabase-js"
+import { AuthError } from "@supabase/supabase-js"
 import clsx from "classnames"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { TOAST_CONFIG } from "./utils/toast"
+import { MdiGithub, MdiGoogle } from "ui/src/icons"
 
 const Auth = ({ type }: { type: "signup" | "signin" }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const [signError, setSignUpError] = useState<ApiError | null>(null)
+  const [signError, setSignUpError] = useState<AuthError | null>(null)
   const [shouldConfirm, setShouldConfirm] = useState(false)
   const [githubLoading, setGithubLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
@@ -27,7 +28,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
   const signInWithGoogle = async () => {
     setLoading(true)
-    const { error, user, session } = await supabaseClient.auth.signIn({
+    const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: "google",
     })
     setLoading(false)
@@ -35,7 +36,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
   const signInWithGithub = async () => {
     setLoading(true)
-    const { error, user, session } = await supabaseClient.auth.signIn({
+    const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: "github",
     })
     setLoading(false)
@@ -46,8 +47,11 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
     if (!email || !password) return
     setLoading(true)
     console.log(type, email, password)
-    const { error, user, session } = await (type === "signin"
-      ? supabaseClient.auth.signIn({
+    const {
+      error,
+      data: { user, session },
+    } = await (type === "signin"
+      ? supabaseClient.auth.signInWithPassword({
           email,
           password,
         })
@@ -79,23 +83,29 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
       )}
       <Button
         disableDefaultStyle
-        className={clsx("btn-sm btn-block btn-accent", googleLoading && "loading")}
+        className={clsx(
+          "btn-sm btn-block bg-[#db4437] hover:bg-[#db4437]/80 text-white",
+          googleLoading && "loading"
+        )}
         onClick={(e) => {
           signInWithGoogle()
           setGoogleLoading(true)
         }}
       >
-        Sign in with Google
+        <MdiGoogle className="mr-2" /> Sign in with Google
       </Button>
       <Button
         disableDefaultStyle
-        className={clsx("btn-sm btn-block btn-accent", githubLoading && "loading")}
+        className={clsx(
+          "btn-sm btn-block bg-[#24292e] hover:bg-[#24292e]/80 text-white",
+          githubLoading && "loading"
+        )}
         onClick={() => {
           signInWithGithub()
           setGithubLoading(true)
         }}
       >
-        Sign in with Github
+        <MdiGithub className="mr-2" /> Sign in with Github
       </Button>
       <div className="divider">OR</div>
       <div>

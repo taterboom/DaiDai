@@ -1,10 +1,19 @@
 {
   "name": "daidai-extension",
   "scripts": {
-    "build": "rm -rf dist && pnpm cp",
-    "cp": "mkdir dist && pnpm cp:ext & pnpm cp:popup",
+    "build": "rm -rf dist && pnpm compile && pnpm cp",
+    "compile": "npx esbuild background=./background.ts --bundle --outdir=dist --target=esnext --define:process.env.NEXT_PUBLIC_EXTENSION=chrome",
+    "cp": "pnpm cp:ext & pnpm cp:popup & pnpm cp:bookmarks",
     "cp:ext": "cp ./manifest.json dist/ & cp -R ./images dist/",
-    "cp:popup": "mkdir dist/popup && cp -R ../extension-popup/out/ dist/popup/"
+    "cp:popup": "mkdir dist/popup && cp -R ../extension-popup/out/ dist/popup/",
+    "cp:bookmarks": "mkdir dist/bookmarks && cp -R ../extension-bookmarks/out/ dist/bookmarks/"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "cookie": "^0.5.0",
+    "esbuild": "^0.15.10"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.197",
+    "@types/cookie": "^0.5.1"
+  }
 }

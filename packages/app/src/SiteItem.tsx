@@ -40,7 +40,7 @@ const SiteItem: React.FC<{
   disable?: boolean
 }> = ({ index, value, active, disable }) => {
   const hrefTarget = useSettingsStore((state) => state.hrefTarget)
-  const { user } = useUser()
+  const user = useUser()
   const tagsColorMap = useTagsColorMap()
   const activeTags = useDaiDaiStore((state) => state.activeTags)
   const shouldReplace = (pannelConfig: PannelConfig) => !pannelConfig[1] && user === null
@@ -49,7 +49,7 @@ const SiteItem: React.FC<{
     <figure
       className={clsx(
         active && "!bg-primary-focus",
-        "group relative flex items-center p-5 py-3 bg-main transition-colors hover:bg-main-focus"
+        "group relative flex items-center px-5 py-3 bg-main transition-colors hover:bg-main-focus popup:px-3 popup:py-2"
       )}
     >
       {/* cover */}

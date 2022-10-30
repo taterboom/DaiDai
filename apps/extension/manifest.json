@@ -10,6 +10,12 @@
     "default_title": "Read bookmarks",
     "default_popup": "popup/index.html"
   },
-  "permissions": [],
-  "host_permissions": []
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["cookies", "bookmarks", "tabs"],
+  "host_permissions": ["https://*.daidai.cyou/"],
+  "chrome_url_overrides": {
+    "bookmarks": "bookmarks/index.html"
+  }
 }

@@ -1,4 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
+import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "react-toastify"
@@ -13,12 +13,16 @@ import {
   PANNEL_PROFILE,
   PANNEL_SHORTCUTS,
 } from "./utils/pannel"
-import { authToast, TOAST_CONFIG } from "./utils/toast"
+import { authToast, offlineToastOnce, TOAST_CONFIG } from "./utils/toast"
 import BookmarkImporter from "./BookmarkImporter"
 import Loading from "ui/src/Loading"
 import Popup from "ui/src/Popup"
 import DaidaiObjectDeleter from "./DaidaiObjectDeleter"
-import { DaidaiObjectCreator, DaidaiObjectEditor } from "./DaidaiObjectForm"
+import {
+  DaidaiObjectCreator,
+  DaidaiObjectCreatorInExtension,
+  DaidaiObjectEditor,
+} from "./DaidaiObjectForm"
 import Dock from "./Dock"
 import ObjectEditor from "./ObjectEditor/ObjectEditor"
 import Profile from "./Profile"
@@ -26,9 +30,11 @@ import ShortcutManualPopup from "./ShotcutsManual"
 import Sites from "./Sites"
 import Tags from "./Tags"
 import TypeBox from "./TypeBox"
+import { isExtension } from "./utils/ua"
 
 const Desktop: React.FC = ({}) => {
-  const { user, isLoading } = useUser()
+  const { isLoading } = useSessionContext()
+  const user = useUser()
   const [dataLoading, setDataLoading] = useState(false)
   const initData = useDaiDaiStore((state) => state.initDatda)
   const router = useRouter()
@@ -42,11 +48,11 @@ const Desktop: React.FC = ({}) => {
   }, [router.query.index])
 
   const pannelCanShow = (pannelConfig: PannelConfig) =>
-    (pannelConfig[1] || user !== null) && pannel === pannelConfig[0]
+    /*(pannelConfig[1] || user !== null) && */ pannel === pannelConfig[0]
 
   const controlDisabled = typeof pannel === "string"
 
-  const onClosePannel = router.back
+  const onClosePannel = () => router.push("/")
 
   // prevent nextjs default scroll behavior
   useEffect(() => {
@@ -78,20 +84,21 @@ const Desktop: React.FC = ({}) => {
       }
     } else {
       initData(null)
+      offlineToastOnce()
     }
   }, [initData, user, isLoading])
 
-  useEffect(() => {
-    const inPannelDonotSupportAnonymousButAnonymousNow = PANNELS.some(
-      ([name, supportAnonymous]) => name === pannel && !supportAnonymous && user === null
-    )
-    if (inPannelDonotSupportAnonymousButAnonymousNow) {
-      authToast()
-    }
-  }, [pannel, user])
+  // useEffect(() => {
+  //   const inPannelDonotSupportAnonymousButAnonymousNow = PANNELS.some(
+  //     ([name, supportAnonymous]) => name === pannel && !supportAnonymous && user === null
+  //   )
+  //   if (inPannelDonotSupportAnonymousButAnonymousNow) {
+  //     authToast()
+  //   }
+  // }, [pannel, user])
 
   return (
-    <div className="p-16">
+    <div className="min-w-[480px] min-h-[601px] p-16 popup:p-4">
       <Popup closeable={false} show={dataLoading || (isLoading && !user)}>
         <Loading />
       </Popup>
@@ -101,7 +108,14 @@ const Desktop: React.FC = ({}) => {
       <Tags></Tags>
       <Sites disabled={controlDisabled}></Sites>
       <Dock />
-      <DaidaiObjectCreator show={pannelCanShow(PANNEL_CREATOR)} onClose={onClosePannel} />
+      {isExtension ? (
+        <DaidaiObjectCreatorInExtension
+          show={pannelCanShow(PANNEL_CREATOR)}
+          onClose={onClosePannel}
+        />
+      ) : (
+        <DaidaiObjectCreator show={pannelCanShow(PANNEL_CREATOR)} onClose={onClosePannel} />
+      )}
       <DaidaiObjectEditor
         index={daidaiObjectIndex}
         show={pannelCanShow(PANNEL_EDITOR)}

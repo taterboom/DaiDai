@@ -382,8 +382,8 @@ const ToolBarPlugin = ({ onSubmit }: { onSubmit: () => void }) => {
   }, [editor, updateToolBar])
 
   return (
-    <div className="flex items-center justify-between handlebar !bg-main-accent">
-      <div className="flex items-center">
+    <div className="flex items-center justify-between flex-wrap handlebar !bg-main-accent">
+      <div className="flex items-center flex-wrap">
         <TagButton checked={currentBlock?.type === "tag"} />
         <HeadingButton checked={currentBlock?.type === "heading"}></HeadingButton>
         <FormatBoldButton checked={isBold}></FormatBoldButton>
@@ -398,9 +398,9 @@ const ToolBarPlugin = ({ onSubmit }: { onSubmit: () => void }) => {
         <NumberListButton
           checked={currentBlock?.type === "list" && currentBlock?.remark === "number"}
         ></NumberListButton>
-        <CheckListButton
+        {/* <CheckListButton
           checked={currentBlock?.type === "list" && currentBlock?.remark === "check"}
-        ></CheckListButton>
+        ></CheckListButton> */}
         <QuoteButton checked={currentBlock?.type === "quote"}></QuoteButton>
       </div>
       <Button

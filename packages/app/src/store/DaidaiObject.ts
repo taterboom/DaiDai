@@ -7,8 +7,8 @@ import {
 } from "lexical"
 import { nanoid } from "nanoid"
 import { SerializedTagNode } from "../ObjectEditor/Tag/TagNode"
-import type { DaidaiApiResult } from "../types/api"
 import { Bookmark } from "../utils/bookmarkHtml2json"
+import { DaidaiApiResult } from "../utils/supabaseClient"
 
 function isSerializedHeadingNode(node: any): node is SerializedHeadingNode {
   return node.type === "heading"

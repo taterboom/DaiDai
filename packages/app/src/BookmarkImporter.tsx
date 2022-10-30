@@ -1,6 +1,6 @@
 import { useUser } from "@supabase/auth-helpers-react"
 import clsx from "classnames"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "react-toastify"
 import { useUpdateEffect } from "react-use"
 import useDaiDaiStore from "./store/daidai"
@@ -8,9 +8,11 @@ import DaidaiObject from "./store/DaidaiObject"
 import { Bookmark, bookmarkHTMLString2json } from "./utils/bookmarkHtml2json"
 import { TOAST_CONFIG } from "./utils/toast"
 import Button from "ui/src/Button"
-import { MaterialSymbolsSave, Upload } from "ui/src/icons"
+import { MaterialSymbolsSave, OpenmojiChrome, PhQuestion, Upload } from "ui/src/icons"
 import Popup from "ui/src/Popup"
 import { useLocalstorageState } from "ui/src/useLocalstorageState"
+import { Tooltip } from "ui/src/Tooltip"
+import { isExtension } from "./utils/ua"
 
 const HTMLInput = ({ onChange }: { onChange: (json: Bookmark[]) => void }) => {
   const handleFile = (file: File) => {
@@ -45,7 +47,7 @@ const HTMLInput = ({ onChange }: { onChange: (json: Bookmark[]) => void }) => {
 
   return (
     <div
-      className="upload"
+      className="upload p-8"
       onDragOver={(e) => {
         e.preventDefault()
       }}
@@ -70,6 +72,35 @@ const HTMLInput = ({ onChange }: { onChange: (json: Bookmark[]) => void }) => {
   )
 }
 
+const ChromeBookmarksReader = ({ onChange }: { onChange: (json: Bookmark[]) => void }) => {
+  const handleImportFromChromeBookmarks = useCallback(async () => {
+    const bookmarkTreeRoot = await chrome.bookmarks.getTree()
+    const bookmarks: Bookmark[] = []
+    const traverse = (bookmarkTreeNode: chrome.bookmarks.BookmarkTreeNode, tags: string[]) => {
+      const { children, title, url } = bookmarkTreeNode
+      if (children) {
+        const _tags = title ? tags.concat(title) : tags
+        children.forEach((item) => traverse(item, _tags))
+      } else {
+        if (title && url) {
+          bookmarks.push({
+            title,
+            url,
+            tags,
+          })
+        }
+      }
+    }
+    bookmarkTreeRoot.forEach((item) => traverse(item, []))
+    onChange(bookmarks)
+  }, [onChange])
+  return (
+    <Button className="!btn-accent w-fit mt-8 btn-lg" onClick={handleImportFromChromeBookmarks}>
+      Import from your Chrome bookmarks <OpenmojiChrome className="ml-2" />
+    </Button>
+  )
+}
+
 type BookmarkImporterPopupProps = {
   children?: React.ReactNode
   show: boolean
@@ -85,17 +116,13 @@ const BookmarkImporterPopupPopup = (props: BookmarkImporterPopupProps) => {
 }
 
 const BookmarkImporter = () => {
-  const { user } = useUser()
+  const user = useUser()
   const add = useDaiDaiStore((state) => state.add)
   const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 
   const submit = (result: Bookmark[]) => {
-    if (!user) {
-      toast.error("Should login first!", TOAST_CONFIG)
-      return
-    }
     if (result && result.length > 0) {
-      add(user.id, ...result.map((item) => DaidaiObject.generateFromBookmark(item))).then(
+      add(...result.map((item) => DaidaiObject.generateFromBookmark(item))).then(
         () => {
           toast.success("Success!", TOAST_CONFIG)
         },
@@ -108,11 +135,17 @@ const BookmarkImporter = () => {
   }
 
   return (
-    <div className="pannel">
+    <div className="pannel overflow-hidden max-w-[90vw]">
       {bookmarks ? (
         <BookmarksSelect value={bookmarks} onSubmit={submit} />
       ) : (
-        <div className="flex justify-between w-[800px] ">
+        <div className="flex flex-col items-center w-[768px] max-w-full">
+          {isExtension && (
+            <>
+              <ChromeBookmarksReader onChange={(e) => setBookmarks(e)} />
+              <div className="divider self-auto w-64 mt-10">OR</div>
+            </>
+          )}
           <HTMLInput onChange={(e) => setBookmarks(e)} />
         </div>
       )}
@@ -201,7 +234,15 @@ const BookmarksSelect = ({
               checked={ignoreFirstTagChecked}
               onChange={(e) => setIgnoreFirstTagChecked(e.target.checked)}
             ></input>
-            <span className="label-text">Ignore first tag</span>
+
+            <span className="label-text">
+              Ignore first tag{" "}
+              <Tooltip content="The first tag is created by chrome automatically, such as #Bookmarks Bar and #Other Bookmarks, they are useless.">
+                <span className="text-info">
+                  <PhQuestion className="inline" />
+                </span>
+              </Tooltip>
+            </span>
           </label>
           <label className="label cursor-pointer gap-2">
             <input
@@ -212,7 +253,10 @@ const BookmarksSelect = ({
                 setIgnoreDuplicatedItemsChecked(e.target.checked)
               }}
             ></input>
-            <span className="label-text">Ignore duplicated items</span>
+            <span className="label-text">
+              Ignore duplicated items (highlight with{" "}
+              <span className="inline-block h-2 w-3 bg-warning"></span>)
+            </span>
           </label>
         </div>
         <Button
