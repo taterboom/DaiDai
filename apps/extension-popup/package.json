@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NEXT_PUBLIC_EXTENSION=chrome next build && next export",
+    "build": "NEXT_PUBLIC_EXTENSION=chrome NEXT_PUBLIC_EXTENSION_TYPE=popup next build && next export",
     "start": "next start",
     "lint": "next lint"
   },

@@ -10,6 +10,7 @@ import {
 import Button, { LinkButton, LinkButtonProps } from "ui/src/Button"
 import {
   CarbonWorkspaceImport,
+  IonMdExpand,
   MaterialSymbolsAddBoxOutlineSharp,
   MaterialSymbolsKeyboardSharp,
   NavLogo,
@@ -18,7 +19,7 @@ import {
 } from "ui/src/icons"
 import clsx from "classnames"
 import { useLocalStorage, useMeasure } from "react-use"
-import { isExtension } from "./utils/ua"
+import { isExtension, isExtensionPopup } from "./utils/ua"
 import ChromeNewTabButton from "./chrome/ChromeNewTabButton"
 
 const getGroupParent = (elem: HTMLElement): HTMLElement | null => {
@@ -74,6 +75,7 @@ const Dock = (props: DockProps) => {
         showAll ? "bounce-in-right" : "bounce-in-left"
       )}
     >
+      <div id="test"></div>
       <Button
         className="text-base"
         onClick={() => {
@@ -109,6 +111,15 @@ const Dock = (props: DockProps) => {
         <MaterialSymbolsKeyboardSharp className="text-lg" />
         <CollpasedLabel>Shortcuts</CollpasedLabel>
       </LinkButton>
+      {isExtensionPopup && (
+        <ChromeNewTabButton
+          href="chrome://bookmarks"
+          className="group flex items-center gap-1 pr-2"
+        >
+          <IonMdExpand />
+          <CollpasedLabel>Bookmarks Tab</CollpasedLabel>
+        </ChromeNewTabButton>
+      )}
       {user ? (
         <LinkButton
           href={`/?pannel=${PANNEL_PROFILE[0]}`}

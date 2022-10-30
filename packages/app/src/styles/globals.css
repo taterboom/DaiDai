@@ -21,7 +21,7 @@ body {
 }
 
 .pannel {
-  @apply text-neutral-content bg-neutral/80 p-4;
+  @apply text-neutral-content bg-neutral/80 p-4 max-h-[85vh] overflow-y-auto;
 }
 
 .kbd {

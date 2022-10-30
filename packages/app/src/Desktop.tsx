@@ -18,7 +18,11 @@ import BookmarkImporter from "./BookmarkImporter"
 import Loading from "ui/src/Loading"
 import Popup from "ui/src/Popup"
 import DaidaiObjectDeleter from "./DaidaiObjectDeleter"
-import { DaidaiObjectCreator, DaidaiObjectEditor } from "./DaidaiObjectForm"
+import {
+  DaidaiObjectCreator,
+  DaidaiObjectCreatorInExtension,
+  DaidaiObjectEditor,
+} from "./DaidaiObjectForm"
 import Dock from "./Dock"
 import ObjectEditor from "./ObjectEditor/ObjectEditor"
 import Profile from "./Profile"
@@ -26,6 +30,7 @@ import ShortcutManualPopup from "./ShotcutsManual"
 import Sites from "./Sites"
 import Tags from "./Tags"
 import TypeBox from "./TypeBox"
+import { isExtension } from "./utils/ua"
 
 const Desktop: React.FC = ({}) => {
   const { isLoading } = useSessionContext()
@@ -103,7 +108,14 @@ const Desktop: React.FC = ({}) => {
       <Tags></Tags>
       <Sites disabled={controlDisabled}></Sites>
       <Dock />
-      <DaidaiObjectCreator show={pannelCanShow(PANNEL_CREATOR)} onClose={onClosePannel} />
+      {isExtension ? (
+        <DaidaiObjectCreatorInExtension
+          show={pannelCanShow(PANNEL_CREATOR)}
+          onClose={onClosePannel}
+        />
+      ) : (
+        <DaidaiObjectCreator show={pannelCanShow(PANNEL_CREATOR)} onClose={onClosePannel} />
+      )}
       <DaidaiObjectEditor
         index={daidaiObjectIndex}
         show={pannelCanShow(PANNEL_EDITOR)}

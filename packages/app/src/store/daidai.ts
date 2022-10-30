@@ -72,18 +72,29 @@ const useDaiDaiStore = create<DaidaiState>()(
       add: async (...daidaiObjects) => {
         const state = get()
         if (state.user) {
-          const { error } = await daidaisQuery().insert(
-            daidaiObjects.map((item) => ({
-              url: item.url,
-              c_html: item.contentHTML,
-              user_id: state.user!.id,
-            }))
-          )
+          const { error, data } = await daidaisQuery()
+            .insert(
+              daidaiObjects.map((item) => ({
+                url: item.url,
+                c_html: item.contentHTML,
+                user_id: state.user!.id,
+              }))
+            )
+            .select("id, url, c_html")
           if (error) throw error
+          // use database id
+          set((state) => {
+            state.data.push(
+              ...data.map(
+                (item) => new DaidaiObject({ url: item.url, contentHTML: item.c_html, id: item.id })
+              )
+            )
+          })
+        } else {
+          set((state) => {
+            state.data.push(...daidaiObjects)
+          })
         }
-        set((state) => {
-          state.data.push(...daidaiObjects)
-        })
       },
       update: async (index, daidaiObject) => {
         const state = get()
