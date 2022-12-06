@@ -6,7 +6,7 @@ importers:
     specifiers:
       turbo: latest
     devDependencies:
-      turbo: 1.5.6
+      turbo: 1.6.3
 
   apps/extension:
     specifiers:
@@ -126,6 +126,7 @@ importers:
       '@supabase/auth-helpers-nextjs': ^0.4.0
       '@supabase/auth-helpers-react': ^0.3.0
       '@supabase/supabase-js': ^2.0.0
+      '@trpc/client': ^10.4.3
       '@types/chrome': ^0.0.197
       '@types/node': 17.0.31
       '@types/react': 18.0.8
@@ -142,6 +143,7 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0
       react-toastify: ^9.0.8
+      server: workspace:^1.0.0
       tailwind-config: workspace:^1.0.0
       tailwindcss: ^3.0.24
       three: ^0.145.0
@@ -153,12 +155,14 @@ importers:
       '@supabase/auth-helpers-nextjs': 0.4.0
       '@supabase/auth-helpers-react': 0.3.0
       '@supabase/supabase-js': 2.0.0
+      '@trpc/client': 10.4.3
       app: link:../../packages/app
       classnames: 2.3.2
       next: 12.1.5_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-toastify: 9.0.8_ef5jwxihqo6n7gxfmzogljlgcm
+      server: link:../../packages/server
       tailwind-config: link:../../packages/tailwind-config
       three: 0.145.0
       ui: link:../../packages/ui
@@ -244,6 +248,19 @@ importers:
       '@types/lodash': 4.14.186
       '@types/react': 18.0.8
       '@types/react-dom': 18.0.3
+
+  packages/server:
+    specifiers:
+      '@prisma/client': ^4.7.1
+      '@trpc/server': ^10.4.3
+      prisma: ^4.7.1
+      zod: ^3.19.1
+    dependencies:
+      '@prisma/client': 4.7.1_prisma@4.7.1
+      '@trpc/server': 10.4.3
+      zod: 3.19.1
+    devDependencies:
+      prisma: 4.7.1
 
   packages/tailwind-config:
     specifiers:
@@ -765,6 +782,28 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
+  /@prisma/client/4.7.1_prisma@4.7.1:
+    resolution: {integrity: sha512-/GbnOwIPtjiveZNUzGXOdp7RxTEkHL4DZP3vBaFNadfr6Sf0RshU5EULFzVaSi9i9PIK9PYd+1Rn7z2B2npb9w==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c
+      prisma: 4.7.1
+    dev: false
+
+  /@prisma/engines-version/4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c:
+    resolution: {integrity: sha512-Bd4LZ+WAnUHOq31e9X/ihi5zPlr4SzTRwUZZYxvWOxlerIZ7HJlVa9zXpuKTKLpI9O1l8Ec4OYCKsivWCs5a3Q==}
+    dev: false
+
+  /@prisma/engines/4.7.1:
+    resolution: {integrity: sha512-zWabHosTdLpXXlMefHmnouhXMoTB1+SCbUU3t4FCmdrtIOZcarPKU3Alto7gm/pZ9vHlGOXHCfVZ1G7OIrSbog==}
+    requiresBuild: true
+
   /@radix-ui/primitive/1.0.0:
     resolution: {integrity: sha512-3e7rn8FDMin4CgeL7Z/49smCA3rFYY3Ha2rUQ7HRWFadS5iCRw08ZgVT1LaNTCNqgvrUiyczLflrVrF0SRQtNA==}
     dependencies:
@@ -1204,6 +1243,16 @@ packages:
       tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
     dependencies:
       tailwindcss: 3.1.8
+    dev: false
+
+  /@trpc/client/10.4.3:
+    resolution: {integrity: sha512-VMdyLHr6PG2FlMxnbPt/6jniDBxv3Ys1hFhk0AriFDD9h4Lg9fznwGn5RI1eV5RCOAoCQ/+ZwPMSKOMBhiycTw==}
+    peerDependencies:
+      '@trpc/server': 10.4.3
+    dev: false
+
+  /@trpc/server/10.4.3:
+    resolution: {integrity: sha512-U+TVFtMUnySUfKHXjdpdZdFS268naGafbjQiG/H7t0OKpiLnbJ4IhgyYzj82Hvghb6Ow9E+UTNt6ALP7KoN4/g==}
     dev: false
 
   /@types/chrome/0.0.197:
@@ -3315,6 +3364,14 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  /prisma/4.7.1:
+    resolution: {integrity: sha512-CCQP+m+1qZOGIZlvnL6T3ZwaU0LAleIHYFPN9tFSzjs/KL6vH9rlYbGOkTuG9Q1s6Ki5D0LJlYlW18Z9EBUpGg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 4.7.1
+
   /prismjs/1.29.0:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
@@ -3896,65 +3953,65 @@ packages:
       typescript: 4.6.4
     dev: true
 
-  /turbo-darwin-64/1.5.6:
-    resolution: {integrity: sha512-CWdXMwenBS2+QXIR2Czx7JPnAcoMzWx/QwTDcHVxZyeayMHgz8Oq5AHCtfaHDSfV8YhD3xa0GLSk6+cFt+W8BQ==}
+  /turbo-darwin-64/1.6.3:
+    resolution: {integrity: sha512-QmDIX0Yh1wYQl0bUS0gGWwNxpJwrzZU2GIAYt3aOKoirWA2ecnyb3R6ludcS1znfNV2MfunP+l8E3ncxUHwtjA==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.5.6:
-    resolution: {integrity: sha512-c/aXgW9JuXT2bJSKf01pdSDQKnrdcdj3WFKmKiVldb9We6eqFzI0fLHBK97k5LM/OesmRMfCMQ2Cv2DU8RqBAA==}
+  /turbo-darwin-arm64/1.6.3:
+    resolution: {integrity: sha512-75DXhFpwE7CinBbtxTxH08EcWrxYSPFow3NaeFwsG8aymkWXF+U2aukYHJA6I12n9/dGqf7yRXzkF0S/9UtdyQ==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.5.6:
-    resolution: {integrity: sha512-y/jNF7SG+XJEwk2GxIqy3g4dj/a0PgZKDGyOkp24qp4KBRcHBl6dI1ZEfNed30EhEqmW4F5Dr7IpeCZoqgbrMg==}
+  /turbo-linux-64/1.6.3:
+    resolution: {integrity: sha512-O9uc6J0yoRPWdPg9THRQi69K6E2iZ98cRHNvus05lZbcPzZTxJYkYGb5iagCmCW/pq6fL4T4oLWAd6evg2LGQA==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.5.6:
-    resolution: {integrity: sha512-FRcxPtW7eFrbR3QaYBVX8cK7i+2Cerqi6F0t5ulcq+d1OGSdSW3l35rPPyJdwCzCy+k/S9sBcyCV0RtbS6RKCQ==}
+  /turbo-linux-arm64/1.6.3:
+    resolution: {integrity: sha512-dCy667qqEtZIhulsRTe8hhWQNCJO0i20uHXv7KjLHuFZGCeMbWxB8rsneRoY+blf8+QNqGuXQJxak7ayjHLxiA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.5.6:
-    resolution: {integrity: sha512-/5KIExY7zbrbeL5fhKGuO85u5VtJ3Ue4kI0MbYCNnTGe7a10yTYkwswgtGihsgEF4AW0Nm0159aHmXZS2Le8IA==}
+  /turbo-windows-64/1.6.3:
+    resolution: {integrity: sha512-lKRqwL3mrVF09b9KySSaOwetehmGknV9EcQTF7d2dxngGYYX1WXoQLjFP9YYH8ZV07oPm+RUOAKSCQuDuMNhiA==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.5.6:
-    resolution: {integrity: sha512-p+LQN9O39+rZuOAyc6BzyVGvdEKo+v+XmtdeyZsZpfj4xuOLtsEptW1w6cUD439u0YcPknuccGq1MQ0lXQ6Xuw==}
+  /turbo-windows-arm64/1.6.3:
+    resolution: {integrity: sha512-BXY1sDPEA1DgPwuENvDCD8B7Hb0toscjus941WpL8CVd10hg9pk/MWn9CNgwDO5Q9ks0mw+liDv2EMnleEjeNA==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.5.6:
-    resolution: {integrity: sha512-xJO/fhiMo4lI62iGR9OgUfJTC9tnnuoMwNC52IfvvBDEPlA8RWGMS8SFpDVG9bNCXvVRrtUTNJXMe6pJWBiOTA==}
+  /turbo/1.6.3:
+    resolution: {integrity: sha512-FtfhJLmEEtHveGxW4Ye/QuY85AnZ2ZNVgkTBswoap7UMHB1+oI4diHPNyqrQLG4K1UFtCkjOlVoLsllUh/9QRw==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.5.6
-      turbo-darwin-arm64: 1.5.6
-      turbo-linux-64: 1.5.6
-      turbo-linux-arm64: 1.5.6
-      turbo-windows-64: 1.5.6
-      turbo-windows-arm64: 1.5.6
+      turbo-darwin-64: 1.6.3
+      turbo-darwin-arm64: 1.6.3
+      turbo-linux-64: 1.6.3
+      turbo-linux-arm64: 1.6.3
+      turbo-windows-64: 1.6.3
+      turbo-windows-arm64: 1.6.3
     dev: true
 
   /type-check/0.4.0:
@@ -4132,6 +4189,10 @@ packages:
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
+
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
+    dev: false
 
   /zstddec/0.0.2:
     resolution: {integrity: sha512-DCo0oxvcvOTGP/f5FA6tz2Z6wF+FIcEApSTu0zV5sQgn9hoT5lZ9YRAKUraxt9oP7l4e8TnNdi8IZTCX6WCkwA==}

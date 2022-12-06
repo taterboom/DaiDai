@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")(["ui", "app"], {
+const withTM = require("next-transpile-modules")(["ui", "app", "server"], {
   debug: true,
 })
 

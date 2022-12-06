@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^4.7.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.7.1",
+    "@trpc/server": "^10.4.3",
+    "zod": "^3.19.1"
+  }
+}
