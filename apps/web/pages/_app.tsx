@@ -7,38 +7,29 @@ import type { AppProps } from "next/app"
 import { SessionContextProvider } from "@supabase/auth-helpers-react"
 import { ToastContainer } from "react-toastify"
 import { supabaseClient } from "app/src/utils/supabaseClient"
-
-// @filename: client.ts
-import { createTRPCProxyClient, httpBatchLink } from "@trpc/client"
-import type { AppRouter } from "server/trpc"
+import { trpcClient } from "../utils/trpcClient"
 import { useEffect } from "react"
+import { SessionProvider } from "next-auth/react"
 
-// Notice the <AppRouter> generic here.
-const trpc = createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url: "https://local.daidai.cyou:3000/api/trpc",
-    }),
-  ],
-})
-
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   useEffect(() => {
     if (typeof window !== undefined) {
-      trpc.user.getUsers.query().then((res) => {
-        console.log(res.data)
+      trpcClient.user.getUsers.query().then((res) => {
+        console.log("!!!!!", res.data)
       })
     }
   })
   return (
     <>
       <ToastContainer />
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
-        <Component {...pageProps} />
-      </SessionContextProvider>
+      <SessionProvider session={session}>
+        <SessionContextProvider
+          supabaseClient={supabaseClient}
+          initialSession={pageProps.initialSession}
+        >
+          <Component {...pageProps} />
+        </SessionContextProvider>
+      </SessionProvider>
     </>
   )
 }

@@ -6,7 +6,7 @@ const withTM = require("next-transpile-modules")(["ui", "app", "server"], {
 const nextConfig = withTM({
   reactStrictMode: true,
   swcMinify: true,
-  assetPrefix: "./",
+  // assetPrefix: "./",
   experimental: {
     images: {
       unoptimized: true,
